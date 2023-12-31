@@ -1,0 +1,20 @@
+pre-commit:
+  parallel: true
+  commands:
+    tests:
+      run: make test
+    markdownlint:
+      tags: documentation style
+      glob: "*.md"
+      run: markdownlint {staged_files}
+    stylua:
+      tags: style
+      run: stylua --check lua --color always
+    yaml-prettier:
+      tags: style
+      glob: "*.{yml,yaml}"
+      run: prettier -c {staged_files}
+commit-msg:
+  commands:
+    commitlint:
+      run: commitlint --edit={1}
