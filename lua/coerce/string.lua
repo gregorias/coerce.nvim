@@ -29,15 +29,15 @@ M.is_lower = function(char)
 	return not M.is_unicase(char) and not M.is_upper(char)
 end
 
---- Splits a string into a list of Unicode characters.
+--- Splits a string into a list of Unicode graphemes.
 --
--- Includes combining characters into a single character.
+-- Includes combining characters into a single grapheme.
 --
 -- See also vim.fn.str2list, which splits a string into a list of code points.
 --
 --@param str The string to split.
 --@return A list of characters.
-M.str2charlist = function(str)
+M.str2graphemelist = function(str)
 	local charlist = {}
 	local stridx = 0
 	while stridx < string.len(str) do
