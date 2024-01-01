@@ -4,15 +4,15 @@ A Neovim plugin for changing case of words.
 
 ## Comparison to similar tools
 
-| Feature | Coerce.nvim | Text-case.nvim | Abolish |
-|:--:|:--:|:--:|:--:|
-| Unicode support | ✅ | | ❌ |
-| Which Key support | ✅ | ✅ | ❌ |
-| Which Key integration | | ✅ | ❌ |
-| Telescope integration | | ✅ | ❌ |
-| Current keyword coerce | ✅ | ❌ | ✅ |
-| Kebab case | | ❌ | ✅  |
-| Numeronym „case” | | ❌ | ❌ |
+| Feature                | Coerce.nvim | Text-case.nvim | Abolish |
+| :--:                   | :--:        | :--:           | :--:    |
+| Unicode support        | ✅          |                | ❌      |
+| Which Key support      | ✅          | ✅             | ❌      |
+| Which Key integration  |             | ✅             | ❌      |
+| Telescope integration  |             | ✅             | ❌      |
+| Current keyword coerce | ✅          | ❌             | ✅      |
+| Kebab case             |             | ❌             | ✅      |
+| Numeronym “case”       |             | ❌             | ❌      |
 
 ## Acknowledgments
 
