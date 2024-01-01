@@ -29,4 +29,31 @@ M.is_lower = function(char)
 	return not M.is_unicase(char) and not M.is_upper(char)
 end
 
+--- Splits a string into a list of Unicode characters.
+--
+-- Includes combining characters into a single character.
+--
+-- See also vim.fn.str2list, which splits a string into a list of code points.
+--
+--@param str The string to split.
+--@return A list of characters.
+M.str2charlist = function(str)
+	local charlist = {}
+	local stridx = 0
+	while stridx < string.len(str) do
+		local current_charidx = vim.fn.charidx(str, stridx)
+		local charend = 1
+		while stridx + charend < string.len(str) do
+			local next_charidx = vim.fn.charidx(str, stridx + charend)
+			if current_charidx ~= next_charidx then
+				break
+			end
+			charend = charend + 1
+		end
+		table.insert(charlist, string.sub(str, stridx + 1, stridx + charend))
+		stridx = stridx + charend
+	end
+	return charlist
+end
+
 return M
