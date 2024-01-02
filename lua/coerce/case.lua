@@ -2,11 +2,11 @@
 -- @module coerce.case
 local M = {}
 
---- Converts a string into a numeronym.
+--- Converts a string into a numerical contraction.
 --
 --@param str The string to convert.
---@return The numeronym.
-M.to_numeronym = function(str)
+--@return The numerical contraction.
+M.to_numerical_contraction = function(str)
 	local cs = require("coerce.string")
 
 	local grapheme_list = cs.str2graphemelist(str)
@@ -14,7 +14,17 @@ M.to_numeronym = function(str)
 		return str
 	end
 
-	return grapheme_list[1] .. tostring(#grapheme_list - 2) .. grapheme_list[#grapheme_list]
+	local character_count = 0
+	local idx = 2
+	while idx <= (#grapheme_list - 1) do
+		local grapheme = grapheme_list[idx]
+		if vim.fn.charclass(grapheme) == 2 then
+			character_count = character_count + 1
+		end
+		idx = idx + 1
+	end
+
+	return grapheme_list[1] .. character_count .. grapheme_list[#grapheme_list]
 end
 
 return M
