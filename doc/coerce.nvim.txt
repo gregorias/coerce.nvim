@@ -10,7 +10,7 @@ Table of Contents                              *coerce.nvim-table-of-contents*
 ==============================================================================
 1. Coerce.nvim                                       *coerce.nvim-coerce.nvim*
 
-A Neovim plugin for changing case of words.
+A Neovim plugin for changing the case of words.
 
 
 COMPARISON TO SIMILAR TOOLS*coerce.nvim-coerce.nvim-comparison-to-similar-tools*
