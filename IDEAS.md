@@ -1,7 +1,6 @@
 # Ideas
 
-- Support Unicode
-  - unicase alphabets treat as lower case... hmm... maybe not?
+- [ ] Unit tests for different case conversions.
 - This plugin should have a "gc"\<case\>\<motion\> functionality.
 - This plugin should have a visual mode "gc\<case\>" functionality
 - This plugin should have "crCASE" for normal mode (current keywords) functionality.

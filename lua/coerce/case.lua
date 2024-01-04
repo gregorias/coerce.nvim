@@ -4,6 +4,40 @@ local M = {}
 
 local cs = require("coerce.string")
 
+--- Converts a keyword into PascalCase.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_camel_case = function(str)
+	local parts = M.split_keyword(str)
+
+	for i = 2, #parts, 1 do
+		local part_graphemes = cs.str2graphemelist(parts[i])
+		part_graphemes[1] = vim.fn.toupper(part_graphemes[1])
+		parts[i] = table.concat(part_graphemes, "")
+	end
+
+	return table.concat(parts, "")
+end
+
+--- Converts a keyword into dot-case.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_dot_case = function(str)
+	local parts = M.split_keyword(str)
+	return table.concat(parts, ".")
+end
+
+--- Converts a keyword into kebab-case.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_kebab_case = function(str)
+	local parts = M.split_keyword(str)
+	return table.concat(parts, "-")
+end
+
 --- Converts a string into a numerical contraction.
 --
 --@param str The string to convert.
@@ -25,6 +59,42 @@ M.to_numerical_contraction = function(str)
 	end
 
 	return grapheme_list[1] .. character_count .. grapheme_list[#grapheme_list]
+end
+
+--- Converts a keyword into PascalCase.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_pascal_case = function(str)
+	local parts = M.split_keyword(str)
+
+	for i = 1, #parts, 1 do
+		local part_graphemes = cs.str2graphemelist(parts[i])
+		part_graphemes[1] = vim.fn.toupper(part_graphemes[1])
+		parts[i] = table.concat(part_graphemes, "")
+	end
+
+	return table.concat(parts, "")
+end
+
+--- Converts a keyword into snake_case.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_snake_case = function(str)
+	local parts = M.split_keyword(str)
+	return table.concat(parts, "_")
+end
+
+--- Converts a keyword into snake_case.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_upper_case = function(str)
+	local parts = M.split_keyword(str)
+
+	parts = vim.tbl_map(vim.fn.toupper, parts)
+	return table.concat(parts, "_")
 end
 
 --- Splits a word into its parts.
