@@ -17,6 +17,24 @@ describe("coerce.vim.api.extra", function()
 			assert.are.same({ "ello" }, fetched_text)
 		end)
 
+		it("gets text from a single line", function()
+			local buf = test_helpers.create_buf({
+				"local M = {}",
+				"",
+				'local COERCE_PREFIX = "cr"',
+				'local CHANGE_CASE_PREFIX = "gc"',
+			})
+
+			local fetched_text = vae.nvim_buf_get_text(buf, {
+				mode = region.modes.CHAR_MODE,
+				start_row = 2,
+				start_col = 6,
+				end_row = 3,
+				end_col = 19,
+			})
+			assert.are.same({ "COERCE_PREFIX" }, fetched_text)
+		end)
+
 		it("gets text from multiple lines", function()
 			local buf = test_helpers.create_buf({ "Hello, world!", "I am mister bombastic." })
 

@@ -13,7 +13,7 @@ M.nvim_buf_get_text = function(buffer, region)
 	local lines = vim.api.nvim_buf_get_lines(
 		buffer,
 		region.start_row,
-		region.end_row + 1,
+		region.end_row,
 		--[[strict_indexing]]
 		false
 	)
