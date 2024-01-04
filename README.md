@@ -13,7 +13,7 @@ A Neovim plugin for changing the case of words.
 | LSP rename support     | ❌          | ✅             | ❌      |
 | Current keyword coerce | ✅          | ❌             | ✅      |
 | Kebab case             |             | ❌             | ✅      |
-| Numeronym “case”       | ✅          | ❌             | ❌      |
+| [Numeronym] “case”     | ✅          | ❌             | ❌      |
 
 ## Acknowledgments
 
@@ -25,3 +25,4 @@ plugin precisely to address its shortcomings, which are:
 
 [abolish]: https://github.com/tpope/vim-abolish
 [which-key]: https://github.com/folke/which-key.nvim
+[Numeronym]: https://en.wikipedia.org/wiki/Numeronym#Numerical_contractions
