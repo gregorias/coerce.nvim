@@ -1,6 +1,6 @@
 # 🔄 Coerce.nvim
 
-A Neovim plugin for changing case of words.
+A Neovim plugin for changing the case of words.
 
 ## Comparison to similar tools
 
