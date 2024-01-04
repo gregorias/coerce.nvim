@@ -33,4 +33,39 @@ M.operator = function(user_operator_cb, mode, movement)
 	vim.api.nvim_feedkeys("g@" .. movement, mode or "m", false)
 end
 
+--- Gets the region selected by an operator motion.
+--
+--@tparam string mode The motion mode.
+--@return coerce.region.Region The selected region.
+M.get_selected_region = function(mode)
+	assert(mode == M.motion_modes.CHAR, "Only supporting char motion for now.")
+
+	local buffer = 0
+	local sln = vim.api.nvim_buf_get_mark(buffer, "[")
+	local eln = vim.api.nvim_buf_get_mark(buffer, "]")
+
+	-- if mode == M.motion_modes.LINE then
+	--   sln = { sln[1], 0 }
+	--   eln = { eln[1], vim.fn.getline(eln[1]):len() - 1 }
+	-- end
+
+	-- Make sure we we change start and end if end is higher than start.
+	-- This happens when we select from bottom to top or from right to left.
+	local start_row = math.min(sln[1], eln[1]) - 1
+	local start_col = math.min(sln[2], eln[2])
+	local end_row = math.max(sln[1], eln[1])
+	local end_col_1 = math.min(sln[2], vim.fn.getline(sln[1]):len()) + 1
+	local end_col_2 = math.min(eln[2], vim.fn.getline(eln[1]):len()) + 1
+	local end_col = math.max(end_col_1, end_col_2)
+
+	local region = require("coerce.region")
+	return {
+		mode = region.modes.CHAR_MODE,
+		start_row = start_row,
+		start_col = start_col,
+		end_row = end_row,
+		end_col = end_col,
+	}
+end
+
 return M
