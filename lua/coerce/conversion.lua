@@ -26,4 +26,16 @@ M.substitute = function(selected_region, apply)
 	)
 end
 
+--- Converts the current word using the apply function.
+--
+--@tparam function apply The function to apply to the current word.
+--@treturn nil
+M.convert_current_word = function(apply)
+	local operator_m = require("coerce.operator")
+	operator_m.operator(function(mmode)
+		local selected_region = operator_m.get_selected_region(mmode)
+		M.substitute(selected_region, apply)
+	end, "x", "iw")
+end
+
 return M

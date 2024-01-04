@@ -22,4 +22,17 @@ describe("coerce.conversion", function()
 			assert.are.same({ "Hello, Albert!" }, lines)
 		end)
 	end)
+	describe("convert_current_word", function()
+		it("converts the current word", function()
+			local buf = test_helpers.create_buf({ "Hello, world!" })
+			vim.api.nvim_win_set_cursor(0, { 1, 8 })
+
+			cc.convert_current_word(function()
+				return "Bob"
+			end)
+
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
+			assert.are.same({ "Hello, Bob!" }, lines)
+		end)
+	end)
 end)
