@@ -10,9 +10,10 @@ A Neovim plugin for changing case of words.
 | Which Key support      | ✅          | ✅             | ❌      |
 | Which Key integration  |             | ✅             | ❌      |
 | Telescope integration  |             | ✅             | ❌      |
+| LSP rename support     | ❌          | ✅             | ❌      |
 | Current keyword coerce | ✅          | ❌             | ✅      |
 | Kebab case             |             | ❌             | ✅      |
-| Numeronym “case”       |             | ❌             | ❌      |
+| Numeronym “case”       | ✅          | ❌             | ❌      |
 
 ## Acknowledgments
 
