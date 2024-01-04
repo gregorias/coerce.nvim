@@ -33,4 +33,12 @@ M.empty_char_region = {
 	end_col = 0,
 }
 
+--- Gets the lines selected by a region.
+--
+--@tparam Region region The region to get the lines from.
+--@return number The number of lines in the region.
+M.lines = function(region)
+	return region.end_row - region.start_row
+end
+
 return M
