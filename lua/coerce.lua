@@ -1,7 +1,6 @@
 local M = {}
 
 local COERCE_PREFIX = "cr"
-local CHANGE_CASE_PREFIX = "gc"
 
 --- Sets up the plugin.
 M.setup = function()
@@ -52,9 +51,6 @@ M.setup = function()
 				end,
 				"UPPER_CASE",
 			},
-		},
-		[CHANGE_CASE_PREFIX] = {
-			name = "+Change Case",
 		},
 	})
 end
