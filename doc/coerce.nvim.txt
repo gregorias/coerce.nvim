@@ -1,4 +1,4 @@
-*coerce.nvim.txt*       For Neovim >= 0.9.4       Last change: 2024 January 04
+*coerce.nvim.txt*       For Neovim >= 0.9.4       Last change: 2024 January 05
 
 ==============================================================================
 Table of Contents                              *coerce.nvim-table-of-contents*
