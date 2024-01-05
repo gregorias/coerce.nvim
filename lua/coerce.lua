@@ -1,13 +1,18 @@
 local M = {}
 
-local COERCE_PREFIX = "cr"
+M.default_config = {
+	coerce_prefix = "cr",
+}
 
 --- Sets up the plugin.
-M.setup = function()
+--
+--@tparam table|nil config
+M.setup = function(config)
+	config = vim.tbl_deep_extend("keep", config or {}, M.default_config)
 	local conversion_m = require("coerce.conversion")
 	local case_m = require("coerce.case")
 	require("coerce.keymap").register({
-		[COERCE_PREFIX] = {
+		[config.coerce_prefix] = {
 			name = "+Coerce to...",
 			c = {
 				function()
