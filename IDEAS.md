@@ -1,6 +1,7 @@
 # Ideas
 
 - Should be integrable with Which Key but also work with native keymaps
+- Integrate with Legendary ("Coerce").
 - Should integrate with LSP rename...
 - [ ] Advertise on Reddit.
 - [ ] Add to the Neovim Awesome list
