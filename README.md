@@ -22,16 +22,18 @@
 | Current keyword coerce  | ✅     | ❌                     | ✅                 |
 | Kebab case              | ✅     | ❌                     | ✅                 |
 | [Numeronym] “case”      | ✅     | ❌                     | ❌                 |
+| Custom case support     | ✅     | ❌                     | ❌                 |
 
 ## Acknowledgments
 
-This plugin is based on [Abolish][abolish]'s coercion feature. I created this
-plugin precisely to address its shortcomings, which are:
+This plugin was inspired by [Abolish][abolish]’s coercion feature. I created
+this plugin to address Abolish’s shortcomings, which are:
 
-- lack of configurability
-- no integration with [Which Key][which-key]
+- No integration with [Which Key][which-key] or [Telescope].
+- Little configurability. I couldn’t extend the plugin with new cases.
 
 [abolish]: https://github.com/tpope/vim-abolish
 [text-case]: https://github.com/johmsalas/text-case.nvim
 [which-key]: https://github.com/folke/which-key.nvim
 [Numeronym]: https://en.wikipedia.org/wiki/Numeronym#Numerical_contractions
+[Telescope]: https://github.com/nvim-telescope/telescope.nvim
