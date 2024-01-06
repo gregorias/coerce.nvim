@@ -40,6 +40,9 @@ this plugin to address Abolish’s shortcomings, which are:
 I used [Text-case][text-case]’s source code to inform myself on how to do
 things in Neovim.
 
+The logo is based on
+[a fist SVG from SVG Repo](https://www.svgrepo.com/svg/29542/fist).
+
 [abolish]: https://github.com/tpope/vim-abolish
 [text-case]: https://github.com/johmsalas/text-case.nvim
 [which-key]: https://github.com/folke/which-key.nvim
