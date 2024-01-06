@@ -27,6 +27,7 @@ Install the theme with your preferred package manager, such as [Lazy]:
 ```lua
 {
   "gregorias/coerce.nvim",
+  tag = 'v0.1',
   config = true,
 }
 ```
@@ -46,6 +47,13 @@ like so:
   end,
 }
 ```
+
+### Note on stability
+
+Coerce is under active development, and I intend to make breaking changes as I
+explore the design space. For your peace of mind, consider freezing your
+installation at a specific version for now. Fine by me if you want to live on
+the bleeding edge though.
 
 ## 🚀 Usage
 
