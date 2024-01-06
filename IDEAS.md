@@ -8,8 +8,8 @@
 - [ ] Support visual selection
 - [ ] Support operator motion
 - [ ] Create a VimDoc.
-- [ ] Advertise on Reddit.
-- [ ] Add to the Neovim Awesome list
+- [x] Advertise on Reddit.
+- [x] Add to the Neovim Awesome list
 - For further ideas, explore:
   - [Text-case](https://github.com/johmsalas/text-case.nvim)
   - [Abolish][abolish]
