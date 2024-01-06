@@ -40,34 +40,34 @@ Install the theme with your preferred package manager, such as [Lazy]:
 
 ### Built-in cases
 
-| Case       | Key |
-| :--        | :-- |
-| camelCase  | c   |
-| dot.case   | d   |
-| kebab-case | k   |
-| n12e       | n   |
-| PascalCase | p   |
-| snake_case | s   |
-| UPPER_CASE | u   |
+| Case              | Key |
+| :--               | :-- |
+| camelCase         | c   |
+| dot.case          | d   |
+| kebab-case        | k   |
+| [n12e][Numeronym] | n   |
+| PascalCase        | p   |
+| snake_case        | s   |
+| UPPER_CASE        | u   |
 
 ## ⚙️ Configuration
 
 ## Comparison to similar tools
 
-| Feature                 | Coerce | [Text-case][text-case] | [Abolish][abolish] |
-| :--                     | :--:   | :--:                   | :--:               |
-| Unicode support         | ✅     |                        | ❌                 |
-| Which Key integration   | ✅     | ✅                     | ❌                 |
-| [Telescope] integration |        | ✅                     | ❌                 |
-| [Legendary] integration |        |                        | ❌                 |
-| LSP rename              | ❌     | ✅                     | ❌                 |
-| Operator motion support | ❌     | ✅                     | ❌                 |
-| Current keyword coerce  | ✅     | ❌                     | ✅                 |
-| Kebab case              | ✅     | ❌                     | ✅                 |
-| [Numeronym] “case”      | ✅     | ❌                     | ❌                 |
-| Custom case support     | ✅     | ❌                     | ❌                 |
+| Feature                            | Coerce | [Text-case][text-case] | [Abolish][abolish] |
+| :--                                | :--:   | :--:                   | :--:               |
+| Full Unicode support               | ✅     | ❌                     | ❌                 |
+| [Which Key][which-key] integration | ✅     | ✅                     | ❌                 |
+| [Telescope] integration            | ❌     | ✅                     | ❌                 |
+| [Legendary] integration            | ❌     | ❌                     | ❌                 |
+| LSP rename                         | ❌     | ✅                     | ❌                 |
+| Operator motion support            | ❌     | ✅                     | ❌                 |
+| Current keyword coerce             | ✅     | ❌                     | ✅                 |
+| Kebab case                         | ✅     | ✅                     | ✅                 |
+| [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |
+| Custom case support                | ✅     | ❌                     | ❌                 |
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 This plugin was inspired by [Abolish][abolish]’s coercion feature. I created
 this plugin to address Abolish’s shortcomings, which are:
