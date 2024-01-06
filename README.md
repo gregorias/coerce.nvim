@@ -32,6 +32,22 @@ Install the theme with your preferred package manager, such as [Lazy]:
 }
 ```
 
+### Abolish setup
+
+This plugin effectively replaces [Abolish]’s coercion functionality. If you
+wish to keep it for its other features, you can disable the coercion feature
+like so:
+
+```lua
+{
+  "tpope/vim-abolish",
+  init = function()
+    -- Disable coercion mappings. I use coerce.nvim for that.
+    vim.g.abolish_no_mappings = true
+  end,
+}
+```
+
 ## 🚀 Usage
 
 1. Put the cursor inside [a keyword][iskeyword].
