@@ -63,7 +63,7 @@ COMPARISON TO SIMILAR TOOLS          *coerce.nvim-comparison-to-similar-tools*
   -------------------------------------------------------------------------------
   Feature                      Coerce           Text-case           Abolish
   ---------------------- ------------------ ------------------ ------------------
-  Unicode support                                              
+  Full Unicode support                                         
 
   WhichKey integration                                         
 
@@ -86,7 +86,7 @@ COMPARISON TO SIMILAR TOOLS          *coerce.nvim-comparison-to-similar-tools*
 
 ACKNOWLEDGMENTS                                  *coerce.nvim-acknowledgments*
 
-Thisplugin was inspired by Abolish <https://github.com/tpope/vim-abolish>’s
+This plugin was inspired by Abolish <https://github.com/tpope/vim-abolish>’s
 coercion feature. I created this plugin to address Abolish’s shortcomings,
 which are:
 
