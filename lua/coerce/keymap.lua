@@ -19,7 +19,6 @@ M.which_key_keymap_registry = {
 		})
 	end,
 	register_keymap = function(keymap, action, description)
-		vim.notify(keymap .. description)
 		require("which-key").register({
 			[keymap] = {
 				action,
