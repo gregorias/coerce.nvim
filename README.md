@@ -22,7 +22,7 @@
 
 ## 📦 Installation
 
-Install the theme with your preferred package manager, such as [Lazy]:
+Install the plugin with your preferred package manager, such as [Lazy]:
 
 ```lua
 {
