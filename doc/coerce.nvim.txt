@@ -20,7 +20,6 @@ REQUIREMENTS                                        *coerce.nvim-requirements*
 - Neovim 0.9+
 - Optional plugin dependencies:
     - Which Key <https://github.com/folke/which-key.nvim>
-    - Legendary <https://github.com/mrjones2014/legendary.nvim>
 
 
 INSTALLATION                                        *coerce.nvim-installation*
@@ -76,6 +75,35 @@ BUILT-IN CASES ~
 CONFIGURATION                                      *coerce.nvim-configuration*
 
 
+SETUP ~
+
+The default configuration looks like so:
+
+>lua
+    require"coerce".setup{
+      coerce_prefix = "cr",
+      keymap_registry = require("coerce.keymap").keymap_registry(),
+    }
+<
+
+You may freely modify the config parameters to your liking.
+
+
+REGISTER A NEW CASE ~
+
+You can register a new case like so:
+
+>lua
+    require"coerce".register{
+      keymap = "l",
+      case = function(str)
+        return vim.fn.tolower(str)
+      end,
+      description = "lowercase",
+    }
+<
+
+
 COMPARISON TO SIMILAR TOOLS          *coerce.nvim-comparison-to-similar-tools*
 
 Text-case <https://github.com/johmsalas/text-case.nvim> is significantly more
@@ -90,8 +118,6 @@ keyword, Coerce is simpler.
   WhichKey integration                                         
 
   Telescopeintegration                                         
-
-  Legendaryintegration                                         
 
   LSPrename                                                    
 
