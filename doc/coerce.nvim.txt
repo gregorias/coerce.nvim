@@ -1,19 +1,13 @@
-*coerce.nvim.txt*       For Neovim >= 0.9.4       Last change: 2024 January 05
+*coerce.nvim.txt*       For Neovim >= 0.9.4       Last change: 2024 January 06
 
 ==============================================================================
 Table of Contents                              *coerce.nvim-table-of-contents*
 
-1. Coerce.nvim                                       |coerce.nvim-coerce.nvim|
-  - Comparison to similar tools|coerce.nvim-coerce.nvim-comparison-to-similar-tools|
-  - Acknowledgments                  |coerce.nvim-coerce.nvim-acknowledgments|
-
-==============================================================================
-1. Coerce.nvim                                       *coerce.nvim-coerce.nvim*
-
-A Neovim plugin for changing the case of words.
+  - Comparison to similar tools      |coerce.nvim-comparison-to-similar-tools|
+  - Acknowledgments                              |coerce.nvim-acknowledgments|
 
 
-COMPARISON TO SIMILAR TOOLS*coerce.nvim-coerce.nvim-comparison-to-similar-tools*
+COMPARISON TO SIMILAR TOOLS          *coerce.nvim-comparison-to-similar-tools*
 
           Feature          Coerce.nvim   Text-case.nvim   Abolish
   ----------------------- ------------- ---------------- ---------
@@ -26,7 +20,7 @@ COMPARISON TO SIMILAR TOOLS*coerce.nvim-coerce.nvim-comparison-to-similar-tools*
          Kebabcase                                       
       Numeronym“case”                                    
 
-ACKNOWLEDGMENTS                      *coerce.nvim-coerce.nvim-acknowledgments*
+ACKNOWLEDGMENTS                                  *coerce.nvim-acknowledgments*
 
 Thisplugin is based on Abolish <https://github.com/tpope/vim-abolish>’s
 coercion feature. I created this plugin precisely to address its shortcomings,
