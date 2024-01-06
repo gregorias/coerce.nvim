@@ -1,6 +1,14 @@
-# 🔄 Coerce.nvim
+<!-- markdownlint-disable MD033 MD041 -->
 
-A Neovim plugin for changing the case of words.
+<div align="center">
+  <p>
+    <img src="assets/coerce-fist-name.png" align="center" alt="Coerce Logo"
+         width="400" />
+  </p>
+  <p>
+    A Neovim plugin for changing keyword case.
+  </p>
+</div>
 
 ## Comparison to similar tools
 
