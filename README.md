@@ -10,6 +10,10 @@
   </p>
 </div>
 
+## Example session
+
+![tty](assets/coerce-session.gif)
+
 ## Comparison to similar tools
 
 | Feature                 | Coerce | [Text-case][text-case] | [Abolish][abolish] |
