@@ -70,6 +70,9 @@ like so:
 
 ## Comparison to similar tools
 
+[Text-case][text-case] is significantly more feature-rich than Coerce, but if
+you just need to change case of the current keyword, Coerce is simpler.
+
 | Feature                            | Coerce | [Text-case][text-case] | [Abolish][abolish] |
 | :--                                | :--:   | :--:                   | :--:               |
 | Full Unicode support               | ✅     | ❌                     | ❌                 |
