@@ -16,7 +16,7 @@
 | :--:                    | :--:   | :--:                   | :--:               |
 | Unicode support         | ✅     |                        | ❌                 |
 | Which Key integration   | ✅     | ✅                     | ❌                 |
-| Telescope integration   |        | ✅                     | ❌                 |
+| [Telescope] integration |        | ✅                     | ❌                 |
 | [Legendary] integration |        |                        | ❌                 |
 | LSP rename              | ❌     | ✅                     | ❌                 |
 | Operator motion support | ❌     | ✅                     | ❌                 |
@@ -30,7 +30,7 @@
 This plugin was inspired by [Abolish][abolish]’s coercion feature. I created
 this plugin to address Abolish’s shortcomings, which are:
 
-- No integration with [Which Key][which-key] or [Telescope].
+- No integration with [Which Key][which-key] or [Legendary].
 - Little configurability. I couldn’t extend the plugin with new cases.
 
 I used [Text-case][text-case]’s source code to inform myself on how to do
