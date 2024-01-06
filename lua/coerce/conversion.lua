@@ -3,6 +3,13 @@
 --@module coerce.conversion
 local M = {}
 
+--- Registers a new case.
+M.register = function(args)
+	args.keymap_registry.register_keymap(args.coerce_prefix .. args.keymap, function()
+		M.convert_current_word(args.case)
+	end, args.description)
+end
+
 --- Changes the the selected text using the apply function.
 --
 --@tparam Region selected_region The selected region to change.

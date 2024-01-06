@@ -1,16 +1,18 @@
 # Ideas
 
-- Should be integrable with Which Key but also work with native keymaps
-- Integrate with Legendary ("Coerce").
-- Should integrate with LSP rename...
-- Should allow for extending with arbitrary cases.
+- [x] Use justfile
+- [x] Allow registering custom cases
+- [x] Work with WK and native keymaps.
+- [ ] Integrate with Legendary ("Coerce").
+- [ ] Work with LSP rename.
+- [ ] Support visual selection
+- [ ] Support operator motion
+- [ ] Create a VimDoc.
 - [ ] Advertise on Reddit.
 - [ ] Add to the Neovim Awesome list
-
-- For ideas (subject matter and otherwise):
+- For further ideas, explore:
   - [Text-case](https://github.com/johmsalas/text-case.nvim)
-  - Abolish
+  - [Abolish][abolish]
   - [vim-caser](https://github.com/arthurxavierx/vim-caser)
 
-- [x] Use justfile
-- [ ] Create a VimDoc.
+[abolish]: https://github.com/tpope/vim-abolish

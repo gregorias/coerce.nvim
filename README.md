@@ -19,7 +19,6 @@
 - Neovim 0.9+
 - Optional plugin dependencies:
   - [Which Key][which-key]
-  - [Legendary]
 
 ## 📦 Installation
 
@@ -68,6 +67,33 @@ like so:
 
 ## ⚙️ Configuration
 
+### Setup
+
+The default configuration looks like so:
+
+```lua
+require"coerce".setup{
+  coerce_prefix = "cr",
+  keymap_registry = require("coerce.keymap").keymap_registry(),
+}
+```
+
+You may freely modify the config parameters to your liking.
+
+### Register a new case
+
+You can register a new case like so:
+
+```lua
+require"coerce".register{
+  keymap = "l",
+  case = function(str)
+    return vim.fn.tolower(str)
+  end,
+  description = "lowercase",
+}
+```
+
 ## Comparison to similar tools
 
 [Text-case][text-case] is significantly more feature-rich than Coerce, but if
@@ -78,7 +104,6 @@ you just need to change case of the current keyword, Coerce is simpler.
 | Full Unicode support               | ✅     | ❌                     | ❌                 |
 | [Which Key][which-key] integration | ✅     | ✅                     | ❌                 |
 | [Telescope] integration            | ❌     | ✅                     | ❌                 |
-| [Legendary] integration            | ❌     | ❌                     | ❌                 |
 | LSP rename                         | ❌     | ✅                     | ❌                 |
 | Operator motion support            | ❌     | ✅                     | ❌                 |
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
