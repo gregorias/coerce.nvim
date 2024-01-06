@@ -49,6 +49,9 @@ which are:
 I used Text-case <https://github.com/johmsalas/text-case.nvim>’s source code
 to inform myself on how to do things in Neovim.
 
+The logo is based on a fist SVG from SVG Repo
+<https://www.svgrepo.com/svg/29542/fist>.
+
 ==============================================================================
 1. Links                                                   *coerce.nvim-links*
 
