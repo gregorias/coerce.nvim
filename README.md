@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD033 MD041 -->
+<!-- markdownlint-disable MD013 MD033 MD041 -->
 
 <div align="center">
   <p>
@@ -12,16 +12,16 @@
 
 ## Comparison to similar tools
 
-| Feature                | Coerce.nvim | Text-case.nvim | Abolish |
-| :--:                   | :--:        | :--:           | :--:    |
-| Unicode support        | ✅          |                | ❌      |
-| Which Key support      | ✅          | ✅             | ❌      |
-| Which Key integration  |             | ✅             | ❌      |
-| Telescope integration  |             | ✅             | ❌      |
-| LSP rename support     | ❌          | ✅             | ❌      |
-| Current keyword coerce | ✅          | ❌             | ✅      |
-| Kebab case             |             | ❌             | ✅      |
-| [Numeronym] “case”     | ✅          | ❌             | ❌      |
+| Feature                 | Coerce | [Text-case][text-case] | [Abolish][abolish] |
+| :--:                    | :--:   | :--:                   | :--:               |
+| Unicode support         | ✅     |                        | ❌                 |
+| Which Key integration   | ✅     | ✅                     | ❌                 |
+| Telescope integration   |        | ✅                     | ❌                 |
+| LSP rename support      | ❌     | ✅                     | ❌                 |
+| Operator motion support | ❌     | ✅                     | ❌                 |
+| Current keyword coerce  | ✅     | ❌                     | ✅                 |
+| Kebab case              | ✅     | ❌                     | ✅                 |
+| [Numeronym] “case”      | ✅     | ❌                     | ❌                 |
 
 ## Acknowledgments
 
@@ -32,5 +32,6 @@ plugin precisely to address its shortcomings, which are:
 - no integration with [Which Key][which-key]
 
 [abolish]: https://github.com/tpope/vim-abolish
+[text-case]: https://github.com/johmsalas/text-case.nvim
 [which-key]: https://github.com/folke/which-key.nvim
 [Numeronym]: https://en.wikipedia.org/wiki/Numeronym#Numerical_contractions
