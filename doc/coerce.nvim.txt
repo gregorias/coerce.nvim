@@ -78,6 +78,10 @@ CONFIGURATION                                      *coerce.nvim-configuration*
 
 COMPARISON TO SIMILAR TOOLS          *coerce.nvim-comparison-to-similar-tools*
 
+Text-case <https://github.com/johmsalas/text-case.nvim> is significantly more
+feature-rich than Coerce, but if you just need to change case of the current
+keyword, Coerce is simpler.
+
   -------------------------------------------------------------------------------
   Feature                      Coerce           Text-case           Abolish
   ---------------------- ------------------ ------------------ ------------------
