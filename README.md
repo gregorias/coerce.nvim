@@ -72,6 +72,7 @@ the bleeding edge though.
 | PascalCase        | p   |
 | snake_case        | s   |
 | UPPER_CASE        | u   |
+| path/case         | /   |
 
 ## ⚙️ Configuration
 
