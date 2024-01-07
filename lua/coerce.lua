@@ -16,6 +16,7 @@ M.default_cases = {
 	{ keymap = "p", case = case_m.to_pascal_case, description = "PascalCase" },
 	{ keymap = "s", case = case_m.to_snake_case, description = "snake_case" },
 	{ keymap = "u", case = case_m.to_upper_case, description = "UPPER_CASE" },
+	{ keymap = "/", case = case_m.to_path_case, description = "path/case" },
 }
 
 local effective_config = nil
