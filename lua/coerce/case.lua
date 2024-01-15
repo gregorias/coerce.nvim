@@ -120,7 +120,6 @@ M.split_keyword = function(str)
 		return { str }
 	end
 
-	local words = {}
 	local recognized_separators = {
 		["-"] = true,
 		["_"] = true,
