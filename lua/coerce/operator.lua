@@ -64,24 +64,9 @@ M.get_selected_region = function(mode)
 	--   sln = { sln[1], 0 }
 	--   eln = { eln[1], vim.fn.getline(eln[1]):len() - 1 }
 	-- end
-
-	-- Make sure we we change start and end if end is higher than start.
-	-- This happens when we select from bottom to top or from right to left.
-	local start_row = math.min(sln[1], eln[1])
-	local start_col = math.min(sln[2], eln[2])
-	local end_row = math.max(sln[1], eln[1]) + 1
-	local end_col_1 = math.min(sln[2], vim.fn.getline(sln[1] + 1):len()) + 1
-	local end_col_2 = math.min(eln[2], vim.fn.getline(eln[1] + 1):len()) + 1
-	local end_col = math.max(end_col_1, end_col_2)
-
-	local region = require("coerce.region")
-	return {
-		mode = region.modes.CHAR,
-		start_row = start_row,
-		start_col = start_col,
-		end_row = end_row,
-		end_col = end_col,
-	}
+	--
+	local region_m = require("coerce.region")
+	return region_m.region(region_m.modes.CHAR, sln, eln)
 end
 
 return M
