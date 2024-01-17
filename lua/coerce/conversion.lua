@@ -7,7 +7,7 @@ local M = {}
 M.register = function(args)
 	args.keymap_registry.register_keymap(args.coerce_prefix .. args.keymap, function()
 		local coroutine_m = require("coerce.coroutine")
-		coroutine_m.fire_and_forget(M.convert_current_word, args.case)
+		coroutine_m.fire_and_forget(M.coerce_current_word, args.case)
 	end, args.description)
 end
 
@@ -34,17 +34,33 @@ M.substitute = function(selected_region, apply)
 	)
 end
 
+--- Selects the current word.
+--
+-- This is a fire-and-forget coroutine function.
+--
+--@treturn Region The selected region.
+local select_current_word = function()
+	local operator_m = require("coerce.operator")
+	return operator_m.operator("x", "iw")
+end
+
+--- Coerces selected text.
+--
+--@tparam function select_text The function that returns selected text.
+--@tparam function transform_text The function to use to transform selected text.
+M.coerce = function(select_text, transform_text)
+	local selected_region = select_text()
+	M.substitute(selected_region, transform_text)
+end
+
 --- Converts the current word using the apply function.
 --
 -- This is a fire-and-forget coroutine function.
 --
 --@tparam function apply The function to apply to the current word.
 --@treturn nil
-M.convert_current_word = function(apply)
-	local operator_m = require("coerce.operator")
-
-	local selected_region = operator_m.operator("x", "iw")
-	M.substitute(selected_region, apply)
+M.coerce_current_word = function(apply)
+	M.coerce(select_current_word, apply)
 end
 
 return M

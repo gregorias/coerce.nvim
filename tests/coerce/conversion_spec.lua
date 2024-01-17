@@ -23,12 +23,12 @@ describe("coerce.conversion", function()
 			assert.are.same({ "Hello, Albert!" }, lines)
 		end)
 	end)
-	describe("convert_current_word", function()
-		it("converts the current word", function()
+	describe("coerce_current_word", function()
+		it("coerces the current word", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 			vim.api.nvim_win_set_cursor(0, { 1, 8 })
 
-			cco.fire_and_forget(cc.convert_current_word, function()
+			cco.fire_and_forget(cc.coerce_current_word, function()
 				return "Bob"
 			end)
 
