@@ -20,8 +20,19 @@ M.create_buf = function(content_lines)
 		true,
 		content_lines
 	)
-	vim.cmd('buffer ' .. buf)
+	vim.cmd("buffer " .. buf)
 	return buf
+end
+
+--- Executes keys in the given mode.
+--
+-- This function also replaces termcodes like `<C-o>` into something that
+-- feedkeys can understand.
+--
+--@treturn nil
+M.execute_keys = function(feedkeys, mode)
+	local keys = vim.api.nvim_replace_termcodes(feedkeys, true, false, true)
+	vim.api.nvim_feedkeys(keys, mode, false)
 end
 
 return M
