@@ -11,7 +11,7 @@ M.visual_mode = {
 --- Returns the current visual mode.
 --
 --@treturn visual_mode The current visual mode.
-M.get_current_visual_mode = function()
+M.get_visual_mode = function()
 	local mode = vim.api.nvim_get_mode().mode
 	if mode == "v" then
 		return M.visual_mode.INLINE
@@ -34,7 +34,7 @@ M.get_current_visual_selection = function()
 	local cvim = require("coerce.vim")
 	local region = require("coerce.region")
 
-	local vmode = M.get_current_visual_mode()
+	local vmode = M.get_visual_mode()
 	assert(vmode ~= nil, "Not in visual mode.")
 	local rmode = nil
 	if vmode == M.visual_mode.INLINE then
