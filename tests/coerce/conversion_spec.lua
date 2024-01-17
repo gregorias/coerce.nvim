@@ -1,4 +1,5 @@
 local cc = require("coerce.conversion")
+local cco = require("coerce.coroutine")
 local region = require("coerce.region")
 local test_helpers = require("tests.helpers")
 local vae = require("coerce.vim.api.extra")
@@ -27,7 +28,7 @@ describe("coerce.conversion", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 			vim.api.nvim_win_set_cursor(0, { 1, 8 })
 
-			cc.convert_current_word(function()
+			cco.fire_and_forget(cc.convert_current_word, function()
 				return "Bob"
 			end)
 

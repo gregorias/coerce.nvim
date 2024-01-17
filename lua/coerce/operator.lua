@@ -22,15 +22,30 @@ M._operator_cb = nil
 --
 -- This is a good way to work with operators, because these two actions are usually done together.
 --
+-- Prefer using operator() instead of this function. Callback-hell is less readable.
+--
 --@tparam function user_operator_cb The operator callback.
 --@tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
 --@tparam string movement The movement to be used for the operator.
 --@treturn nil
-M.operator = function(user_operator_cb, mode, movement)
+M.operator_cb = function(user_operator_cb, mode, movement)
 	movement = movement or ""
 	M._operator_cb = user_operator_cb
 	vim.o.operatorfunc = "v:lua.require'coerce.operator'._operator_cb"
 	vim.api.nvim_feedkeys("g@" .. movement, mode or "m", false)
+end
+
+--- Triggers an operator.
+--
+-- This is a fire-and-forget coroutine function.
+--
+--@tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
+--@tparam string movement The movement to be used for the operator.
+--@treturn coerce.region.Region The selected region.
+M.operator = function(mode, movement)
+	local mmode = require("coerce.coroutine").cb_to_co(M.operator_cb)(mode, movement)
+	local selected_region = M.get_selected_region(mmode)
+	return selected_region
 end
 
 --- Gets the region selected by an operator motion.

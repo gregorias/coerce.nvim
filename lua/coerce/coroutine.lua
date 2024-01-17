@@ -60,4 +60,12 @@ M.cb_to_co = function(f)
 	return f_co
 end
 
+--- Fires and forgets a coroutine function.
+--
+--@tparam function f_co The coroutine function to fire and forget.
+--@treturn nil
+M.fire_and_forget = function(f_co, ...)
+	coroutine.resume(coroutine.create(f_co), ...)
+end
+
 return M

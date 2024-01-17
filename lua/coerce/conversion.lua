@@ -6,7 +6,8 @@ local M = {}
 --- Registers a new case.
 M.register = function(args)
 	args.keymap_registry.register_keymap(args.coerce_prefix .. args.keymap, function()
-		M.convert_current_word(args.case)
+		local coroutine_m = require("coerce.coroutine")
+		coroutine_m.fire_and_forget(M.convert_current_word, args.case)
 	end, args.description)
 end
 
@@ -35,14 +36,15 @@ end
 
 --- Converts the current word using the apply function.
 --
+-- This is a fire-and-forget coroutine function.
+--
 --@tparam function apply The function to apply to the current word.
 --@treturn nil
 M.convert_current_word = function(apply)
 	local operator_m = require("coerce.operator")
-	operator_m.operator(function(mmode)
-		local selected_region = operator_m.get_selected_region(mmode)
-		M.substitute(selected_region, apply)
-	end, "x", "iw")
+
+	local selected_region = operator_m.operator("x", "iw")
+	M.substitute(selected_region, apply)
 end
 
 return M
