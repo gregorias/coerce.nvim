@@ -75,7 +75,7 @@ M.get_selected_region = function(mode)
 
 	local region = require("coerce.region")
 	return {
-		mode = region.modes.CHAR_MODE,
+		mode = region.modes.CHAR,
 		start_row = start_row,
 		start_col = start_col,
 		end_row = end_row,

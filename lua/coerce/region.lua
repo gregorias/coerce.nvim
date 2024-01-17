@@ -19,18 +19,25 @@ local M = {}
 --
 -- For now, we only support the char mode.
 M.modes = {
-	CHAR_MODE = "char",
-	-- LINE_MODE = "line",
-	-- BLOCK_MODE = "block",
+	CHAR = "char",
+	LINE = "line",
+	BLOCK = "block",
 }
 
---- An example empty region.
+--- An example empty char region.
 M.empty_char_region = {
-	mode = M.modes.CHAR_MODE,
+	mode = M.modes.CHAR,
 	start_row = 0,
 	start_col = 0,
 	end_row = 0,
 	end_col = 0,
+}
+
+--- An example empty line region.
+M.empty_line_region = {
+	mode = M.modes.LINE,
+	start_row = 0,
+	end_row = 0,
 }
 
 --- Gets the lines selected by a region.

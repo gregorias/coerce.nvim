@@ -10,7 +10,7 @@ describe("coerce.conversion", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 
 			cc.substitute({
-				mode = region.modes.CHAR_MODE,
+				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 7,
 				end_row = 1,

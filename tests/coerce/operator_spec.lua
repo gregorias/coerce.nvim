@@ -23,7 +23,7 @@ describe("coerce.operator", function()
 			local selected_region = co.operator("m", "iw")
 
 			assert.are.same({
-				mode = region.modes.CHAR_MODE,
+				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 0,
 				end_row = 1,
@@ -46,7 +46,7 @@ describe("coerce.operator", function()
 			vim.api.nvim_feedkeys("e", "x", false)
 
 			assert.are.same({
-				mode = region.modes.CHAR_MODE,
+				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 0,
 				end_row = 1,

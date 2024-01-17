@@ -8,7 +8,7 @@ describe("coerce.vim.api.extra", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 
 			local fetched_text = vae.nvim_buf_get_text(buf, {
-				mode = region.modes.CHAR_MODE,
+				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 1,
 				end_row = 1,
@@ -26,7 +26,7 @@ describe("coerce.vim.api.extra", function()
 			})
 
 			local fetched_text = vae.nvim_buf_get_text(buf, {
-				mode = region.modes.CHAR_MODE,
+				mode = region.modes.CHAR,
 				start_row = 2,
 				start_col = 6,
 				end_row = 3,
@@ -39,7 +39,7 @@ describe("coerce.vim.api.extra", function()
 			local buf = test_helpers.create_buf({ "Hello, world!", "I am mister bombastic." })
 
 			local fetched_text = vae.nvim_buf_get_text(buf, {
-				mode = region.modes.CHAR_MODE,
+				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 1,
 				end_row = 2,

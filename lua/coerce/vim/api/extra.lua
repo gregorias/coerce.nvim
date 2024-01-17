@@ -9,7 +9,7 @@ local M = {}
 --@treturn table The text lines of the region.
 M.nvim_buf_get_text = function(buffer, region)
 	local region_m = require("coerce.region")
-	assert(region.mode == region_m.modes.CHAR_MODE, "Only char regions are supported, but got: " .. vim.inspect(region))
+	assert(region.mode == region_m.modes.CHAR, "Only char regions are supported, but got: " .. vim.inspect(region))
 	local lines = vim.api.nvim_buf_get_lines(
 		buffer,
 		region.start_row,
