@@ -23,7 +23,7 @@ local effective_config = nil
 
 --- Registers a new case.
 --
---tparam table args
+--@tparam table args
 M.register = function(case)
 	case.coerce_prefix = effective_config.coerce_prefix
 	case.keymap_registry = effective_config.keymap_registry
