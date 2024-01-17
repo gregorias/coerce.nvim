@@ -35,6 +35,7 @@ end
 --@tparam table|nil config
 M.setup = function(config)
 	effective_config = vim.tbl_deep_extend("keep", config or {}, M.default_config)
+	effective_config.keymap_registry.register_keymap_group(effective_config.coerce_prefix, "+Coerce")
 	for _, case in ipairs(M.default_cases) do
 		M.register(case)
 	end
