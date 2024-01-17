@@ -1,5 +1,6 @@
 --- Extra vim.api utilities.
---@module coerce.vim.api.extra
+--
+--@module coerce.vim.api
 local M = {}
 
 --- Gets the text of a region of a buffer.

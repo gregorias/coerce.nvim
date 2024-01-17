@@ -21,8 +21,8 @@ M.substitute = function(selected_region, apply)
 	local region = require("coerce.region")
 	assert(selected_region.mode == region.modes.CHAR)
 	assert(region.lines(selected_region) <= 1)
-	local vae = require("coerce.vim.api.extra")
-	local selected_text_lines = vae.nvim_buf_get_text(buffer, selected_region)
+	local va = require("coerce.vim.api")
+	local selected_text_lines = va.nvim_buf_get_text(buffer, selected_region)
 	local transformed_text = apply(selected_text_lines[1])
 	vim.api.nvim_buf_set_text(
 		buffer,

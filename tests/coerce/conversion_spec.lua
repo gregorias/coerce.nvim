@@ -2,7 +2,6 @@ local cc = require("coerce.conversion")
 local cco = require("coerce.coroutine")
 local region = require("coerce.region")
 local test_helpers = require("tests.helpers")
-local vae = require("coerce.vim.api.extra")
 
 describe("coerce.conversion", function()
 	describe("substitute", function()
