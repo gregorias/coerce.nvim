@@ -12,7 +12,7 @@ M.default_cases = {
 	{ keymap = "c", case = case_m.to_camel_case, description = "camelCase" },
 	{ keymap = "d", case = case_m.to_dot_case, description = "dot.case" },
 	{ keymap = "k", case = case_m.to_kebab_case, description = "kebab-case" },
-	{ keymap = "n", case = case_m.to_numerical_contraction, description = "numerical contraction (n18n)" },
+	{ keymap = "n", case = case_m.to_numerical_contraction, description = "numeronym (n7m)" },
 	{ keymap = "p", case = case_m.to_pascal_case, description = "PascalCase" },
 	{ keymap = "s", case = case_m.to_snake_case, description = "snake_case" },
 	{ keymap = "u", case = case_m.to_upper_case, description = "UPPER_CASE" },
