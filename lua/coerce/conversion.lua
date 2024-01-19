@@ -3,12 +3,43 @@
 --@module coerce.conversion
 local M = {}
 
+M.registered_cases = {}
+M.registered_modes = {}
+
 --- Registers a new case.
 M.register = function(args)
 	args.keymap_registry.register_keymap(args.coerce_prefix .. args.keymap, function()
 		local coroutine_m = require("coerce.coroutine")
 		coroutine_m.fire_and_forget(M.coerce_current_word, args.case)
 	end, args.description)
+end
+
+--- Constructs a Coercer object.
+--
+-- Coercer is meant to be a singleton object that handles registering new
+-- cases and modes, and actuating them.
+--
+--@tparam table keymap_registry
+--@tparam string coerce_prefix
+M.Coercer = function(keymap_registry, coerce_prefix)
+	return {
+		keymap_registry = keymap_registry,
+		coerce_prefix = coerce_prefix,
+		registered_cases = {},
+
+		--- Registers a new case.
+		--
+		--@tparam {keymap=string, description=string, case=function}
+		--@treturn nil
+		register_case = function(self, case)
+			table.insert(self.registered_cases, case)
+
+			self.keymap_registry.register_keymap(self.coerce_prefix .. case.keymap, function()
+				local coroutine_m = require("coerce.coroutine")
+				coroutine_m.fire_and_forget(M.coerce_current_word, case.case)
+			end, case.description)
+		end,
+	}
 end
 
 --- Changes the the selected text using the apply function.

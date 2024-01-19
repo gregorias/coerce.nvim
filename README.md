@@ -94,7 +94,7 @@ You may freely modify the config parameters to your liking.
 You can register a new case like so:
 
 ```lua
-require"coerce".register{
+require"coerce".register_case{
   keymap = "l",
   case = function(str)
     return vim.fn.tolower(str)

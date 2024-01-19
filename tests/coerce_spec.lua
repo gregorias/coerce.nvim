@@ -5,7 +5,7 @@ describe("coerce", function()
 		it("registers a new case", function()
 			local buf = test_helpers.create_buf({ "myCase" })
 			c.setup({})
-			c.register({
+			c.register_case({
 				keymap = "i",
 				case = function(str)
 					return str:sub(1, 1)
