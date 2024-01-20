@@ -92,6 +92,35 @@ the word.
 | Normal   | cr            | current [word][iskeyword] |
 | Visual   | cr            | visual selection          |
 
+### Tips & tricks
+
+#### Visually selecting a previously changed keyword
+
+You may coerce a keyword in such a way that it stops being keyword, e.g., you
+use the path case in most programming languages. In that case, just running
+`cr` again won’t fully revert the case. You’ll need to visually select the word
+to fix it.
+
+To quickly select a changed keyword,
+[you can configure a special keymap for doing that](https://vim.fandom.com/wiki/Selecting_your_pasted_text). For example, here’s how I have it set up:
+
+```lua
+require"which-key".register({
+  g = {
+    p = {
+      -- "p" makes sense, gv selects the last Visual selection, so this one
+      -- selects the last pasted text.
+      function()
+          vim.api.nvim_feedkeys("`[" .. vim.fn.strpart(vim.fn.getregtype(), 0, 1) .. "`]", "n", false)
+      end,
+      "Switch to VISUAL using last paste/change",
+    },
+  },
+})
+```
+
+With that, I can use `gp` to select whatever I have just coerced.
+
 ## ⚙️ Configuration
 
 ### Setup

@@ -7,7 +7,7 @@
 - [ ] Work with LSP rename.
 - [x] Support visual selection
 - [x] Make sure that WhichKey works for (visual) `cr`.
-- [ ] Document the `gp` trick to reselect latest change.
+- [x] Document the `gp` trick to reselect latest change.
 - [ ] Support operator motion
 - [ ] Allow clients to ditch built-in cases and configure their own.
 - [ ] Create a VimDoc.
