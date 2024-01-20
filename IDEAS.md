@@ -7,6 +7,7 @@
 - [ ] Work with LSP rename.
 - [ ] Support visual selection
 - [ ] Support operator motion
+- [ ] Make sure that WhichKey works for (visual) `cr`.
 - [ ] Create a VimDoc.
 - [x] Advertise on Reddit.
 - [x] Add to the Neovim Awesome list

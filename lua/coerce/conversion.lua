@@ -6,14 +6,6 @@ local M = {}
 M.registered_cases = {}
 M.registered_modes = {}
 
---- Registers a new case.
-M.register = function(args)
-	args.keymap_registry.register_keymap(args.coerce_prefix .. args.keymap, function()
-		local coroutine_m = require("coerce.coroutine")
-		coroutine_m.fire_and_forget(M.coerce_current_word, args.case)
-	end, args.description)
-end
-
 --- Constructs a Coercer object.
 --
 -- Coercer is meant to be a singleton object that handles registering new
@@ -21,11 +13,20 @@ end
 --
 --@tparam table keymap_registry
 --@tparam string coerce_prefix
-M.Coercer = function(keymap_registry, coerce_prefix)
+M.Coercer = function(keymap_registry)
 	return {
 		keymap_registry = keymap_registry,
-		coerce_prefix = coerce_prefix,
 		registered_cases = {},
+		registered_modes = {},
+
+		_register_mode_case = function(self, mode, case)
+			self.keymap_registry.register_keymap(mode.keymap_prefix .. case.keymap, function()
+				local coroutine_m = require("coerce.coroutine")
+				coroutine_m.fire_and_forget(function()
+					M.coerce(mode.selector, case.case)
+				end)
+			end, case.description)
+		end,
 
 		--- Registers a new case.
 		--
@@ -34,10 +35,21 @@ M.Coercer = function(keymap_registry, coerce_prefix)
 		register_case = function(self, case)
 			table.insert(self.registered_cases, case)
 
-			self.keymap_registry.register_keymap(self.coerce_prefix .. case.keymap, function()
-				local coroutine_m = require("coerce.coroutine")
-				coroutine_m.fire_and_forget(M.coerce_current_word, case.case)
-			end, case.description)
+			for _, mode in ipairs(self.registered_modes) do
+				self:_register_mode_case(mode, case)
+			end
+		end,
+
+		--- Registers a new mode.
+		--
+		--@tparam { keymap_prefix=string, selector=function }
+		register_mode = function(self, mode)
+			table.insert(self.registered_modes, mode)
+			self.keymap_registry.register_keymap_group(mode.keymap_prefix, "+Coerce")
+
+			for _, case in ipairs(self.registered_cases) do
+				self:_register_mode_case(mode, case)
+			end
 		end,
 	}
 end
@@ -70,7 +82,7 @@ end
 -- This is a fire-and-forget coroutine function.
 --
 --@treturn Region The selected region.
-local select_current_word = function()
+M.select_current_word = function()
 	local operator_m = require("coerce.operator")
 	return operator_m.operator("x", "iw")
 end
@@ -91,7 +103,7 @@ end
 --@tparam function apply The function to apply to the current word.
 --@treturn nil
 M.coerce_current_word = function(apply)
-	M.coerce(select_current_word, apply)
+	M.coerce(M.select_current_word, apply)
 end
 
 return M

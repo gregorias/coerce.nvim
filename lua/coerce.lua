@@ -6,6 +6,7 @@ M.default_config = {
 }
 
 local case_m = require("coerce.case")
+local conversion_m = require("coerce.conversion")
 
 --- The default cases to use.
 M.default_cases = {
@@ -19,6 +20,10 @@ M.default_cases = {
 	{ keymap = "/", case = case_m.to_path_case, description = "path/case" },
 }
 
+M.default_modes = {
+	{ vim_mode = "n", keymap_prefix = "cr", selector = conversion_m.select_current_word },
+}
+
 --- The singleton Coercer object.
 --
 -- It’s initialized with the config in `setup`.
@@ -27,10 +32,18 @@ local effective_config = nil
 
 --- Registers a new case.
 --
---@tparam table args
+--@tparam table case
 M.register_case = function(case)
 	assert(coercer ~= nil, "Coercer is not initialized.")
 	coercer:register_case(case)
+end
+
+--- Registers a new mode.
+--
+--@tparam table mode
+M.register_mode = function(mode)
+	assert(coercer ~= nil, "Coercer is not initialized.")
+	coercer:register_mode(mode)
 end
 
 --- Sets up the plugin.
@@ -38,11 +51,13 @@ end
 --@tparam table|nil config
 M.setup = function(config)
 	effective_config = vim.tbl_deep_extend("keep", config or {}, M.default_config)
-	effective_config.keymap_registry.register_keymap_group(effective_config.coerce_prefix, "+Coerce")
 
-	local conversion_m = require("coerce.conversion")
+	coercer = conversion_m.Coercer(effective_config.keymap_registry)
 
-	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.coerce_prefix)
+	for _, mode in ipairs(M.default_modes) do
+		coercer:register_mode(mode)
+	end
+
 	for _, case in ipairs(M.default_cases) do
 		coercer:register_case(case)
 	end
