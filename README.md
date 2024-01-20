@@ -59,8 +59,8 @@ the bleeding edge though.
 
 You can use Coerce to coerce [words][iskeyword] into various **cases** using
 **modes**. A **case** is a function that changes a word into another word
-(e.g., into its camel case version). A **mode** specifies how the plugin should
-select the word.
+(e.g., the word’s camel case version). A **mode** specifies how Coerce selects
+the word.
 
 ### Quick start
 
@@ -126,6 +126,8 @@ require"coerce".register_mode{
   keymap_prefix = "gc",
   selector = function()
     local s, e = -- Your function that finds start and end points.
+                 -- For example, returning {0, 0}, {0, 5} selects the first 6
+                 -- characters of the current buffer.
     local region_m = require"coerce.region"
     return region_m(region_m.modes.INLINE, s, e)
   end,
