@@ -57,6 +57,13 @@ the bleeding edge though.
 
 ## 🚀 Usage
 
+You can use Coerce to coerce [words][iskeyword] into various **cases** using
+**modes**. A **case** is a function that changes a word into another word
+(e.g., into its camel case version). A **mode** specifies how the plugin should
+select the word.
+
+### Quick start
+
 1. Put the cursor inside [a keyword][iskeyword].
 2. Press `crX`, where `X` stands for your desired case. Which key, if present,
    will show you hints.
@@ -74,6 +81,13 @@ the bleeding edge though.
 | UPPER_CASE        | u   |
 | path/case         | /   |
 
+### Built-in modes
+
+| Vim mode | Keymap prefix | Selector                  |
+| :--      | :--           | :--                       |
+| Normal   | cr            | current [word][iskeyword] |
+| Visual   | cr            | visual selection          |
+
 ## ⚙️ Configuration
 
 ### Setup
@@ -82,7 +96,6 @@ The default configuration looks like so:
 
 ```lua
 require"coerce".setup{
-  coerce_prefix = "cr",
   keymap_registry = require("coerce.keymap").keymap_registry(),
 }
 ```
@@ -103,22 +116,40 @@ require"coerce".register_case{
 }
 ```
 
+### Register a new mode
+
+You can register a new mode like so:
+
+```lua
+require"coerce".register_mode{
+  vim_mode = "v",
+  keymap_prefix = "gc",
+  selector = function()
+    local s, e = -- Your function that finds start and end points.
+    local region_m = require"coerce.region"
+    return region_m(region_m.modes.INLINE, s, e)
+  end,
+}
+```
+
 ## Comparison to similar tools
 
-[Text-case][text-case] is significantly more feature-rich than Coerce, but if
-you just need to change case of the current keyword, Coerce is simpler.
+[Text-case][text-case] is more feature-rich than Coerce, but if you just need
+to change case of the current keyword, Coerce is simpler.
 
 | Feature                            | Coerce | [Text-case][text-case] | [Abolish][abolish] |
 | :--                                | :--:   | :--:                   | :--:               |
 | Full Unicode support               | ✅     | ❌                     | ❌                 |
 | [Which Key][which-key] integration | ✅     | ✅                     | ❌                 |
 | [Telescope] integration            | ❌     | ✅                     | ❌                 |
-| LSP rename                         | ❌     | ✅                     | ❌                 |
-| Operator motion support            | ❌     | ✅                     | ❌                 |
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
+| Visual selection                   | ✅     | ✅                     | ❌                 |
+| Operator motion support            | ❌     | ✅                     | ❌                 |
+| LSP rename                         | ❌     | ✅                     | ❌                 |
 | Kebab case                         | ✅     | ✅                     | ✅                 |
 | [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |
 | Custom case support                | ✅     | ❌                     | ❌                 |
+| Custom mode support                | ✅     | ❌                     | ❌                 |
 
 ## 🙏 Acknowledgments
 

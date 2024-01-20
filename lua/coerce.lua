@@ -22,6 +22,7 @@ M.default_cases = {
 
 M.default_modes = {
 	{ vim_mode = "n", keymap_prefix = "cr", selector = conversion_m.select_current_word },
+	{ vim_mode = "v", keymap_prefix = "cr", selector = conversion_m.select_current_visual_selection },
 }
 
 --- The singleton Coercer object.

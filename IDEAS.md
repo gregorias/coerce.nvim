@@ -8,6 +8,7 @@
 - [ ] Support visual selection
 - [ ] Support operator motion
 - [ ] Make sure that WhichKey works for (visual) `cr`.
+- [ ] Allow clients to ditch built-in cases and configure their own.
 - [ ] Create a VimDoc.
 - [x] Advertise on Reddit.
 - [x] Add to the Neovim Awesome list
