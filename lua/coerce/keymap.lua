@@ -17,6 +17,11 @@ M.which_key_keymap_registry = {
 		require("which-key").register({
 			[keymap] = { name = description },
 		}, { mode = mode })
+		-- Fixes a bug, where the WhichKey window doesn’t show up in the visual mode.
+		-- The open bug in question: https://github.com/folke/which-key.nvim/issues/458.
+		if mode == "v" or mode == "x" then
+			vim.keymap.set(mode, keymap, "<cmd>WhichKey " .. keymap .. " " .. mode .. "<cr>")
+		end
 	end,
 	register_keymap = function(mode, keymap, action, description)
 		require("which-key").register({

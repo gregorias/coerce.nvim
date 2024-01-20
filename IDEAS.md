@@ -5,9 +5,10 @@
 - [x] Work with WK and native keymaps.
 - [ ] Integrate with Legendary ("Coerce").
 - [ ] Work with LSP rename.
-- [ ] Support visual selection
+- [x] Support visual selection
+- [x] Make sure that WhichKey works for (visual) `cr`.
+- [ ] Document the `gp` trick to reselect latest change.
 - [ ] Support operator motion
-- [ ] Make sure that WhichKey works for (visual) `cr`.
 - [ ] Allow clients to ditch built-in cases and configure their own.
 - [ ] Create a VimDoc.
 - [x] Advertise on Reddit.
