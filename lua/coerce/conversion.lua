@@ -20,7 +20,7 @@ M.Coercer = function(keymap_registry)
 		registered_modes = {},
 
 		_register_mode_case = function(self, mode, case)
-			self.keymap_registry.register_keymap(mode.keymap_prefix .. case.keymap, function()
+			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
 				local coroutine_m = require("coerce.coroutine")
 				coroutine_m.fire_and_forget(function()
 					M.coerce(mode.selector, case.case)
@@ -45,7 +45,7 @@ M.Coercer = function(keymap_registry)
 		--@tparam { keymap_prefix=string, selector=function }
 		register_mode = function(self, mode)
 			table.insert(self.registered_modes, mode)
-			self.keymap_registry.register_keymap_group(mode.keymap_prefix, "+Coerce")
+			self.keymap_registry.register_keymap_group(mode.vim_mode, mode.keymap_prefix, "+Coerce")
 
 			for _, case in ipairs(self.registered_cases) do
 				self:_register_mode_case(mode, case)

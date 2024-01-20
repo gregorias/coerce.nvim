@@ -4,27 +4,27 @@
 local M = {}
 
 M.plain_keymap_registry = {
-	register_keymap_group = function()
+	register_keymap_group = function(mode)
 		return nil
 	end,
-	register_keymap = function(keymap, action, description)
-		vim.keymap.set("n", keymap, action)
+	register_keymap = function(mode, keymap, action, description)
+		vim.keymap.set(mode, keymap, action)
 	end,
 }
 
 M.which_key_keymap_registry = {
-	register_keymap_group = function(keymap, description)
+	register_keymap_group = function(mode, keymap, description)
 		require("which-key").register({
 			[keymap] = { name = description },
-		})
+		}, { mode = mode })
 	end,
-	register_keymap = function(keymap, action, description)
+	register_keymap = function(mode, keymap, action, description)
 		require("which-key").register({
 			[keymap] = {
 				action,
 				description,
 			},
-		})
+		}, { mode = mode })
 	end,
 }
 
