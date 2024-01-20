@@ -12,7 +12,7 @@
 
 Coerce is a Neovim plugin that enables you to quickly change a keyword’s case.
 Coerce’s framework is also capable of any short-text, single-command text
-manipulation, e.g., turning a selected text into its numeronym.
+manipulation, e.g., turning selected text into its numeronym.
 
 ## Example session
 
