@@ -4,6 +4,7 @@
 - [x] Allow registering custom cases
 - [x] Work with WK and native keymaps.
 - [ ] Integrate with Legendary ("Coerce").
+- [ ] Integrate with Telescope ("Coerce").
 - [ ] Work with LSP rename.
 - [x] Support visual selection
 - [x] Make sure that WhichKey works for (visual) `cr`.
