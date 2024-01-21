@@ -1,8 +1,12 @@
 local M = {}
 
 M.default_config = {
-	coerce_prefix = "cr",
 	keymap_registry = require("coerce.keymap").keymap_registry(),
+	notify = function(...)
+		-- We call `vim.notify` lazily, so that we don’t bind vim.notify during the plugin’s setup.
+		-- The user may modify `vim.notify` later.
+		vim.notify(...)
+	end,
 }
 
 local case_m = require("coerce.case")
@@ -53,7 +57,7 @@ end
 M.setup = function(config)
 	effective_config = vim.tbl_deep_extend("keep", config or {}, M.default_config)
 
-	coercer = conversion_m.Coercer(effective_config.keymap_registry)
+	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.notify)
 
 	for _, mode in ipairs(M.default_modes) do
 		coercer:register_mode(mode)

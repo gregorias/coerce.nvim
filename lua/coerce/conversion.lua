@@ -12,10 +12,12 @@ M.registered_modes = {}
 -- cases and modes, and actuating them.
 --
 --@tparam table keymap_registry
+--@tparam function notify The notification function to use.
 --@tparam string coerce_prefix
-M.Coercer = function(keymap_registry)
+M.Coercer = function(keymap_registry, notify)
 	return {
 		keymap_registry = keymap_registry,
+		notify = notify,
 		registered_cases = {},
 		registered_modes = {},
 
@@ -23,7 +25,10 @@ M.Coercer = function(keymap_registry)
 			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
 				local coroutine_m = require("coerce.coroutine")
 				coroutine_m.fire_and_forget(function()
-					M.coerce(mode.selector, case.case)
+					local error = M.coerce(mode.selector, case.case)
+					if type(error) == "string" then
+						self.notify(error, "error", { title = "Coerce" })
+					end
 				end)
 			end, case.description)
 		end,
@@ -100,17 +105,20 @@ M.select_current_visual_selection = function()
 
 	local selected_line_count = region.lines(selected_region)
 	if selected_line_count > 1 then
-		return (selected_line_count .. " lines selected." .. "Only single-line visual selections are supported.")
+		return (selected_line_count .. " lines selected." .. " Coerce supports only single-line visual selections.")
 	end
 	return selected_region
 end
 
 --- Coerces selected text.
 --
---@tparam function select_text The function that returns selected text.
+--@tparam function select_text The function that returns selected text (Region) or an error.
 --@tparam function transform_text The function to use to transform selected text.
 M.coerce = function(select_text, transform_text)
 	local selected_region = select_text()
+	if type(selected_region) == "string" then
+		return selected_region
+	end
 	M.substitute(selected_region, transform_text)
 end
 

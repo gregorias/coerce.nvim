@@ -130,6 +130,8 @@ The default configuration looks like so:
 ```lua
 require"coerce".setup{
   keymap_registry = require("coerce.keymap").keymap_registry(),
+  -- The notification function used during error conditions.
+  notify = function(...) return vim.notify(...) end,
 }
 ```
 
@@ -167,7 +169,7 @@ require"coerce".register_mode{
 }
 ```
 
-## Comparison to similar tools
+## ✅ Comparison to similar tools
 
 [Text-case][text-case] is more feature-rich than Coerce, but if you just need
 to change case of the current keyword, Coerce is simpler.
@@ -176,6 +178,7 @@ to change case of the current keyword, Coerce is simpler.
 | :--                                | :--:   | :--:                   | :--:               |
 | Full Unicode support               | ✅     | ❌                     | ❌                 |
 | [Which Key][which-key] integration | ✅     | ✅                     | ❌                 |
+| [nvim-notify] integration          | ✅     | ❌                     | ❌                 |
 | [Telescope] integration            | ❌     | ✅                     | ❌                 |
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
 | Visual selection                   | ✅     | ✅                     | ❌                 |
@@ -202,6 +205,7 @@ The logo is based on
 
 [abolish]: https://github.com/tpope/vim-abolish
 [iskeyword]: https://neovim.io/doc/user/options.html#'iskeyword'
+[nvim-notify]: https://github.com/rcarriga/nvim-notify
 [text-case]: https://github.com/johmsalas/text-case.nvim
 [which-key]: https://github.com/folke/which-key.nvim
 [Legendary]: https://github.com/mrjones2014/legendary.nvim
