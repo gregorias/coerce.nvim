@@ -92,6 +92,16 @@ M.select_current_word = function()
 	return operator_m.operator("x", "iw")
 end
 
+--- Selects with the user provided motion.
+--
+-- This is a fire-and-forget coroutine function.
+--
+--@treturn Region The selected region.
+M.select_with_motion = function()
+	local operator_m = require("coerce.operator")
+	return operator_m.operator("im", "")
+end
+
 --- Selects the current visual selection.
 --
 -- This plugin is only meant to work with keywords, so this function fails if
