@@ -90,6 +90,7 @@ the word.
 | Vim mode | Keymap prefix | Selector                  |
 | :--      | :--           | :--                       |
 | Normal   | cr            | current [word][iskeyword] |
+| Normal   | gcr           | motion selection          |
 | Visual   | cr            | visual selection          |
 
 ### Tips & tricks
@@ -182,7 +183,7 @@ to change case of the current keyword, Coerce is simpler.
 | [Telescope] integration            | ❌     | ✅                     | ❌                 |
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
 | Visual selection                   | ✅     | ✅                     | ❌                 |
-| Operator motion support            | ❌     | ✅                     | ❌                 |
+| Motion selection                   | ✅     | ✅                     | ❌                 |
 | LSP rename                         | ❌     | ✅                     | ❌                 |
 | Kebab case                         | ✅     | ✅                     | ✅                 |
 | [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |

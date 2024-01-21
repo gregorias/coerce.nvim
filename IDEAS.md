@@ -8,7 +8,7 @@
 - [x] Support visual selection
 - [x] Make sure that WhichKey works for (visual) `cr`.
 - [x] Document the `gp` trick to reselect latest change.
-- [ ] Support operator motion
+- [x] Support operator motion
 - [ ] Allow clients to ditch built-in cases and configure their own.
 - [ ] Create a VimDoc.
 - [x] Advertise on Reddit.

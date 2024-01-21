@@ -32,7 +32,7 @@ describe("coerce.conversion", function()
 			end)
 			test_helpers.execute_keys("e", "x")
 
-			assert.are.same(region.region(region.modes.CHAR, {0, 0}, {0, 4}), selected_region)
+			assert.are.same(region.region(region.modes.CHAR, { 0, 0 }, { 0, 4 }), selected_region)
 		end)
 	end)
 	describe("coerce_current_word", function()

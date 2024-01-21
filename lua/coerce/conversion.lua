@@ -99,6 +99,8 @@ end
 --@treturn Region The selected region.
 M.select_with_motion = function()
 	local operator_m = require("coerce.operator")
+	-- The "i" mode is important. We might be running within a feedkeys() call, so we need to insert
+	-- the operator into the typeahead buffer immediately before the motion.
 	return operator_m.operator("im", "")
 end
 

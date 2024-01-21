@@ -60,11 +60,6 @@ M.get_selected_region = function(mode)
 	local sln = cvim.api.nvim_buf_get_mark(buffer, "[")
 	local eln = cvim.api.nvim_buf_get_mark(buffer, "]")
 
-	-- if mode == M.motion_modes.LINE then
-	--   sln = { sln[1], 0 }
-	--   eln = { eln[1], vim.fn.getline(eln[1]):len() - 1 }
-	-- end
-	--
 	local region_m = require("coerce.region")
 	return region_m.region(region_m.modes.CHAR, sln, eln)
 end

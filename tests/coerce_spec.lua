@@ -23,8 +23,20 @@ describe("coerce", function()
 		local buf = test_helpers.create_buf({ "myCase" })
 		c.setup({})
 		-- `ve` selects the keyword
-		-- `cru` runs the upper case coersion
+		-- `cru` runs upper case coercion
 		test_helpers.execute_keys("vecru", "x")
+
+		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
+		assert.are.same({ "MY_CASE" }, lines)
+	end)
+
+	it("works with motion selection", function()
+		local buf = test_helpers.create_buf({ "myCase" })
+		c.setup({})
+		-- `gcr` starts the operator pending mode
+		-- `u` select upper case coercion
+		-- `e` select the keyword
+		test_helpers.execute_keys("gcrue", "x")
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
