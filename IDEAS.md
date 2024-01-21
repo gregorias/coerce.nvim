@@ -9,7 +9,7 @@
 - [x] Make sure that WhichKey works for (visual) `cr`.
 - [x] Document the `gp` trick to reselect latest change.
 - [x] Support operator motion
-- [ ] Allow clients to ditch built-in cases and configure their own.
+- [x] Allow clients to ditch built-in cases and configure their own.
 - [ ] Create a VimDoc.
 - [x] Advertise on Reddit.
 - [x] Add to the Neovim Awesome list

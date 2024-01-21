@@ -1,14 +1,5 @@
 local M = {}
 
-M.default_config = {
-	keymap_registry = require("coerce.keymap").keymap_registry(),
-	notify = function(...)
-		-- We call `vim.notify` lazily, so that we don’t bind vim.notify during the plugin’s setup.
-		-- The user may modify `vim.notify` later.
-		vim.notify(...)
-	end,
-}
-
 local case_m = require("coerce.case")
 local conversion_m = require("coerce.conversion")
 
@@ -28,6 +19,17 @@ M.default_modes = {
 	{ vim_mode = "n", keymap_prefix = "cr", selector = conversion_m.select_current_word },
 	{ vim_mode = "n", keymap_prefix = "gcr", selector = conversion_m.select_with_motion },
 	{ vim_mode = "v", keymap_prefix = "cr", selector = conversion_m.select_current_visual_selection },
+}
+
+M.default_config = {
+	keymap_registry = require("coerce.keymap").keymap_registry(),
+	notify = function(...)
+		-- We call `vim.notify` lazily, so that we don’t bind vim.notify during the plugin’s setup.
+		-- The user may modify `vim.notify` later.
+		vim.notify(...)
+	end,
+	cases = M.default_cases,
+	modes = M.default_modes,
 }
 
 --- The singleton Coercer object.
@@ -60,11 +62,11 @@ M.setup = function(config)
 
 	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.notify)
 
-	for _, mode in ipairs(M.default_modes) do
+	for _, mode in ipairs(effective_config.modes) do
 		coercer:register_mode(mode)
 	end
 
-	for _, case in ipairs(M.default_cases) do
+	for _, case in ipairs(effective_config.cases) do
 		coercer:register_case(case)
 	end
 end
