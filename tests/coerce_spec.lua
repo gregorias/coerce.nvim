@@ -64,4 +64,16 @@ describe("coerce", function()
 			notification
 		)
 	end)
+
+	it("coerces current word even with conflicting keymaps", function()
+		local buf = test_helpers.create_buf({ "myCase" })
+		vim.keymap.set("o", "i", '<cmd>echo "Pressed i"<cr>')
+		vim.keymap.set("o", "w", '<cmd>echo "Pressed w"<cr>')
+		c.setup({})
+		-- `cru` runs upper case coercion
+		test_helpers.execute_keys("cru", "x")
+
+		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
+		assert.are.same({ "MY_CASE" }, lines)
+	end)
 end)

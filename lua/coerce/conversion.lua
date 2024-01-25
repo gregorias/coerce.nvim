@@ -89,7 +89,7 @@ end
 --@treturn Region The selected region.
 M.select_current_word = function()
 	local operator_m = require("coerce.operator")
-	return operator_m.operator("x", "iw")
+	return operator_m.operator("xn", "iw")
 end
 
 --- Selects with the user provided motion.
