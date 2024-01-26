@@ -99,9 +99,10 @@ end
 --@treturn Region The selected region.
 M.select_with_motion = function()
 	local operator_m = require("coerce.operator")
-	-- The "i" mode is important. We might be running within a feedkeys() call, so we need to insert
+	-- The i-mode is important. We might be running within a feedkeys() call, so we need to insert
 	-- the operator into the typeahead buffer immediately before the motion.
-	return operator_m.operator("im", "")
+	-- The n-mode is also important. We don’t want user remaps of g@ to interfere with the operator.
+	return operator_m.operator("in", "")
 end
 
 --- Selects the current visual selection.

@@ -20,7 +20,7 @@ describe("coerce.operator", function()
 	describe("operator", function()
 		it("returns the selected region", function()
 			test_helpers.create_buf({ "Hello, world!" })
-			local selected_region = co.operator("m", "iw")
+			local selected_region = co.operator("n", "iw")
 
 			assert.are.same({
 				mode = region.modes.CHAR,

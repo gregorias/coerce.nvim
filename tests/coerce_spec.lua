@@ -42,6 +42,19 @@ describe("coerce", function()
 		assert.are.same({ "MY_CASE" }, lines)
 	end)
 
+	it("works with motion selection even with a user-defined g@ keymap", function()
+		local buf = test_helpers.create_buf({ "myCase" })
+		vim.keymap.set("n", "g@", '<cmd>echo "Pressed g@"<cr>')
+		c.setup({})
+		-- `gcr` starts the operator pending mode
+		-- `u` select upper case coercion
+		-- `e` select the keyword
+		test_helpers.execute_keys("gcrue", "x")
+
+		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
+		assert.are.same({ "MY_CASE" }, lines)
+	end)
+
 	it("displays an error for a multiline selection in visual mode", function()
 		local buf = test_helpers.create_buf({ "myCase", "yourCase" })
 		local notification = nil
