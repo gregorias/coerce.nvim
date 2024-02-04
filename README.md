@@ -187,7 +187,7 @@ to change case of the current keyword, Coerce is simpler.
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
 | Visual selection                   | ✅     | ✅                     | ❌                 |
 | Motion selection                   | ✅     | ✅                     | ❌                 |
-| LSP rename                         | ❌     | ✅                     | ❌                 |
+| LSP rename                         | ✅     | ✅                     | ❌                 |
 | Kebab case                         | ✅     | ✅                     | ✅                 |
 | [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |
 | Custom case support                | ✅     | ❌                     | ❌                 |
