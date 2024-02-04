@@ -72,14 +72,28 @@ M.substitute = function(selected_region, apply)
 	local va = require("coerce.vim.api")
 	local selected_text_lines = va.nvim_buf_get_text(buffer, selected_region)
 	local transformed_text = apply(selected_text_lines[1])
-	vim.api.nvim_buf_set_text(
-		buffer,
-		selected_region.start_row,
-		selected_region.start_col,
-		selected_region.end_row - 1,
-		selected_region.end_col,
-		{ transformed_text }
-	)
+
+	local clients = vim.lsp.get_active_clients()
+	local any_client_supports_rename = false
+	for _, client in pairs(clients) do
+		if client.supports_method("textDocument/rename") then
+			any_client_supports_rename = true
+			break
+		end
+	end
+
+	if any_client_supports_rename then
+		vim.lsp.buf.rename(transformed_text)
+	else
+		vim.api.nvim_buf_set_text(
+			buffer,
+			selected_region.start_row,
+			selected_region.start_col,
+			selected_region.end_row - 1,
+			selected_region.end_col,
+			{ transformed_text }
+		)
+	end
 end
 
 --- Selects the current word.
