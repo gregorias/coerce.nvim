@@ -64,29 +64,6 @@ M.Coercer = function(keymap_registry, notify)
 	}
 end
 
---- Changes the the selected text using the apply function.
---
---@tparam Region selected_region The selected region to change.
---@tparam function apply The function to apply to the selected region.
---@treturn nil
-M.substitute = function(selected_region, apply)
-	local buffer = 0
-	local region = require("coerce.region")
-	assert(selected_region.mode == region.modes.CHAR)
-	assert(region.lines(selected_region) <= 1)
-	local va = require("coerce.vim.api")
-	local selected_text_lines = va.nvim_buf_get_text(buffer, selected_region)
-	local transformed_text = apply(selected_text_lines[1])
-	vim.api.nvim_buf_set_text(
-		buffer,
-		selected_region.start_row,
-		selected_region.start_col,
-		selected_region.end_row - 1,
-		selected_region.end_col,
-		{ transformed_text }
-	)
-end
-
 --- Coerces selected text.
 --
 --@tparam function select_text The function that returns selected text (Region) or an error.
@@ -96,7 +73,7 @@ M.coerce = function(select_text, transform_text)
 	if type(selected_region) == "string" then
 		return selected_region
 	end
-	M.substitute(selected_region, transform_text)
+	require("coerce.transformer").transform_local(selected_region, transform_text)
 end
 
 --- Converts the current word using the apply function.
