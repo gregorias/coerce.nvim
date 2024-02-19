@@ -10,7 +10,7 @@ function M.server(dispatchers)
 	local mt = {}
 
 	-- With this call, it’s possible to interact with the server, e.g., set up new handlers.
-	mt.__call = function(new_dispatchers)
+	mt.__call = function(self, new_dispatchers)
 		dispatchers = new_dispatchers
 		return srv
 	end
@@ -92,6 +92,7 @@ function M.server(dispatchers)
 		srv.rename = function(params, callback)
 			local uri = params.textDocument.uri
 			local newText = params.newName
+			vim.print("RENAMING")
 			callback(nil, get_rename_workspace_edit(uri, oldText, oldTextPositions, newText))
 		end
 	end
