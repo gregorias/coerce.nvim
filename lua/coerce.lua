@@ -16,7 +16,7 @@ M.default_cases = {
 	{ keymap = "/", case = case_m.to_path_case, description = "path/case" },
 }
 
-M.default_selection_modes = {
+M.default_modes = {
 	{ vim_mode = "n", keymap_prefix = "cr", selector = selector_m.select_current_word },
 	{ vim_mode = "n", keymap_prefix = "gcr", selector = selector_m.select_with_motion },
 	{ vim_mode = "v", keymap_prefix = "cr", selector = selector_m.select_current_visual_selection },
@@ -30,7 +30,7 @@ M.default_config = {
 		vim.notify(...)
 	end,
 	cases = M.default_cases,
-	selection_modes = M.default_selection_modes,
+	modes = M.default_modes,
 }
 
 --- The singleton Coercer object.
@@ -47,12 +47,12 @@ M.register_case = function(case)
 	coercer:register_case(case)
 end
 
---- Registers a new selection mode.
+--- Registers a new mode.
 --
---@tparam table selection mode
-M.register_selection_mode = function(selection_mode)
+--@tparam table mode
+M.register_mode = function(mode)
 	assert(coercer ~= nil, "Coercer is not initialized.")
-	coercer:register_selection_mode(selection_mode)
+	coercer:register_mode(mode)
 end
 
 --- Sets up the plugin.
@@ -63,8 +63,8 @@ M.setup = function(config)
 
 	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.notify)
 
-	for _, selection_mode in ipairs(effective_config.selection_modes) do
-		coercer:register_selection_mode(selection_mode)
+	for _, mode in ipairs(effective_config.modes) do
+		coercer:register_mode(mode)
 	end
 
 	for _, case in ipairs(effective_config.cases) do

@@ -62,12 +62,12 @@ the bleeding edge though.
 ## 🚀 Usage
 
 You can use Coerce to coerce [words][iskeyword] into various **cases** using
-**selection modes**:
+**modes**.
 
 - A **case** is a function that changes a word into another word, e.g., the
   word’s camel case version.
-- A **selection mode** specifies how Coerce selects the word, e.g., select
-  whatever is currently visually selected.
+- A **mode** specifies how Coerce triggers, selects and transforms the word,
+  e.g., select whatever is currently visually selected.
 
 ### Quick start
 
@@ -88,7 +88,7 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 | UPPER_CASE        | u   |
 | path/case         | /   |
 
-### Built-in selection modes
+### Built-in modes
 
 | Vim mode | Keymap prefix | Selector                  |
 | :--      | :--           | :--                       |
@@ -136,10 +136,9 @@ require"coerce".setup{
   keymap_registry = require("coerce.keymap").keymap_registry(),
   -- The notification function used during error conditions.
   notify = function(...) return vim.notify(...) end,
-  -- If you don’t like the default cases and selection modes,
-  -- you can override them.
+  -- If you don’t like the default cases and modes, you can override them.
   cases = require"coerce".default_cases,
-  selection_modes = require"coerce".selection_modes,
+  modes = require"coerce".default_modes,
 }
 ```
 
@@ -159,12 +158,12 @@ require"coerce".register_case{
 }
 ```
 
-### Register a new selection mode
+### Register a new mode
 
-You can register a new selection mode like so:
+You can register a new mode like so:
 
 ```lua
-require"coerce".register_selection mode{
+require"coerce".register_mode{
   vim_mode = "v",
   keymap_prefix = "gc",
   selector = function()

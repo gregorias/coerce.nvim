@@ -4,12 +4,12 @@
 local M = {}
 
 M.registered_cases = {}
-M.registered_selection_modes = {}
+M.registered_modes = {}
 
 --- Constructs a Coercer object.
 --
 -- Coercer is meant to be a singleton object that handles registering new
--- cases and selection_modes, and actuating them.
+-- cases and modes, and actuating them.
 --
 --@tparam table keymap_registry
 --@tparam function notify The notification function to use.
@@ -19,23 +19,18 @@ M.Coercer = function(keymap_registry, notify)
 		keymap_registry = keymap_registry,
 		notify = notify,
 		registered_cases = {},
-		registered_selection_modes = {},
+		registered_modes = {},
 
-		_register_selection_mode_case = function(self, selection_mode, case)
-			self.keymap_registry.register_keymap(
-				selection_mode.vim_mode,
-				selection_mode.keymap_prefix .. case.keymap,
-				function()
-					local coroutine_m = require("coerce.coroutine")
-					coroutine_m.fire_and_forget(function()
-						local error = M.coerce(selection_mode.selector, case.case)
-						if type(error) == "string" then
-							self.notify(error, "error", { title = "Coerce" })
-						end
-					end)
-				end,
-				case.description
-			)
+		_register_mode_case = function(self, mode, case)
+			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
+				local coroutine_m = require("coerce.coroutine")
+				coroutine_m.fire_and_forget(function()
+					local error = M.coerce(mode.selector, case.case)
+					if type(error) == "string" then
+						self.notify(error, "error", { title = "Coerce" })
+					end
+				end)
+			end, case.description)
 		end,
 
 		--- Registers a new case.
@@ -45,20 +40,20 @@ M.Coercer = function(keymap_registry, notify)
 		register_case = function(self, case)
 			table.insert(self.registered_cases, case)
 
-			for _, selection_mode in ipairs(self.registered_selection_modes) do
-				self:_register_selection_mode_case(selection_mode, case)
+			for _, mode in ipairs(self.registered_modes) do
+				self:_register_mode_case(mode, case)
 			end
 		end,
 
-		--- Registers a new selection_mode.
+		--- Registers a new mode.
 		--
 		--@tparam { keymap_prefix=string, selector=function }
-		register_selection_mode = function(self, selection_mode)
-			table.insert(self.registered_selection_modes, selection_mode)
-			self.keymap_registry.register_keymap_group(selection_mode.vim_mode, selection_mode.keymap_prefix, "+Coerce")
+		register_mode = function(self, mode)
+			table.insert(self.registered_modes, mode)
+			self.keymap_registry.register_keymap_group(mode.vim_mode, mode.keymap_prefix, "+Coerce")
 
 			for _, case in ipairs(self.registered_cases) do
-				self:_register_selection_mode_case(selection_mode, case)
+				self:_register_mode_case(mode, case)
 			end
 		end,
 	}
