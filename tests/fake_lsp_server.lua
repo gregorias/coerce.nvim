@@ -92,7 +92,6 @@ function M.server(dispatchers)
 		srv.rename = function(params, callback)
 			local uri = params.textDocument.uri
 			local newText = params.newName
-			vim.print("RENAMING")
 			callback(nil, get_rename_workspace_edit(uri, oldText, oldTextPositions, newText))
 		end
 	end
