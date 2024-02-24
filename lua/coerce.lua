@@ -2,6 +2,7 @@ local M = {}
 
 local case_m = require("coerce.case")
 local selector_m = require("coerce.selector")
+local transformer_m = require("coerce.transformer")
 local conversion_m = require("coerce.conversion")
 
 --- The default cases to use.
@@ -17,9 +18,30 @@ M.default_cases = {
 }
 
 M.default_modes = {
-	{ vim_mode = "n", keymap_prefix = "cr", selector = selector_m.select_current_word },
-	{ vim_mode = "n", keymap_prefix = "gcr", selector = selector_m.select_with_motion },
-	{ vim_mode = "v", keymap_prefix = "cr", selector = selector_m.select_current_visual_selection },
+	{
+		vim_mode = "n",
+		keymap_prefix = "cr",
+		selector = selector_m.select_current_word,
+		transformer = function(selected_region, apply)
+			return transformer_m.transform_lsp_rename_with_failover(
+				selected_region,
+				apply,
+				transformer_m.transform_local
+			)
+		end,
+	},
+	{
+		vim_mode = "n",
+		keymap_prefix = "gcr",
+		selector = selector_m.select_with_motion,
+		transformer = transformer_m.transform_local,
+	},
+	{
+		vim_mode = "v",
+		keymap_prefix = "cr",
+		selector = selector_m.select_current_visual_selection,
+		transformer = transformer_m.transform_local,
+	},
 }
 
 M.default_config = {

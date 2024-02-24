@@ -1,5 +1,7 @@
 local c = require("coerce")
 local test_helpers = require("tests.helpers")
+local fake_lsp_server_m = require("tests.fake_lsp_server")
+
 describe("coerce", function()
 	describe("register", function()
 		it("registers a new case", function()
@@ -40,6 +42,34 @@ describe("coerce", function()
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
+	end)
+
+	it("uses LSP’s rename method when available", function()
+		local buf = test_helpers.create_buf({ "myCase", "local myCase" })
+		-- LSP rename only works on named buffers.
+		vim.api.nvim_buf_set_name(buf, "test.lua")
+		local fake_lsp_server = fake_lsp_server_m.server()
+		fake_lsp_server.stub_rename("myCase", {
+			{ line = 0, character = 0 },
+			{ line = 1, character = 6 },
+		})
+		local client_id = vim.lsp.start({
+			name = "fake-lsp-server",
+			cmd = function(dispatchers)
+				return fake_lsp_server(dispatchers)
+			end,
+		}, { bufnr = buf })
+
+		c.setup({})
+		-- `cr` starts the coercion
+		-- `u` select upper case coercion
+		test_helpers.execute_keys("cru", "x")
+
+		local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+		assert.are.same({ "MY_CASE", "local MY_CASE" }, lines)
+
+		vim.lsp.get_client_by_id(client_id).stop(true)
+		vim.api.nvim_buf_delete(buf, { force = true })
 	end)
 
 	it("works with motion selection even with a user-defined g@ keymap", function()

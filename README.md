@@ -90,11 +90,11 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 
 ### Built-in modes
 
-| Vim mode | Keymap prefix | Selector                  |
-| :--      | :--           | :--                       |
-| Normal   | cr            | current [word][iskeyword] |
-| Normal   | gcr           | motion selection          |
-| Visual   | cr            | visual selection          |
+| Vim mode | Keymap prefix | Selector                  | Transformer      |
+| :--      | :--           | :--                       | :--              |
+| Normal   | cr            | current [word][iskeyword] | LSP rename/local |
+| Normal   | gcr           | motion selection          | local            |
+| Visual   | cr            | visual selection          | local            |
 
 ### Tips & tricks
 
@@ -173,6 +173,7 @@ require"coerce".register_mode{
     local region_m = require"coerce.region"
     return region_m(region_m.modes.INLINE, s, e)
   end,
+  transformer = require"coerce.transformer".transform_local,
 }
 ```
 
@@ -190,7 +191,7 @@ to change case of the current keyword, Coerce is simpler.
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
 | Visual selection                   | ✅     | ✅                     | ❌                 |
 | Motion selection                   | ✅     | ✅                     | ❌                 |
-| LSP rename                         | ❌     | ✅                     | ❌                 |
+| LSP rename                         | ✅     | ✅                     | ❌                 |
 | Kebab case                         | ✅     | ✅                     | ✅                 |
 | [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |
 | Custom case support                | ✅     | ❌                     | ❌                 |
