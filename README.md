@@ -187,7 +187,6 @@ to change case of the current keyword, Coerce is simpler.
 | Full Unicode support               | ✅     | ❌                     | ❌                 |
 | [Which Key][which-key] integration | ✅     | ✅                     | ❌                 |
 | [nvim-notify] integration          | ✅     | ❌                     | ❌                 |
-| [Telescope] integration            | ❌     | ✅                     | ❌                 |
 | Current keyword coerce             | ✅     | ❌                     | ✅                 |
 | Visual selection                   | ✅     | ✅                     | ❌                 |
 | Motion selection                   | ✅     | ✅                     | ❌                 |
