@@ -49,6 +49,31 @@ describe("coerce.transformer", function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)
 		end)
+		it("uses the failover when LSP rename fails", function()
+			local lsp_server = fake_lsp_server_m.server()
+			lsp_server.stub_rename_error()
+			local client_id = vim.lsp.start({
+				name = "transformer-spec-lsp-rename-fail",
+				cmd = function(ds)
+					return lsp_server(ds)
+				end,
+			}, { bufnr = buf })
+
+			transformer.transform_lsp_rename_with_failover({
+				mode = region.modes.CHAR,
+				start_row = 0,
+				start_col = 0,
+				end_row = 1,
+				end_col = 3,
+			}, function()
+				return "bar"
+			end, transformer.transform_local)
+
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+			assert.are.same({ "bar", "local foo" }, lines)
+
+			vim.lsp.get_client_by_id(client_id).stop(true)
+		end)
 		it("uses LSP rename", function()
 			local lsp_server = fake_lsp_server_m.server()
 			lsp_server.stub_rename("foo", {

@@ -96,6 +96,16 @@ function M.server(dispatchers)
 		end
 	end
 
+	-- Sets up a stub for the rename method that always returns an internal error.
+	function srv.stub_rename_error()
+		srv.rename = function(_, callback)
+			callback({
+				code = -32603,
+				message = "Internal error",
+			}, nil)
+		end
+	end
+
 	return srv
 end
 

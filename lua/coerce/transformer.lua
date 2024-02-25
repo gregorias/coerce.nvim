@@ -25,7 +25,7 @@ end
 --
 --@tparam Region selected_region The selected region to change.
 --@tparam function apply The function to apply to the selected region.
---@treturn nil
+--@treturn boolean Whether the function has succeeded.
 M.transform_local = function(selected_region, apply)
 	local buffer = 0
 	local region = require("coerce.region")
@@ -40,6 +40,36 @@ M.transform_local = function(selected_region, apply)
 		selected_region.end_col,
 		{ transformed_text }
 	)
+	return true
+end
+
+--- Changes the selected text with the apply function using LSP rename.
+--
+--@tparam Region selected_region The selected region to change.
+--@tparam function apply The function to apply to the selected region.
+--@treturn boolean Whether the function has succeeded.
+M.transform_lsp_rename = function(selected_region, apply)
+	if not require("coerce.vim.lsp").does_any_client_support_rename() then
+		return false
+	end
+	local transformed_text = apply_case_to_selected_region(selected_region, apply)
+	return vim.lsp.buf.rename(transformed_text)
+end
+
+--- Returns a transform functions that tries out all transforms until one works.
+--
+--@treturn function
+M.coalesce_transforms = function(transforms)
+	local transform = function(...)
+		for _, t in ipairs(transforms) do
+			local success = t(...)
+			if success then
+				return true
+			end
+		end
+		return false
+	end
+	return transform
 end
 
 --- Changes the selected text with the apply function using LSP rename.
@@ -50,14 +80,12 @@ end
 --@tparam Region selected_region The selected region to change.
 --@tparam function apply The function to apply to the selected region.
 --@tparam function failover The transformer function to use when LSP rename fails.
---@treturn nil
+--@treturn boolean Whether the function has succeeded.
 M.transform_lsp_rename_with_failover = function(selected_region, apply, failover)
-	if not require("coerce.vim.lsp").does_any_client_support_rename() then
-		return failover(selected_region, apply)
-	end
-
-	local transformed_text = apply_case_to_selected_region(selected_region, apply)
-	return vim.lsp.buf.rename(transformed_text)
+	return M.coalesce_transforms({
+		M.transform_lsp_rename,
+		M.transform_local,
+	})(selected_region, apply)
 end
 
 return M
