@@ -26,7 +26,7 @@ describe("coerce", function()
 		c.setup({})
 		-- `ve` selects the keyword
 		-- `cru` runs upper case coercion
-		test_helpers.execute_keys("vecru", "x")
+		test_helpers.execute_keys("vegcru", "x")
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
@@ -96,7 +96,7 @@ describe("coerce", function()
 		})
 		-- `vj` selects 2 lines
 		-- `cru` runs the upper case coersion
-		test_helpers.execute_keys("Vjcru", "x")
+		test_helpers.execute_keys("Vjgcru", "x")
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 		-- Nothing has changed.

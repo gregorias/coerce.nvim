@@ -38,7 +38,7 @@ M.default_modes = {
 	},
 	{
 		vim_mode = "v",
-		keymap_prefix = "cr",
+		keymap_prefix = "gcr",
 		selector = selector_m.select_current_visual_selection,
 		transformer = transformer_m.transform_local,
 	},

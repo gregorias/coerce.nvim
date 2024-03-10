@@ -94,7 +94,10 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 | :--      | :--           | :--                       | :--              |
 | Normal   | cr            | current [word][iskeyword] | LSP rename/local |
 | Normal   | gcr           | motion selection          | local            |
-| Visual   | cr            | visual selection          | local            |
+| Visual   | gcr           | visual selection          | local            |
+
+The default visual prefix is `gcr` and not `cr` in order to avoid a conflict with
+[the default `c`.](https://neovim.io/doc/user/change.html#v_c).
 
 ### Tips & tricks
 
@@ -218,4 +221,3 @@ The logo is based on
 [Legendary]: https://github.com/mrjones2014/legendary.nvim
 [Lazy]: https://github.com/folke/lazy.nvim
 [Numeronym]: https://en.wikipedia.org/wiki/Numeronym#Numerical_contractions
-[Telescope]: https://github.com/nvim-telescope/telescope.nvim
