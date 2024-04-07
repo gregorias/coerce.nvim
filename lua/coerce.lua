@@ -45,12 +45,13 @@ M.default_modes = {
 }
 
 ---@class CoerceConfig
----@field keymap_registry KeymapRegistry
+---@field keymap_registry KeymapRegistry?
 ---@field cases table
 ---@field modes table
 
 M.default_config = {
-	keymap_registry = require("coerce.keymap").keymap_registry(),
+	-- Avoid using the default registry here to avoid forcing clients to load Which Key.
+	keymap_registry = nil,
 	notify = function(...)
 		-- We call `vim.notify` lazily, so that we don’t bind vim.notify during the plugin’s setup.
 		-- The user may modify `vim.notify` later.
@@ -87,6 +88,7 @@ end
 --@tparam table|nil config
 M.setup = function(config)
 	effective_config = vim.tbl_deep_extend("keep", config or {}, M.default_config)
+	effective_config.keymap_registry = effective_config.keymap_registry or require("coerce.keymap").keymap_registry()
 
 	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.notify)
 
