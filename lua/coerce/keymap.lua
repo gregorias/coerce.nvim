@@ -3,15 +3,21 @@
 -- @module coerce.keymap
 local M = {}
 
+---@class KeymapRegistry
+---@field register_keymap_group fun(mode: string, keymap: string, description: string): nil
+---@field register_keymap fun(mode: string, keymap: string, action: string, description: string): nil
+
+---@type KeymapRegistry
 M.plain_keymap_registry = {
-	register_keymap_group = function(mode)
+	register_keymap_group = function()
 		return nil
 	end,
 	register_keymap = function(mode, keymap, action, description)
-		vim.keymap.set(mode, keymap, action)
+		vim.keymap.set(mode, keymap, action, { desc = description })
 	end,
 }
 
+---@type KeymapRegistry
 M.which_key_keymap_registry = {
 	register_keymap_group = function(mode, keymap, description)
 		require("which-key").register({
@@ -34,6 +40,8 @@ M.which_key_keymap_registry = {
 }
 
 --- Returns a keymap registry.
+--
+---@return KeymapRegistry
 M.keymap_registry = function()
 	local which_key_status, _ = pcall(require, "which-key")
 	if which_key_status then
