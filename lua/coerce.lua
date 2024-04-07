@@ -44,6 +44,11 @@ M.default_modes = {
 	},
 }
 
+---@class CoerceConfig
+---@field keymap_registry KeymapRegistry
+---@field cases table
+---@field modes table
+
 M.default_config = {
 	keymap_registry = require("coerce.keymap").keymap_registry(),
 	notify = function(...)
