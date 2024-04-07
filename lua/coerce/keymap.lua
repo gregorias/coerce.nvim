@@ -39,10 +39,34 @@ M.which_key_keymap_registry = {
 	end,
 }
 
+---@return KeymapRegistry
+M.keymaster_keymap_registry = function(keymaster)
+	return {
+		register_keymap_group = function(mode, keymap, description)
+			keymaster.set({
+				[keymap] = { name = description },
+			}, { mode = mode })
+		end,
+		register_keymap = function(mode, keymap, action, description)
+			keymaster.set({
+				[keymap] = {
+					action,
+					description,
+				},
+			}, { mode = mode })
+		end,
+	}
+end
+
 --- Returns a keymap registry.
 --
 ---@return KeymapRegistry
 M.keymap_registry = function()
+	local keymaster_status, keymaster = pcall(require, "keymaster")
+	if keymaster_status then
+		return M.keymaster_keymap_registry(keymaster)
+	end
+
 	local which_key_status, _ = pcall(require, "which-key")
 	if which_key_status then
 		return M.which_key_keymap_registry
