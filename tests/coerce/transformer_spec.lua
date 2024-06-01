@@ -22,6 +22,35 @@ describe("coerce.transformer", function()
 			assert.are.same({ "Hello, Albert!" }, lines)
 		end)
 	end)
+	describe("transform_lsp_rename", function()
+		local buf = nil
+
+		before_each(function()
+			buf = test_helpers.create_buf({ "foo", "local foo" })
+			-- LSP rename only works on named buffers.
+			vim.api.nvim_buf_set_name(buf, "test.lua")
+		end)
+
+		after_each(function()
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end)
+
+		it("Returns false and does nothing with no supporting LSP server", function()
+			local result = transformer.transform_lsp_rename({
+				mode = region.modes.CHAR,
+				start_row = 0,
+				start_col = 0,
+				end_row = 1,
+				end_col = 3,
+			}, function()
+				return "bar"
+			end)
+
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+			assert.are.same({ "foo", "local foo" }, lines)
+			assert.is.False(result)
+		end)
+	end)
 	describe("transform_lsp_rename_with_local_failover", function()
 		local buf
 
