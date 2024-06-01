@@ -23,11 +23,7 @@ M.default_modes = {
 		keymap_prefix = "cr",
 		selector = selector_m.select_current_word,
 		transformer = function(selected_region, apply)
-			return transformer_m.transform_lsp_rename_with_failover(
-				selected_region,
-				apply,
-				transformer_m.transform_local
-			)
+			return transformer_m.transform_lsp_rename_with_local_failover(selected_region, apply)
 		end,
 	},
 	{

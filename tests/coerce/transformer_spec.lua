@@ -22,7 +22,7 @@ describe("coerce.transformer", function()
 			assert.are.same({ "Hello, Albert!" }, lines)
 		end)
 	end)
-	describe("transform_lsp_rename_with_failover", function()
+	describe("transform_lsp_rename_with_local_failover", function()
 		local buf
 
 		before_each(function()
@@ -36,7 +36,7 @@ describe("coerce.transformer", function()
 		end)
 
 		it("uses the failover when LSP rename is not available", function()
-			transformer.transform_lsp_rename_with_failover({
+			transformer.transform_lsp_rename_with_local_failover({
 				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 0,
@@ -44,7 +44,7 @@ describe("coerce.transformer", function()
 				end_col = 3,
 			}, function()
 				return "bar"
-			end, transformer.transform_local)
+			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)
@@ -59,7 +59,7 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			transformer.transform_lsp_rename_with_failover({
+			transformer.transform_lsp_rename_with_local_failover({
 				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 0,
@@ -67,7 +67,7 @@ describe("coerce.transformer", function()
 				end_col = 3,
 			}, function()
 				return "bar"
-			end, transformer.transform_local)
+			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)
@@ -87,7 +87,7 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			transformer.transform_lsp_rename_with_failover({
+			transformer.transform_lsp_rename_with_local_failover({
 				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 0,
@@ -95,7 +95,7 @@ describe("coerce.transformer", function()
 				end_col = 3,
 			}, function()
 				return "bar"
-			end, transformer.transform_local)
+			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local bar" }, lines)
@@ -122,7 +122,7 @@ describe("coerce.transformer", function()
 			vim.api.nvim_win_set_buf(0, buf_nolsp)
 			vim.api.nvim_win_set_cursor(0, { 1, 0 })
 
-			transformer.transform_lsp_rename_with_failover({
+			transformer.transform_lsp_rename_with_local_failover({
 				mode = region.modes.CHAR,
 				start_row = 0,
 				start_col = 0,
@@ -130,7 +130,7 @@ describe("coerce.transformer", function()
 				end_col = 3,
 			}, function()
 				return "bar"
-			end, transformer.transform_local)
+			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf_nolsp, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)

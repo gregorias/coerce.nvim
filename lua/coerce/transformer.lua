@@ -1,4 +1,4 @@
---- A module for transformers.
+--- A module or transformers.
 --
 -- A transformers is a function that takes a selected region and a case, and
 -- transforms the selected text using the case.
@@ -79,9 +79,8 @@ end
 --
 --@tparam Region selected_region The selected region to change.
 --@tparam function apply The function to apply to the selected region.
---@tparam function failover The transformer function to use when LSP rename fails.
 --@treturn boolean Whether the function has succeeded.
-M.transform_lsp_rename_with_failover = function(selected_region, apply, failover)
+M.transform_lsp_rename_with_local_failover = function(selected_region, apply)
 	return M.coalesce_transforms({
 		M.transform_lsp_rename,
 		M.transform_local,
