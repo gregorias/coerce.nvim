@@ -33,6 +33,8 @@ M.cb_to_co = function(f)
 			end
 		end, ...)
 		if f_status == "running" then
+			-- If we are here, then `f` must not have called the callback yet, so it
+			-- will do so asynchronously.
 			-- Yield control and wait for the callback to resume it.
 			coroutine.yield()
 		end
@@ -43,9 +45,9 @@ M.cb_to_co = function(f)
 end
 
 --- Fires and forgets a coroutine function.
---
---@tparam function f_co The coroutine function to fire and forget.
---@treturn nil
+---
+---@tparam function f_co The coroutine function to fire and forget.
+---@treturn nil
 M.fire_and_forget = function(f_co, ...)
 	coroutine.resume(coroutine.create(f_co), ...)
 end
