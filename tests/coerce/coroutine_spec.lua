@@ -2,7 +2,7 @@ local cco = require("coerce.coroutine")
 
 describe("coerce.coroutine", function()
 	describe("cb_to_co", function()
-		it("converts a immediate callback-based function to a coroutine function", function()
+		it("converts an immediate callback-based function to a coroutine function", function()
 			local f = function(cb, a, b)
 				cb(a + b)
 			end
