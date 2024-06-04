@@ -1,6 +1,9 @@
 --- A module with utilities for coroutines.
 local M = {}
 
+local ctable = require("coerce.table")
+local shift = ctable.shift
+
 --- Converts a callback-based function to a coroutine function.
 ---
 --- A coroutine function is a function (not a coroutine/thread) that must be run
@@ -21,15 +24,17 @@ M.cb_to_co = function(f)
 		assert(this ~= nil, "The result of cb_to_co must be called within a coroutine.")
 
 		local f_status = "running"
-		local f_ret = nil
+		local f_ret = {}
 		-- f needs to have the callback as its first argument, because varargs
 		-- passing doesn’t work otherwise.
-		f(function(ret)
+		f(function(...)
 			f_status = "done"
-			f_ret = ret
+			f_ret = { ... }
 			if coroutine.status(this) == "suspended" then
-				local _, cb_ret = coroutine.resume(this)
-				return cb_ret
+				-- If we are suspended, then we f_co has yielded control after calling f.
+				-- Use the caller of this callback to resume computation until the next yield.
+				local cb_ret = { coroutine.resume(this) }
+				return unpack(shift(cb_ret))
 			end
 		end, ...)
 		if f_status == "running" then
@@ -38,7 +43,7 @@ M.cb_to_co = function(f)
 			-- Yield control and wait for the callback to resume it.
 			coroutine.yield()
 		end
-		return f_ret
+		return unpack(f_ret)
 	end
 
 	return f_co
