@@ -23,7 +23,7 @@ describe("coerce.transformer", function()
 		end)
 	end)
 	describe("transform_lsp_rename", function()
-		local buf = nil
+		local buf = 0
 
 		before_each(function()
 			buf = test_helpers.create_buf({ "foo", "local foo" })
@@ -49,6 +49,38 @@ describe("coerce.transformer", function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "foo", "local foo" }, lines)
 			assert.is.False(result)
+		end)
+		it("renames with LSP", function()
+			-- Setup LSP
+			local lsp_server = fake_lsp_server_m.server()
+			lsp_server.stub_rename("foo", {
+				{ line = 0, character = 0 },
+				{ line = 1, character = 6 },
+			})
+			local client_id = vim.lsp.start({
+				name = "fake",
+				cmd = function(ds)
+					return lsp_server(ds)
+				end,
+			}, { bufnr = buf })
+
+			-- Make the call
+			local result = transformer.transform_lsp_rename({
+				mode = region.modes.CHAR,
+				start_row = 0,
+				start_col = 0,
+				end_row = 1,
+				end_col = 3,
+			}, function()
+				return "bar"
+			end)
+
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+			assert.are.same({ "bar", "local bar" }, lines)
+			-- TODO: #5 — This is a bug. The result should be true.
+			-- assert.is.True(result)
+
+			vim.lsp.get_client_by_id(client_id).stop(true)
 		end)
 	end)
 	describe("transform_lsp_rename_with_local_failover", function()

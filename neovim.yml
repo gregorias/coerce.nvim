@@ -20,6 +20,12 @@ globals:
     args:
       - type: any
       - type: any
+  assert.is.False:
+    args:
+      - type: bool
+  assert.is.True:
+    args:
+      - type: bool
   after_each:
     args:
       - type: function
