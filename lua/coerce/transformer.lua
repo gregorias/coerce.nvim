@@ -7,10 +7,10 @@
 local M = {}
 
 --- Returns transformed selected text.
---
---@tparam Region selected_region The selected region to change.
---@tparam function apply The function to apply to the selected region.
---@treturn string
+---
+---@tparam Region selected_region The selected region to change.
+---@tparam function apply The function to apply to the selected region.
+---@treturn string
 local apply_case_to_selected_region = function(selected_region, apply)
 	local buffer = 0
 	local region = require("coerce.region")
@@ -22,10 +22,10 @@ local apply_case_to_selected_region = function(selected_region, apply)
 end
 
 --- Changes the selected text with the apply function using local substitution.
---
---@tparam Region selected_region The selected region to change.
---@tparam function apply The function to apply to the selected region.
---@treturn boolean Whether the function has succeeded.
+---
+---@tparam Region selected_region The selected region to change.
+---@tparam function apply The function to apply to the selected region.
+---@treturn boolean Whether the function has succeeded.
 M.transform_local = function(selected_region, apply)
 	local buffer = 0
 	local region = require("coerce.region")
@@ -44,10 +44,10 @@ M.transform_local = function(selected_region, apply)
 end
 
 --- Changes the selected text with the apply function using LSP rename.
---
---@tparam Region selected_region The selected region to change.
---@tparam function apply The function to apply to the selected region.
---@treturn boolean Whether the function has succeeded.
+---
+---@tparam Region selected_region The selected region to change.
+---@tparam function apply The function to apply to the selected region.
+---@treturn boolean Whether the function has succeeded.
 M.transform_lsp_rename = function(selected_region, apply)
 	if not require("coerce.vim.lsp").does_any_client_support_rename() then
 		return false
@@ -57,8 +57,10 @@ M.transform_lsp_rename = function(selected_region, apply)
 end
 
 --- Returns a transform functions that tries out all transforms until one works.
---
---@treturn function
+---
+--- If any of the transforms is a coroutine function, the returned function will also be one.
+---
+---@treturn function
 M.coalesce_transforms = function(transforms)
 	local transform = function(...)
 		for _, t in ipairs(transforms) do
