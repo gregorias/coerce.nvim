@@ -1,8 +1,10 @@
 --- A module with utilities for coroutines.
 local M = {}
 
-local ctable = require("coerce.table")
-local shift = ctable.shift
+local pack = function(...)
+	-- selene: allow(mixed_table)
+	return { n = select("#", ...), ... }
+end
 
 --- Converts a callback-based function to a coroutine function.
 ---
@@ -24,20 +26,20 @@ M.cb_to_co = function(f)
 		assert(this ~= nil, "The result of cb_to_co must be called within a coroutine.")
 
 		local f_status = "running"
-		local f_ret = {}
+		local f_ret = pack()
 		-- f needs to have the callback as its first argument, because varargs
 		-- passing doesn’t work otherwise.
 		f(function(...)
 			f_status = "done"
-			f_ret = { ... }
+			f_ret = pack(...)
 			if coroutine.status(this) == "suspended" then
 				-- If we are suspended, then we f_co has yielded control after calling f.
 				-- Use the caller of this callback to resume computation until the next yield.
-				local cb_ret = { coroutine.resume(this) }
+				local cb_ret = pack(coroutine.resume(this))
 				if not cb_ret[1] then
 					error(cb_ret[2])
 				end
-				return unpack(shift(cb_ret))
+				return unpack(cb_ret, 2, cb_ret.n)
 			end
 		end, ...)
 		if f_status == "running" then
@@ -46,7 +48,7 @@ M.cb_to_co = function(f)
 			-- Yield control and wait for the callback to resume it.
 			coroutine.yield()
 		end
-		return unpack(f_ret)
+		return unpack(f_ret, 1, f_ret.n)
 	end
 
 	return f_co

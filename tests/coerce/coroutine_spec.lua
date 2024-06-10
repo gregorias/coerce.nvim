@@ -62,6 +62,26 @@ describe("coerce.coroutine", function()
 			assert.are.same(2, f_co_ret_mul)
 		end)
 
+		it("works with a delayed callback-based function that returns multiple results with nils", function()
+			local f_cb = function() end
+			-- f is a function that will “execute” the callback asynchronously through f_cb.
+			local f = function(cb)
+				f_cb = function()
+					return cb("foo", nil, "bar", nil)
+				end
+			end
+
+			local f_co = coroutine.create(cco.cb_to_co(f))
+
+			-- Resume the coroutine, which will call f and yield.
+			coroutine.resume(f_co)
+
+			-- Simulate the callback being called asynchronously.
+			local results = { f_cb() }
+
+			assert.are.same({"foo", nil, "bar", nil}, results)
+		end)
+
 		it("rethrows errors after callback", function()
 			local f_cb = function() end
 
