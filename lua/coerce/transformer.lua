@@ -6,6 +6,8 @@
 --@module coerce.transformer
 local M = {}
 
+local lsp_rename = require("coerce.vim.lsp").rename
+
 --- Returns transformed selected text.
 ---
 ---@tparam Region selected_region The selected region to change.
@@ -45,6 +47,8 @@ end
 
 --- Changes the selected text with the apply function using LSP rename.
 ---
+--- This is a fire-and-forget coroutine function.
+---
 ---@tparam Region selected_region The selected region to change.
 ---@tparam function apply The function to apply to the selected region.
 ---@treturn boolean Whether the function has succeeded.
@@ -53,10 +57,10 @@ M.transform_lsp_rename = function(selected_region, apply)
 		return false
 	end
 	local transformed_text = apply_case_to_selected_region(selected_region, apply)
-	return vim.lsp.buf.rename(transformed_text)
+	return lsp_rename(transformed_text)
 end
 
---- Returns a transform functions that tries out all transforms until one works.
+--- Returns a transform function that tries out all transforms until one works.
 ---
 --- If any of the transforms is a coroutine function, the returned function will also be one.
 ---
@@ -75,13 +79,15 @@ M.coalesce_transforms = function(transforms)
 end
 
 --- Changes the selected text with the apply function using LSP rename.
---
--- The LSP rename only works on the symbol under the cursor, so it’s best not
--- to use this function for any other selection mode.
---
---@tparam Region selected_region The selected region to change.
---@tparam function apply The function to apply to the selected region.
---@treturn boolean Whether the function has succeeded.
+---
+--- This is a fire-and-forget coroutine function.
+---
+--- The LSP rename only works on the symbol under the cursor, so it’s best not
+--- to use this function for any other selection mode.
+---
+---@tparam Region selected_region The selected region to change.
+---@tparam function apply The function to apply to the selected region.
+---@treturn boolean Whether the function has succeeded.
 M.transform_lsp_rename_with_local_failover = function(selected_region, apply)
 	return M.coalesce_transforms({
 		M.transform_lsp_rename,
