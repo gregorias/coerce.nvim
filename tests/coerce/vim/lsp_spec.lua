@@ -24,4 +24,31 @@ describe("coerce.vim.lsp", function()
 			assert.is.True(cvim.lsp.does_any_client_support_rename())
 		end)
 	end)
+
+	describe("rename", function()
+		it("renames a word", function()
+			local bufnr = test_helpers.create_buf({ "foo", "local foo" })
+			-- LSP rename only works on named buffers.
+			vim.api.nvim_buf_set_name(bufnr, "test.lua")
+			local lsp_server = fake_lsp_server_m.server()
+			lsp_server.stub_rename("foo", {
+				{ line = 0, character = 0 },
+			})
+			local client_id = vim.lsp.start({
+				name = "fake",
+				cmd = function(ds)
+					return lsp_server(ds)
+				end,
+			}, { bufnr = bufnr })
+
+			local result = cvim.lsp.rename("bar")
+
+			local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 1, true)
+			assert.is.True(result)
+			assert.are.same({ "bar" }, lines)
+
+			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.api.nvim_buf_delete(bufnr, { force = true })
+		end)
+	end)
 end)
