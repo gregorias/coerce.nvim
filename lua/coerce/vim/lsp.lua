@@ -17,4 +17,20 @@ function M.does_any_client_support_rename()
 	return false
 end
 
+--- Sends a request to the LSP server.
+---
+--- Wraps `client.request` into a fire-and-forget coroutine function to make its use more ergonomical.
+---
+---@tparam vim.lsp.Client client
+---@tparam string method
+---@tparam table? params
+---@tparam integer? bufnr
+---@return table vim.lsp.Handler's signature
+function M.client_request(client, method, params, bufnr)
+	return M.cb_to_co(function(cb)
+		client.request(method, params, function(...)
+			cb(...)
+		end, bufnr)
+	end)()
+end
 return M
