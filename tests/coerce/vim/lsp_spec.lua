@@ -9,6 +9,7 @@ describe("coerce.vim.lsp", function()
 
 			assert.is.False(cvim.lsp.does_any_client_support_rename())
 		end)
+
 		it("returns true when there’s a rename supporting client", function()
 			test_helpers.create_buf({ "Hello, world!" })
 			local fake_lsp_server = fake_lsp_server_m.server()
