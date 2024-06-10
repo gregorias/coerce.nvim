@@ -22,6 +22,7 @@ describe("coerce.transformer", function()
 			assert.are.same({ "Hello, Albert!" }, lines)
 		end)
 	end)
+
 	describe("transform_lsp_rename", function()
 		local buf = 0
 
@@ -50,6 +51,7 @@ describe("coerce.transformer", function()
 			assert.are.same({ "foo", "local foo" }, lines)
 			assert.is.False(result)
 		end)
+
 		it("renames with LSP", function()
 			-- Setup LSP
 			local lsp_server = fake_lsp_server_m.server()
@@ -83,6 +85,7 @@ describe("coerce.transformer", function()
 			vim.lsp.get_client_by_id(client_id).stop(true)
 		end)
 	end)
+
 	describe("transform_lsp_rename_with_local_failover", function()
 		local buf
 
@@ -110,6 +113,7 @@ describe("coerce.transformer", function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)
 		end)
+
 		it("uses the failover when LSP rename fails", function()
 			local lsp_server = fake_lsp_server_m.server()
 			lsp_server.stub_rename_error()
@@ -135,6 +139,7 @@ describe("coerce.transformer", function()
 
 			vim.lsp.get_client_by_id(client_id).stop(true)
 		end)
+
 		it("uses LSP rename", function()
 			local lsp_server = fake_lsp_server_m.server()
 			lsp_server.stub_rename("foo", {
@@ -163,6 +168,7 @@ describe("coerce.transformer", function()
 
 			vim.lsp.get_client_by_id(client_id).stop(true)
 		end)
+
 		it("only tries LSP rename on the buffer it’s connected to", function()
 			local buf_nolsp = test_helpers.create_buf({ "foo", "local foo" })
 			-- LSP rename only works on named buffers.
