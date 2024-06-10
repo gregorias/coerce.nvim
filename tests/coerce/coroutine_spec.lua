@@ -61,5 +61,27 @@ describe("coerce.coroutine", function()
 			assert.are.same(3, f_co_ret_sum)
 			assert.are.same(2, f_co_ret_mul)
 		end)
+
+		it("rethrows errors after callback", function()
+			local f_cb = function() end
+
+			-- f is a function that will “execute” the callback asynchronously through f_cb.
+			local f = function(cb)
+				f_cb = function()
+					return cb()
+				end
+			end
+
+			local f_co = coroutine.create(function()
+				cco.cb_to_co(f)()
+				error("Catch me!")
+			end)
+
+			-- Resume the coroutine, which will call f and yield.
+			coroutine.resume(f_co)
+
+			-- Simulate the callback being called asynchronously.
+			assert.has.errors(f_cb)
+		end)
 	end)
 end)

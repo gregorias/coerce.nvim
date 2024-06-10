@@ -34,6 +34,9 @@ M.cb_to_co = function(f)
 				-- If we are suspended, then we f_co has yielded control after calling f.
 				-- Use the caller of this callback to resume computation until the next yield.
 				local cb_ret = { coroutine.resume(this) }
+				if not cb_ret[1] then
+					error(cb_ret[2])
+				end
 				return unpack(shift(cb_ret))
 			end
 		end, ...)
