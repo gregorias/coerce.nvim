@@ -90,7 +90,7 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 | Visual   | gcr           | visual selection          | local            |
 
 The default visual prefix is `gcr` and not `cr` in order to avoid a conflict with
-[the default `c`.](https://neovim.io/doc/user/change.html#v_c).
+[the default `c`](https://neovim.io/doc/user/change.html#v_c).
 
 ### Tips & tricks
 
