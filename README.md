@@ -162,12 +162,12 @@ You can register a new mode like so:
 require"coerce".register_mode{
   vim_mode = "v",
   keymap_prefix = "gc",
-  selector = function()
+  selector = function(cb)
     local s, e = -- Your function that finds start and end points.
                  -- For example, returning {0, 0}, {0, 5} selects the first 6
                  -- characters of the current buffer.
     local region_m = require"coerce.region"
-    return region_m(region_m.modes.INLINE, s, e)
+    cb(region_m(region_m.modes.INLINE, s, e))
   end,
   transformer = require"coerce.transformer".transform_local,
 }
@@ -189,6 +189,7 @@ to change case of the current keyword, Coerce is simpler.
 | LSP rename                         | ✅     | ✅                     | ❌                 |
 | Kebab case                         | ✅     | ✅                     | ✅                 |
 | [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |
+| Dot repeat support                 | ✅     | ✅                     | ✅                 |
 | Custom case support                | ✅     | ❌                     | ❌                 |
 | Custom mode support                | ✅     | ❌                     | ❌                 |
 

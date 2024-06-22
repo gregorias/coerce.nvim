@@ -7,25 +7,29 @@ local M = {}
 
 --- Selects the current word.
 --
--- This is a fire-and-forget coroutine function.
---
--- @treturn Region The selected region.
-M.select_current_word = function()
+-- @tparam function cb The callback to return the selected region to.
+-- @treturn nil
+M.select_current_word = function(cb)
 	local operator_m = require("coerce.operator")
-	return operator_m.operator("xn", "iw")
+	return operator_m.operator_cb(function(mmode)
+		local selected_region = operator_m.get_selected_region(mmode)
+		cb(selected_region)
+	end, "xn", "iw")
 end
 
 --- Selects with the user provided motion.
 --
--- This is a fire-and-forget coroutine function.
---
--- @treturn Region The selected region.
-M.select_with_motion = function()
+-- @tparam function cb The callback to return the selected region to.
+-- @treturn nil
+M.select_with_motion = function(cb)
 	local operator_m = require("coerce.operator")
 	-- The i-mode is important. We might be running within a feedkeys() call, so we need to insert
 	-- the operator into the typeahead buffer immediately before the motion.
 	-- The n-mode is also important. We don’t want user remaps of g@ to interfere with the operator.
-	return operator_m.operator("in", "")
+	return operator_m.operator_cb(function(mmode)
+		local selected_region = operator_m.get_selected_region(mmode)
+		cb(selected_region)
+	end, "in", "")
 end
 
 --- Selects the current visual selection.
@@ -33,17 +37,18 @@ end
 -- This plugin is only meant to work with keywords, so this function fails if
 -- the selected region is multiline.
 --
--- @treturn Region The selected region or an error.
-M.select_current_visual_selection = function()
+-- @tparam function cb The callback to return the selected region to.
+M.select_current_visual_selection = function(cb)
 	local visual_m = require("coerce.visual")
 	local selected_region = visual_m.get_current_visual_selection()
 	local region = require("coerce.region")
 
 	local selected_line_count = region.lines(selected_region)
 	if selected_line_count > 1 then
-		return (selected_line_count .. " lines selected." .. " Coerce supports only single-line visual selections.")
+		cb(selected_line_count .. " lines selected." .. " Coerce supports only single-line visual selections.")
+	else
+		cb(selected_region)
 	end
-	return selected_region
 end
 
 return M

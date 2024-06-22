@@ -25,10 +25,11 @@ M.Coercer = function(keymap_registry, notify)
 			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
 				local coroutine_m = require("coerce.coroutine")
 				coroutine_m.fire_and_forget(function()
-					local error = M.coerce(mode.selector, mode.transformer, case.case)
-					if type(error) == "string" then
-						self.notify(error, "error", { title = "Coerce" })
-					end
+					M.coerce(mode.selector, mode.transformer, case.case, function(error)
+						if type(error) == "string" then
+							self.notify(error, "error", { title = "Coerce" })
+						end
+					end)
 				end)
 			end, case.description)
 		end,
@@ -61,16 +62,22 @@ end
 
 --- Coerces selected text.
 --
--- @tparam function select_text The function that returns selected text (Region) or an error.
+-- `select_text` uses a callback to support dot-repeat functionality. If `select_text` uses operators, then
+-- the callback can be used as the repeatable action.
+--
+-- @tparam function select_text The function that returns selected text (Region) or an error through a callback.
 -- @tparam function transform_text The function to use to transform selected text.
 -- @tparam function case The function to use to coerce case.
+-- @tparam function cb The function to receive a string error or nil.
 -- @treturn nil
-M.coerce = function(select_text, transform_text, case)
-	local selected_region = select_text()
-	if type(selected_region) == "string" then
-		return selected_region
-	end
-	transform_text(selected_region, case)
+M.coerce = function(select_text, transform_text, case, cb)
+	select_text(function(selected_region)
+		if type(selected_region) == "string" then
+			cb(selected_region)
+		end
+		transform_text(selected_region, case)
+		cb(nil)
+	end)
 end
 
 --- Converts the current word using the apply function.
@@ -82,7 +89,7 @@ end
 --@treturn nil
 M.coerce_current_word = function(transform_text, apply)
 	local selector = require("coerce.selector")
-	M.coerce(selector.select_current_word, transform_text, apply)
+	M.coerce(selector.select_current_word, transform_text, apply, function() end)
 end
 
 return M
