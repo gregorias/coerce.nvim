@@ -61,9 +61,10 @@ end
 
 --- Coerces selected text.
 --
---@tparam function select_text The function that returns selected text (Region) or an error.
---@tparam function transform_text The function to use to transform selected text.
---@tparam function case The function to use to coerce case.
+-- @tparam function select_text The function that returns selected text (Region) or an error.
+-- @tparam function transform_text The function to use to transform selected text.
+-- @tparam function case The function to use to coerce case.
+-- @treturn nil
 M.coerce = function(select_text, transform_text, case)
 	local selected_region = select_text()
 	if type(selected_region) == "string" then
