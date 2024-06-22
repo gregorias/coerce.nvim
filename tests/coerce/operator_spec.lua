@@ -15,6 +15,21 @@ describe("coerce.operator", function()
 
 			assert.are.same("marked", mark)
 		end)
+
+		it("keeps the callback for dot-repeat", function()
+			test_helpers.create_buf({ "Hello, world!" })
+
+			local call_count = 0
+			co.operator_cb(function()
+				call_count = call_count + 1
+			end)
+			vim.api.nvim_feedkeys("iw", "x", false)
+			assert.are.same(1, call_count)
+
+			vim.api.nvim_feedkeys(".", "x", false)
+
+			assert.are.same(2, call_count)
+		end)
 	end)
 
 	describe("operator", function()

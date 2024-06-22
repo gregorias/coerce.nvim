@@ -18,16 +18,16 @@ M._operator_cb = nil
 
 --- Triggers an operator.
 --
--- This function sets the operatorfunc option to a function and immediately triggers the operator.
+-- This function sets the operatorfunc option to the provided callback and immediately triggers the operator.
 --
 -- This is a good way to work with operators, because these two actions are usually done together.
 --
--- Prefer using operator() instead of this function. Callback-hell is less readable.
+-- The provided callback will be used for dot-repeat.
 --
---@tparam function user_operator_cb The operator callback.
---@tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
---@tparam string movement The movement to be used for the operator.
---@treturn nil
+-- @tparam function user_operator_cb The operator callback.
+-- @tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
+-- @tparam string movement The movement to be used for the operator.
+-- @treturn nil
 M.operator_cb = function(user_operator_cb, mode, movement)
 	movement = movement or ""
 	M._operator_cb = user_operator_cb
@@ -39,9 +39,12 @@ end
 --
 -- This is a fire-and-forget coroutine function.
 --
---@tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
---@tparam string movement The movement to be used for the operator.
---@treturn coerce.region.Region The selected region.
+-- Unlike `operator_cb`, there is no useful callback remaining for the dot-repeat. If you need dot-repeat, use
+-- operator_cb.
+--
+-- @tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
+-- @tparam string movement The movement to be used for the operator.
+-- @treturn coerce.region.Region The selected region.
 M.operator = function(mode, movement)
 	local mmode = require("coerce.coroutine").cb_to_co(M.operator_cb)(mode, movement)
 	local selected_region = M.get_selected_region(mmode)
@@ -50,8 +53,8 @@ end
 
 --- Gets the region selected by an operator motion.
 --
---@tparam string mode The motion mode.
---@return coerce.region.Region The selected region.
+-- @tparam string mode The motion mode.
+-- @return coerce.region.Region The selected region.
 M.get_selected_region = function(mode)
 	assert(mode == M.motion_modes.CHAR, "Only supporting char motion for now.")
 	local cvim = require("coerce.vim")
