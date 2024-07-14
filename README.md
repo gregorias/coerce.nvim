@@ -207,6 +207,10 @@ things in Neovim.
 The logo is based on
 [a fist SVG from SVG Repo](https://www.svgrepo.com/svg/29542/fist).
 
+## 🔗 See also
+
+- [Toggle](https://github.com/gregorias/toggle.nvim) — My Neovim plugin for toggling options.
+
 [abolish]: https://github.com/tpope/vim-abolish
 [iskeyword]: https://neovim.io/doc/user/options.html#'iskeyword'
 [nvim-notify]: https://github.com/rcarriga/nvim-notify
