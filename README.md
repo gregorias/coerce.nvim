@@ -31,7 +31,7 @@ Install the plugin with your preferred package manager, such as [Lazy]:
 ```lua
 {
   "gregorias/coerce.nvim",
-  tag = 'v2.1',
+  tag = 'v2.2',
   config = true,
 }
 ```
