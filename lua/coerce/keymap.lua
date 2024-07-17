@@ -20,24 +20,19 @@ M.plain_keymap_registry = {
 ---@type KeymapRegistry
 M.which_key_keymap_registry = {
 	register_keymap_group = function(mode, keymap, description)
-		require("which-key").register({
-			[keymap] = { name = description },
-		}, { mode = mode })
-		-- Fixes a bug, where:
-		--
-		-- - The WhichKey window doesn’t show up in the visual mode ("v" or "x")
-		--   The open bug in question: https://github.com/folke/which-key.nvim/issues/458.
-		-- - The WhichKey window doesn’t show up in when there’s a conflicting prefix, e.g., `gcr` is used for Coerce, but
-		--   `gc` is used for commenting.
-		vim.keymap.set(mode, keymap, "<cmd>WhichKey " .. keymap .. " " .. mode .. "<cr>")
+		require("which-key").add({ { [1] = keymap, group = description, mode = mode } })
+		-- Fixes a bug, where the WhichKey window doesn’t show up in when there’s a conflicting prefix, e.g., `gcr` is used
+		-- for Coerce, but `gc` is used for commenting.
+		vim.keymap.set(mode, keymap, function()
+			local wk_mode = mode
+			if mode == "v" then
+				wk_mode = "x"
+			end
+			require("which-key").show({ keys = keymap, mode = wk_mode })
+		end)
 	end,
 	register_keymap = function(mode, keymap, action, description)
-		require("which-key").register({
-			[keymap] = {
-				action,
-				description,
-			},
-		}, { mode = mode })
+		require("which-key").add({ { [1] = keymap, [2] = action, desc = description, mode = mode } })
 	end,
 }
 
