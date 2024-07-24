@@ -4,14 +4,24 @@ base: lua51
 globals:
   vim:
     any: true
+  after_each:
+    args:
+      - type: function
   assert:
     args:
       - type: bool
       - type: string
         required: false
-  assert.has.errors:
+  assert.has_error:
     args:
       - type: function
+      - type: string
+  assert.has.error:
+    args:
+      - type: function
+  assert.are_nil:
+    args:
+      - type: any
   assert.are.same:
     args:
       - type: any
@@ -26,9 +36,6 @@ globals:
   assert.is.True:
     args:
       - type: bool
-  after_each:
-    args:
-      - type: function
   before_each:
     args:
       - type: function

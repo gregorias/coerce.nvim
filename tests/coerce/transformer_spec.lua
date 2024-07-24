@@ -1,4 +1,5 @@
 local transformer = require("coerce.transformer")
+local cco = require("coerce.coroutine")
 local region = require("coerce.region")
 local fake_lsp_server_m = require("tests.fake_lsp_server")
 local test_helpers = require("tests.helpers")
@@ -67,20 +68,22 @@ describe("coerce.transformer", function()
 			}, { bufnr = buf })
 
 			-- Make the call
-			local result = transformer.transform_lsp_rename({
-				mode = region.modes.CHAR,
-				start_row = 0,
-				start_col = 0,
-				end_row = 1,
-				end_col = 3,
-			}, function()
-				return "bar"
+			local result = false
+			cco.fire_and_forget(function()
+				result = transformer.transform_lsp_rename({
+					mode = region.modes.CHAR,
+					start_row = 0,
+					start_col = 0,
+					end_row = 1,
+					end_col = 3,
+				}, function()
+					return "bar"
+				end)
 			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local bar" }, lines)
-			-- TODO: #5 — This is a bug. The result should be true.
-			-- assert.is.True(result)
+			assert.is.True(result)
 
 			vim.lsp.get_client_by_id(client_id).stop(true)
 		end)
@@ -124,14 +127,16 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			transformer.transform_lsp_rename_with_local_failover({
-				mode = region.modes.CHAR,
-				start_row = 0,
-				start_col = 0,
-				end_row = 1,
-				end_col = 3,
-			}, function()
-				return "bar"
+			cco.fire_and_forget(function()
+				transformer.transform_lsp_rename_with_local_failover({
+					mode = region.modes.CHAR,
+					start_row = 0,
+					start_col = 0,
+					end_row = 1,
+					end_col = 3,
+				}, function()
+					return "bar"
+				end)
 			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
@@ -153,14 +158,16 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			transformer.transform_lsp_rename_with_local_failover({
-				mode = region.modes.CHAR,
-				start_row = 0,
-				start_col = 0,
-				end_row = 1,
-				end_col = 3,
-			}, function()
-				return "bar"
+			cco.fire_and_forget(function()
+				transformer.transform_lsp_rename_with_local_failover({
+					mode = region.modes.CHAR,
+					start_row = 0,
+					start_col = 0,
+					end_row = 1,
+					end_col = 3,
+				}, function()
+					return "bar"
+				end)
 			end)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)

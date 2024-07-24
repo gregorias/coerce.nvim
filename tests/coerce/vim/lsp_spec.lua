@@ -1,4 +1,5 @@
 local cvim = require("coerce.vim")
+local cco = require("coerce.coroutine")
 local test_helpers = require("tests.helpers")
 local fake_lsp_server_m = require("tests.fake_lsp_server")
 
@@ -41,7 +42,10 @@ describe("coerce.vim.lsp", function()
 				end,
 			}, { bufnr = bufnr })
 
-			local result = cvim.lsp.rename("bar")
+			local result = false
+			cco.fire_and_forget(function()
+				result = cvim.lsp.rename("bar")
+			end)
 
 			local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 1, true)
 			assert.is.True(result)

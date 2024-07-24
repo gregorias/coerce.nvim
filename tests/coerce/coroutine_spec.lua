@@ -7,7 +7,7 @@ describe("coerce.coroutine", function()
 				cb(a + b)
 			end
 			local f_co = cco.cb_to_co(f)
-			local f_co_ret = f_co(1, 2)
+			local _, f_co_ret = coroutine.resume(coroutine.create(f_co), 1, 2)
 			assert.are.same(3, f_co_ret)
 		end)
 
@@ -16,7 +16,7 @@ describe("coerce.coroutine", function()
 				cb(a + b, a * b)
 			end
 			local f_co = cco.cb_to_co(f)
-			local f_co_ret_sum, f_co_ret_mul = f_co(1, 2)
+			local _, f_co_ret_sum, f_co_ret_mul = coroutine.resume(coroutine.create(f_co), 1, 2)
 			assert.are.same(3, f_co_ret_sum)
 			assert.are.same(2, f_co_ret_mul)
 		end)
@@ -79,7 +79,7 @@ describe("coerce.coroutine", function()
 			-- Simulate the callback being called asynchronously.
 			local results = { f_cb() }
 
-			assert.are.same({"foo", nil, "bar", nil}, results)
+			assert.are.same({ "foo", nil, "bar", nil }, results)
 		end)
 
 		it("rethrows errors after callback", function()
@@ -101,7 +101,7 @@ describe("coerce.coroutine", function()
 			coroutine.resume(f_co)
 
 			-- Simulate the callback being called asynchronously.
-			assert.has.errors(f_cb)
+			assert.has.error(f_cb)
 		end)
 	end)
 end)
