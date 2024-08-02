@@ -66,6 +66,27 @@ describe("coerce", function()
 		c.teardown()
 	end)
 
+	it("supports overriding motion mode keymap", function()
+		local buf = test_helpers.create_buf({ "myCase", "yourCase" })
+		c.setup({
+			default_mode_keymap_prefixes = {
+				motion_mode = "gca",
+				visual_mode = "gca",
+			},
+		})
+		-- `gca` starts the operator pending mode
+		-- `u` select upper case coercion
+		-- `e` select the keyword
+		-- `j` goes down a line
+		-- `.` repeats the last action
+		test_helpers.execute_keys("gcauej.", "x")
+
+		local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+		assert.are.same({ "MY_CASE", "YOUR_CASE" }, lines)
+
+		c.teardown()
+	end)
+
 	it("uses LSP’s rename method when available", function()
 		local buf = test_helpers.create_buf({ "myCase", "local myCase" })
 		-- LSP rename only works on named buffers.
