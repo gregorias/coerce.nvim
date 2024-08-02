@@ -125,16 +125,16 @@ local effective_config = nil
 local coercer = nil
 
 --- Registers a new case.
---
---@tparam table case
+---
+---@param case table
 M.register_case = function(case)
 	assert(coercer ~= nil, "Coercer is not initialized.")
 	coercer:register_case(case)
 end
 
 --- Registers a new mode.
---
---@tparam table mode
+---
+---@param mode table
 M.register_mode = function(mode)
 	assert(coercer ~= nil, "Coercer is not initialized.")
 	coercer:register_mode(mode)
