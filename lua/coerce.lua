@@ -102,4 +102,13 @@ M.setup = function(config)
 	end
 end
 
+--- Tears down the plugin.
+M.teardown = function()
+	if coercer ~= nil then
+		coercer:unregister_all()
+		coercer = nil
+	end
+	effective_config = nil
+end
+
 return M

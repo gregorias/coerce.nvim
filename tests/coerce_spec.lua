@@ -18,6 +18,8 @@ describe("coerce", function()
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 			assert.are.same({ "m" }, lines)
+
+			c.teardown()
 		end)
 	end)
 
@@ -30,6 +32,8 @@ describe("coerce", function()
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
+
+		c.teardown()
 	end)
 
 	it("works with motion selection", function()
@@ -42,6 +46,8 @@ describe("coerce", function()
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
+
+		c.teardown()
 	end)
 
 	it("supports dot repeats", function()
@@ -56,6 +62,8 @@ describe("coerce", function()
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 		assert.are.same({ "MY_CASE", "YOUR_CASE" }, lines)
+
+		c.teardown()
 	end)
 
 	it("uses LSP’s rename method when available", function()
@@ -84,6 +92,8 @@ describe("coerce", function()
 
 		vim.lsp.get_client_by_id(client_id).stop(true)
 		vim.api.nvim_buf_delete(buf, { force = true })
+
+		c.teardown()
 	end)
 
 	it("works with motion selection even with a user-defined g@ keymap", function()
@@ -120,6 +130,8 @@ describe("coerce", function()
 			{ message = "2 lines selected. Coerce supports only single-line visual selections.", level = "error" },
 			notification
 		)
+
+		c.teardown()
 	end)
 
 	it("coerces current word even with conflicting keymaps", function()
@@ -132,5 +144,7 @@ describe("coerce", function()
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
+
+		c.teardown()
 	end)
 end)

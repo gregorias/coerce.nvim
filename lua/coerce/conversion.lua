@@ -34,6 +34,10 @@ M.Coercer = function(keymap_registry, notify)
 			end, case.description)
 		end,
 
+		_unregister_mode_case = function(self, mode, case)
+			self.keymap_registry.unregister_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap)
+		end,
+
 		--- Registers a new case.
 		--
 		--@tparam {keymap=string, description=string, case=function}
@@ -56,6 +60,18 @@ M.Coercer = function(keymap_registry, notify)
 			for _, case in ipairs(self.registered_cases) do
 				self:_register_mode_case(mode, case)
 			end
+		end,
+
+		--- Unregisters all cases and modes.
+		unregister_all = function(self)
+			for _, mode in ipairs(self.registered_modes) do
+				for _, case in ipairs(self.registered_cases) do
+					self:_unregister_mode_case(mode, case)
+				end
+				self.keymap_registry.unregister_keymap_group(mode.vim_mode, mode.keymap_prefix)
+			end
+			self.registered_cases = {}
+			self.registered_modes = {}
 		end,
 	}
 end

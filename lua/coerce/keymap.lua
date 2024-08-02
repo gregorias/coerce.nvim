@@ -5,15 +5,23 @@ local M = {}
 
 ---@class KeymapRegistry
 ---@field register_keymap_group fun(mode: string, keymap: string, description: string): nil
+---@field unregister_keymap_group fun(mode: string, keymap: string): nil
 ---@field register_keymap fun(mode: string, keymap: string, action: string, description: string): nil
+---@field unregister_keymap fun(mode: string, keymap: string): nil
 
 ---@type KeymapRegistry
 M.plain_keymap_registry = {
 	register_keymap_group = function()
 		return nil
 	end,
+	unregister_keymap_group = function()
+		return nil
+	end,
 	register_keymap = function(mode, keymap, action, description)
 		vim.keymap.set(mode, keymap, action, { desc = description })
+	end,
+	unregister_keymap = function(mode, keymap)
+		vim.keymap.del(mode, keymap)
 	end,
 }
 
@@ -31,39 +39,31 @@ M.which_key_keymap_registry = {
 			require("which-key").show({ keys = keymap, mode = wk_mode })
 		end)
 	end,
+	unregister_keymap_group = function(mode, keymap)
+		require("which-key").add({ { [1] = keymap, group = "which_key_ignore", mode = mode } })
+		vim.keymap.del(mode, keymap)
+	end,
 	register_keymap = function(mode, keymap, action, description)
 		require("which-key").add({ { [1] = keymap, [2] = action, desc = description, mode = mode } })
 	end,
+	unregister_keymap = function(mode, keymap)
+		local wk = require("which-key")
+		wk.add({
+			{
+				[1] = keymap,
+				[2] = "which_key_ignore",
+				desc = "which_key_ignore",
+				mode = mode,
+			},
+		})
+		vim.keymap.del(mode, keymap)
+	end,
 }
-
----@return KeymapRegistry
-M.keymaster_keymap_registry = function(keymaster)
-	return {
-		register_keymap_group = function(mode, keymap, description)
-			keymaster.set({
-				[keymap] = { name = description },
-			}, { mode = mode })
-		end,
-		register_keymap = function(mode, keymap, action, description)
-			keymaster.set({
-				[keymap] = {
-					action,
-					description,
-				},
-			}, { mode = mode })
-		end,
-	}
-end
 
 --- Returns a keymap registry.
 --
 ---@return KeymapRegistry
 M.keymap_registry = function()
-	local keymaster_status, keymaster = pcall(require, "keymaster")
-	if keymaster_status then
-		return M.keymaster_keymap_registry(keymaster)
-	end
-
 	local which_key_status, _ = pcall(require, "which-key")
 	if which_key_status then
 		return M.which_key_keymap_registry
