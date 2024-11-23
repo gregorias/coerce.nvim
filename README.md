@@ -137,9 +137,15 @@ require"coerce".setup{
     motion_mode = "gcr",
     visual_mode = "gcr",
   },
+  -- Set any field to false to disable that mode.
+  default_mode_mask = {
+    normal_mode = true,
+    motion_mode = true,
+    visual_mode = true,
+  },
   -- If you don’t like the default cases and modes, you can override them.
   cases = require"coerce".default_cases,
-  modes = require"coerce".get_default_modes(self.keymap_prefixes),
+  modes = require"coerce".get_default_modes(default_mode_mask, default_mode_keymap_prefixes),
 }
 ```
 
