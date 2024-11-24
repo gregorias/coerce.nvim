@@ -4,10 +4,10 @@
 local M = {}
 
 --- An alternative to nvim_buf_get_text that is zero-indexed.
---
---@tparam number buffer The buffer to get the text from.
---@tparam string f The mark to get.
---@treturn table A 2-tuple of the mark.
+---
+---@param buffer number The buffer to get the text from.
+---@param mark string The mark to get.
+---@return table t A 2-tuple of the mark.
 M.nvim_buf_get_mark = function(buffer, mark)
 	local pos = vim.api.nvim_buf_get_mark(buffer, mark)
 	return { pos[1] - 1, pos[2] }
@@ -31,16 +31,6 @@ M.nvim_buf_get_text = function(buffer, region)
 	lines[vim.tbl_count(lines)] = string.sub(lines[vim.tbl_count(lines)], 0, region.end_col)
 	lines[1] = string.sub(lines[1], region.start_col + 1)
 	return lines
-end
-
---- An alternative to nvim_buf_get_text that is zero-indexed.
---
---@tparam number buffer The buffer to get the text from.
---@tparam string f The mark to get.
---@treturn table A 2-tuple of the mark.
-M.nvim_buf_get_mark = function(buffer, mark)
-	local pos = vim.api.nvim_buf_get_mark(buffer, mark)
-	return { pos[1] - 1, pos[2] }
 end
 
 return M
