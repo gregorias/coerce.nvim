@@ -1,1 +1,7 @@
 .tests
+
+# LuaCov
+luacov.stats.out
+luacov-html
+luacov.report.html
+luacov.report.out
