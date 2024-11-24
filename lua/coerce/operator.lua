@@ -40,8 +40,8 @@ end
 --
 -- This is a fire-and-forget coroutine function.
 --
--- Unlike `operator_cb`, there is no useful callback remaining for the dot-repeat. If you need dot-repeat, use
--- operator_cb.
+-- Unlike `operator_cb`, there is no useful callback remaining for the dot-repeat.
+-- If you need dot-repeat, use operator_cb.
 --
 -- @tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
 -- @tparam string movement The movement to be used for the operator.
@@ -56,11 +56,11 @@ M.operator = function(mode, movement)
 end
 
 --- Gets the region selected by an operator motion.
---
--- @tparam string mode The motion mode.
--- @return coerce.region.Region The selected region.
-M.get_selected_region = function(mode)
-	assert(mode == M.motion_modes.CHAR, "Only supporting char motion for now.")
+---
+---@param motion_mode motion_mode The motion mode.
+---@return Region region The selected region.
+M.get_selected_region = function(motion_mode)
+	assert(motion_mode == M.motion_modes.CHAR, "Only supporting char motion for now.")
 	local cvim = require("coerce.vim")
 
 	local buffer = 0
