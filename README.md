@@ -21,6 +21,8 @@ manipulation, e.g., turning selected text into its numeronym.
 ## ⚡️ Requirements
 
 - Neovim 0.9+
+- Required plugin dependencies:
+  - [Coop][Coop]
 - Optional plugin dependencies:
   - [Which Key][which-key]
 
@@ -227,6 +229,7 @@ The logo is based on
 [nvim-notify]: https://github.com/rcarriga/nvim-notify
 [text-case]: https://github.com/johmsalas/text-case.nvim
 [which-key]: https://github.com/folke/which-key.nvim
+[Coop]: https://github.com/gregorias/coop.nvim
 [Legendary]: https://github.com/mrjones2014/legendary.nvim
 [Lazy]: https://github.com/folke/lazy.nvim
 [Numeronym]: https://en.wikipedia.org/wiki/Numeronym#Numerical_contractions
