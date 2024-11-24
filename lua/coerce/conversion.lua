@@ -23,8 +23,7 @@ M.Coercer = function(keymap_registry, notify)
 
 		_register_mode_case = function(self, mode, case)
 			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
-				local coroutine_m = require("coerce.coroutine")
-				coroutine_m.fire_and_forget(function()
+				require("coop.coroutine-utils").fire_and_forget(function()
 					M.coerce(mode.selector, mode.transformer, case.case, function(error)
 						if type(error) == "string" then
 							self.notify(error, "error", { title = "Coerce" })

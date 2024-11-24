@@ -3,7 +3,7 @@
 --@module coerce.vim.lsp
 local M = {}
 
-local cb_to_co = require("coerce.coroutine").cb_to_co
+local cb_to_co = require("coop.coroutine-utils").cb_to_co
 
 local pack = function(...)
 	-- selene: allow(mixed_table)

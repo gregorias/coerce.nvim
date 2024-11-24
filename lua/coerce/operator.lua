@@ -47,7 +47,7 @@ end
 -- @tparam string movement The movement to be used for the operator.
 -- @treturn coerce.region.Region The selected region.
 M.operator = function(mode, movement)
-	local mmode = require("coerce.coroutine").cb_to_co(function(cb)
+	local mmode = require("coop.coroutine-utils").cb_to_co(function(cb)
 		M.operator_cb(cb)
 		vim.api.nvim_feedkeys(movement, mode, false)
 	end)()

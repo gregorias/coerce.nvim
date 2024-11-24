@@ -1,5 +1,4 @@
 local transformer = require("coerce.transformer")
-local cco = require("coerce.coroutine")
 local region = require("coerce.region")
 local fake_lsp_server_m = require("tests.fake_lsp_server")
 local test_helpers = require("tests.helpers")
@@ -69,7 +68,7 @@ describe("coerce.transformer", function()
 
 			-- Make the call
 			local result = false
-			cco.fire_and_forget(function()
+			require("coop.coroutine-utils").fire_and_forget(function()
 				result = transformer.transform_lsp_rename({
 					mode = region.modes.CHAR,
 					start_row = 0,
@@ -127,7 +126,7 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			cco.fire_and_forget(function()
+			require("coop.coroutine-utils").fire_and_forget(function()
 				transformer.transform_lsp_rename_with_local_failover({
 					mode = region.modes.CHAR,
 					start_row = 0,
@@ -158,7 +157,7 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			cco.fire_and_forget(function()
+			require("coop.coroutine-utils").fire_and_forget(function()
 				transformer.transform_lsp_rename_with_local_failover({
 					mode = region.modes.CHAR,
 					start_row = 0,

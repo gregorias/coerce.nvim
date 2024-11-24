@@ -1,6 +1,5 @@
 local cc = require("coerce.conversion")
 local transformer = require("coerce.transformer")
-local cco = require("coerce.coroutine")
 local test_helpers = require("tests.helpers")
 
 describe("coerce.conversion", function()
@@ -9,7 +8,7 @@ describe("coerce.conversion", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 			vim.api.nvim_win_set_cursor(0, { 1, 8 })
 
-			cco.fire_and_forget(cc.coerce_current_word, transformer.transform_local, function()
+			require("coop.coroutine-utils").fire_and_forget(cc.coerce_current_word, transformer.transform_local, function()
 				return "Bob"
 			end)
 

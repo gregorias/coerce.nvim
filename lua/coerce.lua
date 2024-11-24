@@ -1,7 +1,6 @@
 local M = {}
 
 local case_m = require("coerce.case")
-local coroutine_m = require("coerce.coroutine")
 local selector_m = require("coerce.selector")
 local transformer_m = require("coerce.transformer")
 local conversion_m = require("coerce.conversion")
@@ -57,7 +56,7 @@ M.get_default_modes = function(mode_mask, keymap_prefixes)
 			keymap_prefix = keymap_prefixes.normal_mode,
 			selector = selector_m.select_current_word,
 			transformer = function(selected_region, apply)
-				return coroutine_m.fire_and_forget(
+				return require("coop.coroutine-utils").fire_and_forget(
 					transformer_m.transform_lsp_rename_with_local_failover,
 					selected_region,
 					apply

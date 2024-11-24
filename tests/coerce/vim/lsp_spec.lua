@@ -1,5 +1,4 @@
 local cvim = require("coerce.vim")
-local cco = require("coerce.coroutine")
 local test_helpers = require("tests.helpers")
 local fake_lsp_server_m = require("tests.fake_lsp_server")
 
@@ -43,7 +42,7 @@ describe("coerce.vim.lsp", function()
 			}, { bufnr = bufnr })
 
 			local result = false
-			cco.fire_and_forget(function()
+			require("coop.coroutine-utils").fire_and_forget(function()
 				result = cvim.lsp.rename("bar")
 			end)
 

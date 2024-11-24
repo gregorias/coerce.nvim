@@ -1,5 +1,4 @@
 local co = require("coerce.operator")
-local cco = require("coerce.coroutine")
 local region = require("coerce.region")
 local test_helpers = require("tests.helpers")
 
@@ -37,7 +36,7 @@ describe("coerce.operator", function()
 		it("returns the selected region", function()
 			test_helpers.create_buf({ "Hello, world!" })
 			local selected_region = {}
-			cco.fire_and_forget(function()
+			require("coop.coroutine-utils").fire_and_forget(function()
 				selected_region = co.operator("nx", "iw")
 			end)
 
