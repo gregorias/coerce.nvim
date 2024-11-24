@@ -6,30 +6,29 @@
 local M = {}
 
 --- Selects the current word.
---
--- @tparam function cb The callback to return the selected region to.
--- @treturn nil
+---
+---@param cb function The callback to return the selected region to.
 M.select_current_word = function(cb)
 	local operator_m = require("coerce.operator")
-	return operator_m.operator_cb(function(mmode)
+	operator_m.operator_cb(function(mmode)
 		local selected_region = operator_m.get_selected_region(mmode)
 		cb(selected_region)
-	end, "xn", "iw")
+	end)
+	vim.api.nvim_feedkeys("iw", "xn", false)
 end
 
 --- Selects with the user provided motion.
---
--- @tparam function cb The callback to return the selected region to.
--- @treturn nil
+---
+---@param cb function The callback to return the selected region to.
 M.select_with_motion = function(cb)
 	local operator_m = require("coerce.operator")
 	-- The i-mode is important. We might be running within a feedkeys() call, so we need to insert
 	-- the operator into the typeahead buffer immediately before the motion.
 	-- The n-mode is also important. We don’t want user remaps of g@ to interfere with the operator.
-	return operator_m.operator_cb(function(mmode)
+	operator_m.operator_cb(function(mmode)
 		local selected_region = operator_m.get_selected_region(mmode)
 		cb(selected_region)
-	end, "in", "")
+	end)
 end
 
 --- Selects the current visual selection.

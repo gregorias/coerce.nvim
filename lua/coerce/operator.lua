@@ -6,6 +6,9 @@
 -- - https://neovim.io/doc/user/options.html#'operatorfunc'
 local M = {}
 
+--- https://neovim.io/doc/user/map.html#g%40
+---@alias motion_mode "line" | "char" | "block"
+
 --- Possible motion modes used by operators.
 M.motion_modes = {
 	CHAR = "char",
@@ -17,22 +20,20 @@ M.motion_modes = {
 M._operator_cb = nil
 
 --- Triggers an operator.
---
--- This function sets the operatorfunc option to the provided callback and immediately triggers the operator.
---
--- This is a good way to work with operators, because these two actions are usually done together.
---
--- The provided callback will be used for dot-repeat.
---
--- @tparam function user_operator_cb The operator callback.
--- @tparam string mode The feedkeys() mode. Using “x” may be important to prevent laziness.
--- @tparam string movement The movement to be used for the operator.
--- @treturn nil
-M.operator_cb = function(user_operator_cb, mode, movement)
-	movement = movement or ""
+---
+--- This function sets the operatorfunc option to the provided callback and immediately triggers the operator.
+--- The operator will use the provided movement in the input buffer.
+---
+--- The provided callback can be used for dot-repeat.
+---
+---@param user_operator_cb fun(motion_mode) The operator callback.
+M.operator_cb = function(user_operator_cb)
 	M._operator_cb = user_operator_cb
 	vim.o.operatorfunc = "v:lua.require'coerce.operator'._operator_cb"
-	vim.api.nvim_feedkeys("g@" .. movement, mode or "m", false)
+	-- 'i' to insert. If we the user has typed "gUe" for uppercasing till end of the word and `gU` calls `operator_cb`,
+	-- then `g@` needs to be inserted before the 'e'.
+	-- 'n' to not remap. We want to trigger the operator.
+	vim.api.nvim_feedkeys("g@", "in", false)
 end
 
 --- Triggers an operator.
@@ -46,7 +47,10 @@ end
 -- @tparam string movement The movement to be used for the operator.
 -- @treturn coerce.region.Region The selected region.
 M.operator = function(mode, movement)
-	local mmode = require("coerce.coroutine").cb_to_co(M.operator_cb)(mode, movement)
+	local mmode = require("coerce.coroutine").cb_to_co(function(cb)
+		M.operator_cb(cb)
+		vim.api.nvim_feedkeys(movement, mode, false)
+	end)()
 	local selected_region = M.get_selected_region(mmode)
 	return selected_region
 end
