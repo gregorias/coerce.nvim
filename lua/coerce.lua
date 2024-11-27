@@ -19,6 +19,7 @@ M.default_cases = {
 	{ keymap = "s", case = case_m.to_snake_case, description = "snake_case" },
 	{ keymap = "u", case = case_m.to_upper_case, description = "UPPER_CASE" },
 	{ keymap = "/", case = case_m.to_path_case, description = "path/case" },
+	{ keymap = " ", case = case_m.to_space_case, description = "space case" },
 }
 ---@class DefaultModeKeymapPrefixConfigOptional
 ---@field normal_mode? string

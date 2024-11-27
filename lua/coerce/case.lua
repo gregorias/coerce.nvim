@@ -107,6 +107,16 @@ M.to_path_case = function(str)
 	return table.concat(parts, "/")
 end
 
+--- Converts a keyword into space case.
+--
+--@param str The string to convert.
+--@treturn str
+M.to_space_case = function(str)
+	local parts = M.split_keyword(str)
+
+	return table.concat(parts, " ")
+end
+
 --- Splits a word into its parts.
 --
 -- Using ”keyword” instead of “word”, because in this context, things like like
@@ -125,6 +135,7 @@ M.split_keyword = function(str)
 		["_"] = true,
 		["."] = true,
 		["/"] = true,
+		[" "] = true,
 	}
 	local found_separator = nil
 
