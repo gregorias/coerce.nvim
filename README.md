@@ -72,16 +72,17 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 
 ### Built-in cases
 
-| Case              | Key |
-| :--               | :-- |
-| camelCase         | c   |
-| dot.case          | d   |
-| kebab-case        | k   |
-| [n12e][Numeronym] | n   |
-| PascalCase        | p   |
-| snake_case        | s   |
-| UPPER_CASE        | u   |
-| path/case         | /   |
+| Case              | Key       |
+| :--               | :--       |
+| camelCase         | c         |
+| dot.case          | d         |
+| kebab-case        | k         |
+| [n12e][Numeronym] | n         |
+| PascalCase        | p         |
+| snake_case        | s         |
+| UPPER_CASE        | u         |
+| path/case         | /         |
+| space case        | `<space>` |
 
 ### Built-in modes
 
