@@ -28,6 +28,9 @@ M.Coercer = function(keymap_registry, notify)
 							self.notify(error, "error", { title = "Coerce" })
 						end
 					end)
+					if mode.post_processor then
+						mode.post_processor()
+					end
 				end)
 			end, case.description)
 		end,

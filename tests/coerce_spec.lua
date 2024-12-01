@@ -33,6 +33,10 @@ describe("coerce", function()
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
 
+		-- Visual-mode commands should end up in the normal mode:
+		-- https://github.com/gregorias/coerce.nvim/issues/11
+		assert.are.same("n", vim.api.nvim_get_mode().mode)
+
 		c.teardown()
 	end)
 

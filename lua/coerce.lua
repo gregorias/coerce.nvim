@@ -51,6 +51,7 @@ M.default_mode_mask = {
 ---@field keymap_prefix string
 ---@field selector function
 ---@field transformer function
+---@field post_processor? function The function to run after the coercion.
 
 --- Gets the default modes
 ---
@@ -90,6 +91,10 @@ M.get_default_modes = function(mode_mask, keymap_prefixes)
 			keymap_prefix = keymap_prefixes.visual_mode,
 			selector = selector_m.select_current_visual_selection,
 			transformer = transformer_m.transform_local,
+			post_processor = function()
+				local esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+				vim.api.nvim_feedkeys(esc, "nx", false)
+			end,
 		})
 	end
 
