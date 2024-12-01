@@ -1,19 +1,16 @@
 --- A module for enacting case conversions in Neovim.
---
---@module coerce.conversion
 local M = {}
 
 M.registered_cases = {}
 M.registered_modes = {}
 
 --- Constructs a Coercer object.
---
--- Coercer is meant to be a singleton object that handles registering new
--- cases and modes, and actuating them.
---
---@tparam table keymap_registry
---@tparam function notify The notification function to use.
---@tparam string coerce_prefix
+---
+--- Coercer is meant to be a singleton object that handles registering new
+--- cases and modes, and actuating them.
+---
+---@param keymap_registry table
+---@param notify function The notification function to use.
 M.Coercer = function(keymap_registry, notify)
 	return {
 		keymap_registry = keymap_registry,
@@ -21,6 +18,8 @@ M.Coercer = function(keymap_registry, notify)
 		registered_cases = {},
 		registered_modes = {},
 
+		---@param mode Mode
+		---@param case any
 		_register_mode_case = function(self, mode, case)
 			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
 				require("coop.coroutine-utils").fire_and_forget(function()

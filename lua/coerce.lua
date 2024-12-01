@@ -46,10 +46,19 @@ M.default_mode_mask = {
 	visual_mode = true,
 }
 
+---@class Mode
+---@field vim_mode string
+---@field keymap_prefix string
+---@field selector function
+---@field transformer function
+
+--- Gets the default modes
+---
 ---@param mode_mask DefaultModeMask
 ---@param keymap_prefixes DefaultModeKeymapPrefixConfig
----@return any[]
+---@return Mode[]
 M.get_default_modes = function(mode_mask, keymap_prefixes)
+	---@type Mode[]
 	local modes = {}
 	if mode_mask.normal_mode ~= false then
 		table.insert(modes, {
@@ -93,13 +102,13 @@ end
 ---@field cases? table
 ---@field default_mode_keymap_prefixes? DefaultModeKeymapPrefixConfigOptional
 ---@field default_mode_mask? DefaultModeMask
----@field modes? table
+---@field modes? Mode[]
 
 ---@class CoerceConfig
 ---@field keymap_registry KeymapRegistry
 ---@field notify function
 ---@field cases table
----@field modes table
+---@field modes Mode[]
 
 ---@param keymap_registry KeymapRegistry
 ---@param default_mode_mask DefaultModeMask
