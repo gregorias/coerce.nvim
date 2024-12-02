@@ -1,42 +1,41 @@
 --- Extra string-related utilities.
--- @module coerce.string
 local M = {}
 
 --- Checks if a string uses only unicase characters.
---
--- A unicase character is a character that is neither upper nor lower case,
--- e.g., punctuation or Japanese kanji.
---
---@param str The string to check.
---@return True iff the string is in unicase.
+---
+--- A unicase character is a character that is neither upper nor lower case,
+--- e.g., punctuation or Japanese kanji.
+---
+---@param str string the string to check
+---@return boolean result whether the string is in unicase
 M.is_unicase = function(str)
 	return vim.fn.toupper(str) == vim.fn.tolower(str)
 end
 
 --- Checks if a char is in upper case.
---
---@param char The char to check.
---@return True iff the char is in upper case.
+---
+---@param char string the char to check
+---@return boolean result whether the char is in upper case
 M.is_upper = function(char)
 	return not M.is_unicase(char) and vim.fn.toupper(char) == char
 end
 
 --- Checks if a char is in lower case.
---
---@param char The char to check.
---@return True iff the char is in lower case.
+---
+---@param char string the char to check
+---@return boolean result whether the char is in lower case
 M.is_lower = function(char)
 	return not M.is_unicase(char) and not M.is_upper(char)
 end
 
 --- Splits a string into a list of Unicode graphemes.
---
--- Includes combining characters into a single grapheme.
---
--- See also vim.fn.str2list, which splits a string into a list of code points.
---
---@param str The string to split.
---@return A list of characters.
+---
+--- Includes combining characters into a single grapheme.
+---
+--- See also vim.fn.str2list, which splits a string into a list of code points.
+---
+---@param str string the string to split
+---@return string[] charlist list of characters
 M.str2graphemelist = function(str)
 	local charlist = {}
 	local stridx = 0
