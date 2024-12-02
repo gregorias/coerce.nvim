@@ -187,6 +187,32 @@ require"coerce".register_mode{
 }
 ```
 
+### Examples
+
+#### Selectively disabling LSP rename
+
+If you don’t like that the default normal mode binding uses LSP rename (e.g.,
+because it’s too slow), you can provide your own implementation like so:
+
+```lua
+require"coerce".setup{
+  -- …
+  default_mode_mask = {
+    -- Disable the default `cr` binding.
+    normal_mode = false,
+  },
+  -- …
+}
+
+-- Register a custom `cr` binding that uses the local-only transformation.
+require"coerce".register_mode{
+  vim_mode = "n",
+  keymap_prefix = "cr",
+  selector = require"coerce.selector".select_current_word,
+  transformer = require"coerce.transformer".transform_local,
+}
+```
+
 ## ✅ Comparison to similar tools
 
 [Text-case][text-case] is more feature-rich than Coerce, but if you just need
