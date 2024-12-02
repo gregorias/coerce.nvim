@@ -33,7 +33,7 @@ Install the plugin with your preferred package manager, such as [Lazy]:
 ```lua
 {
   "gregorias/coerce.nvim",
-  tag = 'v4.0.0',
+  tag = 'v4.1.0',
   config = true,
 }
 ```
