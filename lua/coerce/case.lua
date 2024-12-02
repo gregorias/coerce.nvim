@@ -5,9 +5,9 @@ local M = {}
 local cs = require("coerce.string")
 
 --- Converts a keyword into PascalCase.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_camel_case = function(str)
 	local parts = M.split_keyword(str)
 
@@ -21,27 +21,27 @@ M.to_camel_case = function(str)
 end
 
 --- Converts a keyword into dot-case.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_dot_case = function(str)
 	local parts = M.split_keyword(str)
 	return table.concat(parts, ".")
 end
 
 --- Converts a keyword into kebab-case.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_kebab_case = function(str)
 	local parts = M.split_keyword(str)
 	return table.concat(parts, "-")
 end
 
 --- Converts a string into a numerical contraction.
---
---@param str The string to convert.
---@return The numerical contraction.
+---
+---@param str string the string to convert
+---@return string str the numerical contraction
 M.to_numerical_contraction = function(str)
 	local grapheme_list = cs.str2graphemelist(str)
 	if #grapheme_list <= 2 then
@@ -62,9 +62,9 @@ M.to_numerical_contraction = function(str)
 end
 
 --- Converts a keyword into PascalCase.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_pascal_case = function(str)
 	local parts = M.split_keyword(str)
 
@@ -78,18 +78,18 @@ M.to_pascal_case = function(str)
 end
 
 --- Converts a keyword into snake_case.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_snake_case = function(str)
 	local parts = M.split_keyword(str)
 	return table.concat(parts, "_")
 end
 
 --- Converts a keyword into snake_case.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_upper_case = function(str)
 	local parts = M.split_keyword(str)
 
@@ -98,9 +98,9 @@ M.to_upper_case = function(str)
 end
 
 --- Converts a keyword into path/case.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_path_case = function(str)
 	local parts = M.split_keyword(str)
 
@@ -108,9 +108,9 @@ M.to_path_case = function(str)
 end
 
 --- Converts a keyword into space case.
---
---@param str The string to convert.
---@treturn str
+---
+---@param str string the string to convert
+---@return string
 M.to_space_case = function(str)
 	local parts = M.split_keyword(str)
 
@@ -118,12 +118,12 @@ M.to_space_case = function(str)
 end
 
 --- Splits a word into its parts.
---
--- Using ”keyword” instead of “word”, because in this context, things like like
--- “kebab-case” are not words.
---
---@tparam string str The word to split.
---@treturn table The parts of the word.
+---
+--- Using ”keyword” instead of “word”, because in this context, things like like
+--- “kebab-case” are not words.
+---
+---@param str string the string to split
+---@return string[] words keyword parts
 M.split_keyword = function(str)
 	local grapheme_list = cs.str2graphemelist(str)
 	if #grapheme_list <= 2 then
