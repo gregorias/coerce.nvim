@@ -46,7 +46,7 @@ M.default_mode_mask = {
 	visual_mode = true,
 }
 
----@class Mode
+---@class CoerceMode
 ---@field vim_mode string
 ---@field keymap_prefix string
 ---@field selector function
@@ -57,9 +57,9 @@ M.default_mode_mask = {
 ---
 ---@param mode_mask DefaultModeMask
 ---@param keymap_prefixes DefaultModeKeymapPrefixConfig
----@return Mode[]
+---@return CoerceMode[]
 M.get_default_modes = function(mode_mask, keymap_prefixes)
-	---@type Mode[]
+	---@type CoerceMode[]
 	local modes = {}
 	if mode_mask.normal_mode ~= false then
 		table.insert(modes, {
@@ -107,13 +107,13 @@ end
 ---@field cases? table
 ---@field default_mode_keymap_prefixes? DefaultModeKeymapPrefixConfigOptional
 ---@field default_mode_mask? DefaultModeMask
----@field modes? Mode[]
+---@field modes? CoerceMode[]
 
 ---@class CoerceConfig
 ---@field keymap_registry KeymapRegistry
 ---@field notify function
 ---@field cases table
----@field modes Mode[]
+---@field modes CoerceMode[]
 
 ---@param keymap_registry KeymapRegistry
 ---@param default_mode_mask DefaultModeMask
@@ -173,7 +173,7 @@ end
 
 --- Registers a new mode.
 ---
----@param mode Mode
+---@param mode CoerceMode
 M.register_mode = function(mode)
 	assert(coercer ~= nil, "Coercer is not initialized.")
 	coercer:register_mode(mode)

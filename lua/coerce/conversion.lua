@@ -18,7 +18,7 @@ M.Coercer = function(keymap_registry, notify)
 		registered_cases = {},
 		registered_modes = {},
 
-		---@param mode Mode
+		---@param mode CoerceMode
 		---@param case any
 		_register_mode_case = function(self, mode, case)
 			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
