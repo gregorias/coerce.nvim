@@ -164,8 +164,10 @@ M.split_keyword = function(str)
 	else
 		-- No separator found. Separate by upper case.
 		local word = ""
+		local is_last_char_upper = false
 		for i = 1, #grapheme_list, 1 do
-			if cs.is_upper(grapheme_list[i]) then
+			local is_upper = cs.is_upper(grapheme_list[i])
+			if is_upper and not is_last_char_upper then
 				if word ~= "" then
 					table.insert(words, word)
 				end
@@ -173,6 +175,7 @@ M.split_keyword = function(str)
 			else
 				word = word .. grapheme_list[i]
 			end
+			is_last_char_upper = is_upper
 		end
 		if word ~= "" then
 			table.insert(words, word)
