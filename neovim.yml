@@ -12,6 +12,12 @@ globals:
       - type: bool
       - type: string
         required: false
+  assert.False:
+    args:
+      - type: bool
+  assert.True:
+    args:
+      - type: bool
   assert.has_error:
     args:
       - type: function
