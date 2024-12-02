@@ -6,8 +6,6 @@
 --@module coerce.transformer
 local M = {}
 
-local lsp_rename = require("coerce.vim.lsp").rename
-
 --- Returns transformed selected text.
 ---
 ---@tparam Region selected_region The selected region to change.
@@ -53,6 +51,8 @@ end
 ---@tparam function apply The function to apply to the selected region.
 ---@treturn boolean Whether the function has succeeded.
 M.transform_lsp_rename = function(selected_region, apply)
+	local lsp_rename = require("coerce.vim.lsp").rename
+
 	if not require("coerce.vim.lsp").does_any_client_support_rename() then
 		return false
 	end
@@ -84,6 +84,7 @@ end
 ---
 --- The LSP rename only works on the symbol under the cursor, so it’s best not
 --- to use this function for any other selection mode.
+---
 ---
 ---@tparam Region selected_region The selected region to change.
 ---@tparam function apply The function to apply to the selected region.

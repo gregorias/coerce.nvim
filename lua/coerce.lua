@@ -1,9 +1,6 @@
 local M = {}
 
 local case_m = require("coerce.case")
-local selector_m = require("coerce.selector")
-local transformer_m = require("coerce.transformer")
-local conversion_m = require("coerce.conversion")
 
 --------------------------------------------------------------------------------
 --- Configuration
@@ -59,6 +56,9 @@ M.default_mode_mask = {
 ---@param keymap_prefixes DefaultModeKeymapPrefixConfig
 ---@return CoerceMode[]
 M.get_default_modes = function(mode_mask, keymap_prefixes)
+	local selector_m = require("coerce.selector")
+	local transformer_m = require("coerce.transformer")
+
 	---@type CoerceMode[]
 	local modes = {}
 	if mode_mask.normal_mode ~= false then
@@ -183,8 +183,14 @@ end
 ---
 ---@param config? CoerceConfigUser
 M.setup = function(config)
+	local coop_status = pcall(require, "coop")
+	if not coop_status then
+		error("Coop not found. Coerce requires gregorias/coop.nvim to work.", 0)
+	end
+
 	effective_config = M.get_effective_config(config or {})
 
+	local conversion_m = require("coerce.conversion")
 	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.notify)
 
 	for _, mode in ipairs(effective_config.modes) do
