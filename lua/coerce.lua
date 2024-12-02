@@ -173,7 +173,7 @@ end
 
 --- Registers a new mode.
 ---
----@param mode table
+---@param mode Mode
 M.register_mode = function(mode)
 	assert(coercer ~= nil, "Coercer is not initialized.")
 	coercer:register_mode(mode)
