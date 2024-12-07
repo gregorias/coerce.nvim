@@ -17,7 +17,9 @@ end
 function M.does_any_client_support_rename()
 	local clients = vim.lsp.get_clients()
 	for _, client in pairs(clients) do
-		if vim.lsp.buf_is_attached(0, client.id) and client.supports_method("textDocument/rename") then
+		if
+			vim.lsp.buf_is_attached(0, client.id) and client.supports_method("textDocument/rename")
+		then
 			return true
 		end
 	end
@@ -74,7 +76,8 @@ function M.rename(new_name)
 	local function rename(client, name)
 		local params = util.make_position_params(win, client.offset_encoding)
 		params.newName = name
-		local handler = client.handlers[ms.textDocument_rename] or vim.lsp.handlers[ms.textDocument_rename]
+		local handler = client.handlers[ms.textDocument_rename]
+			or vim.lsp.handlers[ms.textDocument_rename]
 		local result = pack(M.client_request(client, ms.textDocument_rename, params, bufnr))
 		if not result[1] then
 			has_any_success = true
@@ -85,21 +88,26 @@ function M.rename(new_name)
 	for idx, client in ipairs(clients) do
 		if client.supports_method(ms.textDocument_prepareRename) then
 			local params = util.make_position_params(win, client.offset_encoding)
-			local err, result = M.client_request(client, ms.textDocument_prepareRename, params, bufnr)
+			local err, result =
+				M.client_request(client, ms.textDocument_prepareRename, params, bufnr)
 			if err or result == nil then
 				if idx < #clients then
 					-- continue
 					do
 					end
 				else
-					local msg = err and ("Error on prepareRename: " .. (err.message or "")) or "Nothing to rename"
+					local msg = err and ("Error on prepareRename: " .. (err.message or ""))
+						or "Nothing to rename"
 					vim.notify(msg, vim.log.levels.INFO)
 				end
 			else
 				rename(client, new_name)
 			end
 		else
-			assert(client.supports_method(ms.textDocument_rename), "Client must support textDocument/rename")
+			assert(
+				client.supports_method(ms.textDocument_rename),
+				"Client must support textDocument/rename"
+			)
 			rename(client, new_name)
 		end
 	end

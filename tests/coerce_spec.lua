@@ -152,7 +152,10 @@ describe("coerce", function()
 		assert.are.same({ "myCase", "yourCase" }, lines)
 		-- A notification has been displayed.
 		assert.are.same(
-			{ message = "2 lines selected. Coerce supports only single-line visual selections.", level = "error" },
+			{
+				message = "2 lines selected. Coerce supports only single-line visual selections.",
+				level = "error",
+			},
 			notification
 		)
 

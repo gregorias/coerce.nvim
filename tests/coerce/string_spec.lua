@@ -48,7 +48,10 @@ describe("coerce.string", function()
 			assert.are.same({ "a", "b", "c" }, coerce_string.str2graphemelist("abc"))
 			assert.are.same({ "ą", "b", "c" }, coerce_string.str2graphemelist("ąbc"))
 			local some_a = list2str({ char2nr("a"), 0x301 })
-			assert.are.same({ "ą", "b", some_a, "c" }, coerce_string.str2graphemelist("ąb" .. some_a .. "c"))
+			assert.are.same(
+				{ "ą", "b", some_a, "c" },
+				coerce_string.str2graphemelist("ąb" .. some_a .. "c")
+			)
 		end)
 	end)
 end)

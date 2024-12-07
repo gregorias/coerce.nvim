@@ -136,13 +136,19 @@ end
 ---@param user_config CoerceConfigUser
 ---@return CoerceConfig
 M.get_effective_config = function(user_config)
-	local keymap_registry = user_config.keymap_registry or require("coerce.keymap").keymap_registry()
-	local effective_keymap_prefixes =
-		vim.tbl_deep_extend("force", M.default_mode_keymap_prefixes, user_config.default_mode_keymap_prefixes or {})
+	local keymap_registry = user_config.keymap_registry
+		or require("coerce.keymap").keymap_registry()
+	local effective_keymap_prefixes = vim.tbl_deep_extend(
+		"force",
+		M.default_mode_keymap_prefixes,
+		user_config.default_mode_keymap_prefixes or {}
+	)
 
-	local default_mode_mask = vim.tbl_deep_extend("force", M.default_mode_mask, user_config.default_mode_mask or {})
+	local default_mode_mask =
+		vim.tbl_deep_extend("force", M.default_mode_mask, user_config.default_mode_mask or {})
 
-	local effective_config = M.get_default_config(keymap_registry, default_mode_mask, effective_keymap_prefixes)
+	local effective_config =
+		M.get_default_config(keymap_registry, default_mode_mask, effective_keymap_prefixes)
 
 	if user_config.notify then
 		effective_config.notify = user_config.notify

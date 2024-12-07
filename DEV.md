@@ -9,6 +9,7 @@ This project requires the following tools:
 - [Commitlint]
 - [Just]
 - [Lefthook]
+- [Stylua]
 
 Install lefthook:
 
@@ -27,3 +28,4 @@ rm luacov.stats.out && just test && just generate-test-coverage-report && open l
 [Commitlint]: https://github.com/conventional-changelog/commitlint
 [Lefthook]: https://github.com/evilmartians/lefthook
 [Just]: https://just.systems/
+[Stylua]: https://github.com/JohnnyMorganz/StyLua

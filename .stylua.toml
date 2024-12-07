@@ -1,0 +1,3 @@
+syntax = "Lua51"
+# 120 is too long for me.
+column_width = 100

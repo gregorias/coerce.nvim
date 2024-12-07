@@ -44,7 +44,11 @@ M.select_current_visual_selection = function(cb)
 
 	local selected_line_count = region.lines(selected_region)
 	if selected_line_count > 1 then
-		cb(selected_line_count .. " lines selected." .. " Coerce supports only single-line visual selections.")
+		cb(
+			selected_line_count
+				.. " lines selected."
+				.. " Coerce supports only single-line visual selections."
+		)
 	else
 		cb(selected_region)
 	end

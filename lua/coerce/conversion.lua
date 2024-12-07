@@ -21,18 +21,23 @@ M.Coercer = function(keymap_registry, notify)
 		---@param mode CoerceMode
 		---@param case any
 		_register_mode_case = function(self, mode, case)
-			self.keymap_registry.register_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap, function()
-				require("coop.coroutine-utils").fire_and_forget(function()
-					M.coerce(mode.selector, mode.transformer, case.case, function(error)
-						if type(error) == "string" then
-							self.notify(error, "error", { title = "Coerce" })
+			self.keymap_registry.register_keymap(
+				mode.vim_mode,
+				mode.keymap_prefix .. case.keymap,
+				function()
+					require("coop.coroutine-utils").fire_and_forget(function()
+						M.coerce(mode.selector, mode.transformer, case.case, function(error)
+							if type(error) == "string" then
+								self.notify(error, "error", { title = "Coerce" })
+							end
+						end)
+						if mode.post_processor then
+							mode.post_processor()
 						end
 					end)
-					if mode.post_processor then
-						mode.post_processor()
-					end
-				end)
-			end, case.description)
+				end,
+				case.description
+			)
 		end,
 
 		_unregister_mode_case = function(self, mode, case)

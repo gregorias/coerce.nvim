@@ -8,9 +8,13 @@ describe("coerce.conversion", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 			vim.api.nvim_win_set_cursor(0, { 1, 8 })
 
-			require("coop.coroutine-utils").fire_and_forget(cc.coerce_current_word, transformer.transform_local, function()
-				return "Bob"
-			end)
+			require("coop.coroutine-utils").fire_and_forget(
+				cc.coerce_current_word,
+				transformer.transform_local,
+				function()
+					return "Bob"
+				end
+			)
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 			assert.are.same({ "Hello, Bob!" }, lines)
