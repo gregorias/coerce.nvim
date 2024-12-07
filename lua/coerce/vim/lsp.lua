@@ -1,6 +1,4 @@
 --- Extra vim.lsp utilities.
---
---@module coerce.vim.lsp
 local M = {}
 
 local cb_to_co = require("coop.coroutine-utils").cb_to_co
@@ -12,8 +10,10 @@ end
 
 --- Returns whether any LSP client supports the rename method.
 --
--- This function only considers clients connected to the current buffer. We are not interested in
--- clients that might be somewhere but are meaningless for the purposes of the rename.
+--- This function only considers clients connected to the current buffer. We are not interested in
+--- clients that might be somewhere but are meaningless for the purposes of the rename.
+---
+---@return boolean
 function M.does_any_client_support_rename()
 	local clients = vim.lsp.get_clients()
 	for _, client in pairs(clients) do
@@ -26,15 +26,18 @@ function M.does_any_client_support_rename()
 	return false
 end
 
+---@alias vim.lsp.Client any
+
 --- Sends a request to the LSP server.
 ---
 --- Wraps `client.request` into a fire-and-forget coroutine function to make its use more ergonomical.
 ---
----@tparam vim.lsp.Client client
----@tparam string method
----@tparam table? params
----@tparam integer? bufnr
----@return table vim.lsp.Handler's signature
+---@async
+---@param client vim.lsp.Client
+---@param method string
+---@param params table?
+---@param bufnr integer?
+---@return table val vim.lsp.Handler's signature
 function M.client_request(client, method, params, bufnr)
 	return cb_to_co(function(cb)
 		client.request(method, params, function(...)
@@ -50,8 +53,9 @@ end
 --- This is a tweaked copy of Neovim’s implementation at
 --- https://github.com/neovim/neovim/blob/efa45832ea02e777ce3f5556ef3cd959c164ec24/runtime/lua/vim/lsp/buf.lua#L298.
 ---
----@tparam string new_name
----@treturn boolean Whether any client has succeeded in renaming.
+---@async
+---@param new_name string
+---@return boolean success Whether any client has succeeded in renaming.
 function M.rename(new_name)
 	local api = vim.api
 	local util = require("vim.lsp.util")
