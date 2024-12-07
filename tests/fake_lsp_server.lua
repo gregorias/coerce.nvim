@@ -1,31 +1,33 @@
 --- A fake LSP server that can be used to test LSP-related functionality.
 local M = {}
 
---- Return an LSP server implementation.
---
--- @tparam table dispatchers A couple methods that allow the server to interact with the client.
+--- Returns an LSP server implementation.
+---
+---@param dispatchers table Methods that allow the server to interact with the client.
+---@return table srv The server object.
 function M.server(dispatchers)
 	local closing = false
 	local srv = {}
 	local mt = {}
 
 	-- With this call, it’s possible to interact with the server, e.g., set up new handlers.
-	mt.__call = function(self, new_dispatchers)
+	mt.__call = function(_, new_dispatchers)
 		dispatchers = new_dispatchers
 		return srv
 	end
 	setmetatable(srv, mt)
 
-	-- This method is called each time the client makes a request to the server
-	--
-	-- To learn more about what method names are available and the structure of
-	-- the payloads, read the specification:
-	-- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/
-	--
-	-- @tparam string method the LSP method name
-	-- @tparam table params the payload that the LSP client sends
-	-- @tparam function callback A function which takes two parameters: `err` and `result`.
-	--                           The callback must be called to send a response to the client
+	--- This method is called each time the client makes a request to the server
+	---
+	--- To learn more about what method names are available and the structure of
+	--- the payloads, read the specification:
+	--- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/.
+	---
+	---@param method string the LSP method name
+	---@param params table the payload that the LSP client sends
+	---@param callback function A function which takes two parameters: `err` and `result`.
+	---                         The callback must be called to send a response to the client.
+	---@return boolean, number
 	function srv.request(method, params, callback)
 		if method == "initialize" then
 			callback(nil, { capabilities = {
@@ -42,8 +44,7 @@ function M.server(dispatchers)
 	-- This method is called each time the client sends a notification to the server
 	-- The difference between `request` and `notify` is that notifications don’t
 	-- expect a response.
-	---@diagnostic disable-next-line: unused-local
-	function srv.notify(method, _params)
+	function srv.notify(method, _)
 		if method == "exit" then
 			dispatchers.on_exit(0, 15)
 		end
@@ -60,8 +61,7 @@ function M.server(dispatchers)
 	end
 
 	-- The default textDocument/rename handler that does nothing.
-	---@diagnostic disable-next-line: unused-local
-	function srv.rename(params, callback) end
+	function srv.rename(_, _) end
 
 	local function get_rename_workspace_edit(uri, oldText, oldTextPositions, newText)
 		local text_edits = {}
@@ -84,10 +84,10 @@ function M.server(dispatchers)
 		}
 	end
 
-	-- Sets up a stub for the rename method that always returns the same result.
-	--
-	-- @param oldText The text that will be replaced.
-	-- @param oldTextPositions The positions of the old text in the document.
+	--- Sets up a stub for the rename method that always returns the same result.
+	---
+	---@param oldText string The text that will be replaced.
+	---@param oldTextPositions table The positions of the old text in the document.
 	function srv.stub_rename(oldText, oldTextPositions)
 		srv.rename = function(params, callback)
 			local uri = params.textDocument.uri
