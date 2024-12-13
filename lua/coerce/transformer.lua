@@ -47,9 +47,10 @@ end
 ---
 --- This is a fire-and-forget coroutine function.
 ---
----@tparam Region selected_region The selected region to change.
----@tparam function apply The function to apply to the selected region.
----@treturn boolean Whether the function has succeeded.
+---@async
+---@param selected_region Region The selected region to change.
+---@param apply function The function to apply to the selected region.
+---@return boolean success Whether the function has succeeded.
 M.transform_lsp_rename = function(selected_region, apply)
 	local lsp_rename = require("coerce.vim.lsp").rename
 
@@ -64,7 +65,7 @@ end
 ---
 --- If any of the transforms is a coroutine function, the returned function will also be one.
 ---
----@treturn function
+---@return function
 M.coalesce_transforms = function(transforms)
 	local transform = function(...)
 		for _, t in ipairs(transforms) do
@@ -85,10 +86,10 @@ end
 --- The LSP rename only works on the symbol under the cursor, so it’s best not
 --- to use this function for any other selection mode.
 ---
----
----@tparam Region selected_region The selected region to change.
----@tparam function apply The function to apply to the selected region.
----@treturn boolean Whether the function has succeeded.
+---@async
+---@param selected_region Region The selected region to change.
+---@param apply function The function to apply to the selected region.
+---@return boolean success Whether the function has succeeded.
 M.transform_lsp_rename_with_local_failover = function(selected_region, apply)
 	return M.coalesce_transforms({
 		M.transform_lsp_rename,
