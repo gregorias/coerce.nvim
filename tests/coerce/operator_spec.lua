@@ -36,7 +36,7 @@ describe("coerce.operator", function()
 		it("returns the selected region", function()
 			test_helpers.create_buf({ "Hello, world!" })
 			local selected_region = {}
-			require("coop.coroutine-utils").fire_and_forget(function()
+			require("coop").spawn(function()
 				selected_region = co.operator("nx", "iw")
 			end)
 

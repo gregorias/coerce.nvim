@@ -39,16 +39,17 @@ end
 
 --- Triggers an operator.
 ---
---- This is a fire-and-forget coroutine function.
+--- This is a task function.
 ---
 --- Unlike `operator_cb`, there is no useful callback remaining for the dot-repeat.
 --- If you need dot-repeat, use operator_cb.
 ---
+---@async
 ---@param mode string The feedkeys() mode. Using “x” may be important to prevent laziness.
 ---@param movement string The movement to be used for the operator.
----@return coerce.region.Region selection_region The selected region.
+---@return Region selection_region The selected region.
 M.operator = function(mode, movement)
-	local mmode = require("coop.coroutine-utils").cb_to_co(function(cb)
+	local mmode = require("coop.task-utils").cb_to_tf(function(cb)
 		M.operator_cb(cb)
 		vim.api.nvim_feedkeys(movement, mode, false)
 	end)()

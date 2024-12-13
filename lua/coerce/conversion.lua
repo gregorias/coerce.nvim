@@ -25,7 +25,7 @@ M.Coercer = function(keymap_registry, notify)
 				mode.vim_mode,
 				mode.keymap_prefix .. case.keymap,
 				function()
-					require("coop.coroutine-utils").fire_and_forget(function()
+					require("coop").spawn(function()
 						M.coerce(mode.selector, mode.transformer, case.case, function(error)
 							if type(error) == "string" then
 								self.notify(error, "error", { title = "Coerce" })
