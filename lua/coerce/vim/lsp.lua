@@ -76,7 +76,8 @@ function M.rename(new_name)
 
 	local win = api.nvim_get_current_win()
 
-	--- @param name string
+	---@async
+	---@param name string
 	local function rename(client, name)
 		local params = util.make_position_params(win, client.offset_encoding)
 		params.newName = name

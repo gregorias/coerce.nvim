@@ -83,15 +83,15 @@ M.Coercer = function(keymap_registry, notify)
 end
 
 --- Coerces selected text.
---
--- `select_text` uses a callback to support dot-repeat functionality. If `select_text` uses operators, then
--- the callback can be used as the repeatable action.
---
--- @tparam function select_text The function that returns selected text (Region) or an error through a callback.
--- @tparam function transform_text The function to use to transform selected text.
--- @tparam function case The function to use to coerce case.
--- @tparam function cb The function to receive a string error or nil.
--- @treturn nil
+---
+--- `select_text` uses a callback to support dot-repeat functionality. If `select_text` uses operators, then
+--- the callback can be used as the repeatable action.
+---
+---@param select_text function The function that returns selected text (Region) or an error through a callback.
+---@param transform_text function The function to use to transform selected text.
+---@param case function The function to use to coerce case.
+---@param cb function The function to receive a string error or nil.
+---@return nil
 M.coerce = function(select_text, transform_text, case, cb)
 	select_text(function(selected_region)
 		if type(selected_region) == "string" then
@@ -103,12 +103,12 @@ M.coerce = function(select_text, transform_text, case, cb)
 end
 
 --- Converts the current word using the apply function.
---
--- This is a fire-and-forget coroutine function.
---
---@tparam function apply The function to transform the selected text.
---@tparam function apply The case function to apply to the current word.
---@treturn nil
+---
+--- This is a task function.
+---
+---@async
+---@param transform_text function The function to transform the selected text.
+---@param apply function The case function to apply to the current word.
 M.coerce_current_word = function(transform_text, apply)
 	local selector = require("coerce.selector")
 	M.coerce(selector.select_current_word, transform_text, apply, function() end)
