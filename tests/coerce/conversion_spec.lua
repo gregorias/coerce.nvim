@@ -8,7 +8,7 @@ describe("coerce.conversion", function()
 			local buf = test_helpers.create_buf({ "Hello, world!" })
 			vim.api.nvim_win_set_cursor(0, { 1, 8 })
 
-			require("coop.coroutine-utils").fire_and_forget(
+			require("coop").spawn(
 				cc.coerce_current_word,
 				transformer.transform_local,
 				function()

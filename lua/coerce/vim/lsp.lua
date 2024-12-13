@@ -1,8 +1,6 @@
 --- Extra vim.lsp utilities.
 local M = {}
 
-local cb_to_co = require("coop.coroutine-utils").cb_to_co
-
 local pack = function(...)
 	-- selene: allow(mixed_table)
 	return { n = select("#", ...), ... }
@@ -26,29 +24,9 @@ function M.does_any_client_support_rename()
 	return false
 end
 
----@alias vim.lsp.Client any
-
---- Sends a request to the LSP server.
----
---- Wraps `client.request` into a fire-and-forget coroutine function to make its use more ergonomical.
----
----@async
----@param client vim.lsp.Client
----@param method string
----@param params table?
----@param bufnr integer?
----@return table val vim.lsp.Handler's signature
-function M.client_request(client, method, params, bufnr)
-	return cb_to_co(function(cb)
-		client.request(method, params, function(...)
-			cb(...)
-		end, bufnr)
-	end)()
-end
-
 --- Renames all references to the symbol under the cursor.
 ---
---- This is a fire-and-forget coroutine function.
+--- This is a task function.
 ---
 --- This is a tweaked copy of Neovim’s implementation at
 --- https://github.com/neovim/neovim/blob/efa45832ea02e777ce3f5556ef3cd959c164ec24/runtime/lua/vim/lsp/buf.lua#L298.
@@ -75,6 +53,7 @@ function M.rename(new_name)
 	end
 
 	local win = api.nvim_get_current_win()
+	local request = require("coop.lsp.client").request
 
 	---@async
 	---@param name string
@@ -83,7 +62,7 @@ function M.rename(new_name)
 		params.newName = name
 		local handler = client.handlers[ms.textDocument_rename]
 			or vim.lsp.handlers[ms.textDocument_rename]
-		local result = pack(M.client_request(client, ms.textDocument_rename, params, bufnr))
+		local result = pack(request(client, ms.textDocument_rename, params, bufnr))
 		if not result[1] then
 			has_any_success = true
 		end
@@ -93,8 +72,7 @@ function M.rename(new_name)
 	for idx, client in ipairs(clients) do
 		if client.supports_method(ms.textDocument_prepareRename) then
 			local params = util.make_position_params(win, client.offset_encoding)
-			local err, result =
-				M.client_request(client, ms.textDocument_prepareRename, params, bufnr)
+			local err, result = request(client, ms.textDocument_prepareRename, params, bufnr)
 			if err or result == nil then
 				if idx < #clients then
 					-- continue

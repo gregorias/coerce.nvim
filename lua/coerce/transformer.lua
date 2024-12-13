@@ -81,7 +81,7 @@ end
 
 --- Changes the selected text with the apply function using LSP rename.
 ---
---- This is a fire-and-forget coroutine function.
+--- This is a task function.
 ---
 --- The LSP rename only works on the symbol under the cursor, so it’s best not
 --- to use this function for any other selection mode.

@@ -44,7 +44,8 @@ describe("coerce.vim.lsp", function()
 			}, { bufnr = bufnr })
 
 			local result = false
-			require("coop.coroutine-utils").fire_and_forget(function()
+
+			require("coop").spawn(function()
 				result = cvim.lsp.rename("bar")
 			end)
 

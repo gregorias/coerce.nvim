@@ -68,7 +68,7 @@ describe("coerce.transformer", function()
 
 			-- Make the call
 			local result = false
-			require("coop.coroutine-utils").fire_and_forget(function()
+			require("coop").spawn(function()
 				result = transformer.transform_lsp_rename({
 					mode = region.modes.CHAR,
 					start_row = 0,
@@ -126,7 +126,7 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			require("coop.coroutine-utils").fire_and_forget(function()
+			require("coop").spawn(function()
 				transformer.transform_lsp_rename_with_local_failover({
 					mode = region.modes.CHAR,
 					start_row = 0,
@@ -157,7 +157,7 @@ describe("coerce.transformer", function()
 				end,
 			}, { bufnr = buf })
 
-			require("coop.coroutine-utils").fire_and_forget(function()
+			require("coop").spawn(function()
 				transformer.transform_lsp_rename_with_local_failover({
 					mode = region.modes.CHAR,
 					start_row = 0,
