@@ -249,6 +249,8 @@ The logo is based on
 
 ## 🔗 See also
 
+- [Coop](https://github.com/gregorias/coop.nvim) — My Neovim plugin for
+  structured concurrency with coroutines.
 - [Toggle](https://github.com/gregorias/toggle.nvim) — My Neovim plugin for toggling options.
 
 [abolish]: https://github.com/tpope/vim-abolish
