@@ -29,15 +29,6 @@ M.plain_keymap_registry = {
 M.which_key_keymap_registry = {
 	register_keymap_group = function(mode, keymap, description)
 		require("which-key").add({ { [1] = keymap, group = description, mode = mode } })
-		-- Fixes a bug, where the WhichKey window doesn’t show up in when there’s a conflicting prefix, e.g., `gcr` is used
-		-- for Coerce, but `gc` is used for commenting.
-		vim.keymap.set(mode, keymap, function()
-			local wk_mode = mode
-			if mode == "v" then
-				wk_mode = "x"
-			end
-			require("which-key").show({ keys = keymap, mode = wk_mode })
-		end)
 	end,
 	unregister_keymap_group = function(mode, keymap)
 		require("which-key").add({ { [1] = keymap, group = "which_key_ignore", mode = mode } })
