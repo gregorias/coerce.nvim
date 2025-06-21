@@ -8,6 +8,12 @@ require("lazy.minit").busted({
 		{ [1] = "gregorias/coop.nvim", lazy = true },
 		{ "https://github.com/lunarmodules/luacov" },
 	},
+	rocks = {
+		-- Required for Busted.
+		enabled = true,
+		-- Hererocks had a trouble compiling on Github Actions.
+		hererocks = false,
+	},
 })
 
 -- Trigger luacov to generate the report.
