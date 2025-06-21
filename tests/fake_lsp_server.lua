@@ -3,9 +3,14 @@ local M = {}
 
 --- Returns an LSP server implementation.
 ---
----@param dispatchers table Methods that allow the server to interact with the client.
+---@param dispatchers table? Methods that allow the server to interact with the client.
 ---@return table srv The server object.
 function M.server(dispatchers)
+	dispatchers = dispatchers or {
+		on_exit = function(_, _)
+			-- Default implementation does nothing.
+		end,
+	}
 	local closing = false
 	local srv = {}
 	local mt = {}
