@@ -22,6 +22,11 @@ jobs:
     name: test
     steps:
       - uses: extractions/setup-just@v1
+
+      - uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "5.1.5"
+
       - name: checkout
         uses: actions/checkout@v3
 

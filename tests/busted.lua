@@ -11,8 +11,6 @@ require("lazy.minit").busted({
 	rocks = {
 		-- Required for Busted.
 		enabled = true,
-		-- Hererocks had a trouble compiling on Github Actions.
-		hererocks = false,
 	},
 })
 
