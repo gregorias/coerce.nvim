@@ -24,6 +24,8 @@ describe("coerce.vim.lsp", function()
 				vim.lsp.get_client_by_id(client_id).supports_method("textDocument/rename")
 			)
 			assert.is.True(cvim.lsp.does_any_client_support_rename())
+
+			vim.lsp.get_client_by_id(client_id).stop(true)
 		end)
 	end)
 
