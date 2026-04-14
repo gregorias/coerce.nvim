@@ -20,7 +20,10 @@ lefthook install
 Install LuaRocks environment:
 
 ```shell
-luarocks make
+luarocks make ROCKSPEC
+# Install test dependencies.
+# Force using the package tree.
+luarocks test --prepare --tree=lua_modules
 ```
 
 ## Ops

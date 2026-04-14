@@ -16,6 +16,11 @@ dependencies = {
 	"lua >= 5.1",
 }
 
+test_dependencies = {
+	"busted",
+	"luacov",
+}
+
 build = {
 	type = "builtin",
 	modules = {
