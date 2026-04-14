@@ -1,5 +1,9 @@
 .tests
 
+# LuaRocks
+/lua_modules
+/.luarocks
+
 # LuaCov
 luacov.stats.out
 luacov-html
