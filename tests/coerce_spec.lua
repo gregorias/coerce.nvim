@@ -1,8 +1,19 @@
+local yd = require("yo-dawg")
 local c = require("coerce")
 local test_helpers = require("tests.helpers")
-local fake_lsp_server_m = require("tests.fake_lsp_server")
+
 
 describe("coerce", function()
+	local nvim
+
+	before_each(function()
+		nvim = yd.start()
+	end)
+
+	after_each(function()
+		yd.stop(nvim)
+	end)
+
 	describe("register", function()
 		it("registers a new case", function()
 			local buf = test_helpers.create_buf({ "myCase" })
@@ -92,33 +103,40 @@ describe("coerce", function()
 	end)
 
 	it("uses LSP’s rename method when available", function()
-		local buf = test_helpers.create_buf({ "myCase", "local myCase" })
-		-- LSP rename only works on named buffers.
-		vim.api.nvim_buf_set_name(buf, "test.lua")
-		local fake_lsp_server = fake_lsp_server_m.server()
-		fake_lsp_server.stub_rename("myCase", {
-			{ line = 0, character = 0 },
-			{ line = 1, character = 6 },
-		})
-		local client_id = vim.lsp.start({
-			name = "fake-lsp-server",
-			cmd = function(dispatchers)
-				return fake_lsp_server(dispatchers)
-			end,
-		}, { bufnr = buf })
+		local lines = nvim:exec_lua([[
+			local c = require("coerce")
+		  local test_helpers = require("tests.helpers")
+			local fake_lsp_server_m = require("tests.fake_lsp_server")
 
-		c.setup({})
-		-- `cr` starts the coercion
-		-- `u` select upper case coercion
-		test_helpers.execute_keys("cru", "x")
+			local buf = test_helpers.create_buf({ "myCase", "local myCase" })
+			-- LSP rename only works on named buffers.
+			vim.api.nvim_buf_set_name(buf, "test.lua")
+			local fake_lsp_server = fake_lsp_server_m.server()
+			fake_lsp_server.stub_rename("myCase", {
+				{ line = 0, character = 0 },
+				{ line = 1, character = 6 },
+			})
+			local client_id = vim.lsp.start({
+				name = "fake-lsp-server",
+				cmd = function(dispatchers)
+					return fake_lsp_server(dispatchers)
+				end,
+			}, { bufnr = buf })
 
-		local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+			c.setup({})
+			-- `cr` starts the coercion
+			-- `u` select upper case coercion
+			test_helpers.execute_keys("cru", "x")
+
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+
+			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.api.nvim_buf_delete(buf, { force = true })
+
+			c.teardown()
+
+			return lines]], {})
 		assert.are.same({ "MY_CASE", "local MY_CASE" }, lines)
-
-		vim.lsp.get_client_by_id(client_id).stop(true)
-		vim.api.nvim_buf_delete(buf, { force = true })
-
-		c.teardown()
 	end)
 
 	it("works with motion selection even with a user-defined g@ keymap", function()
@@ -151,13 +169,10 @@ describe("coerce", function()
 		-- Nothing has changed.
 		assert.are.same({ "myCase", "yourCase" }, lines)
 		-- A notification has been displayed.
-		assert.are.same(
-			{
-				message = "2 lines selected. Coerce supports only single-line visual selections.",
-				level = "error",
-			},
-			notification
-		)
+		assert.are.same({
+			message = "2 lines selected. Coerce supports only single-line visual selections.",
+			level = "error",
+		}, notification)
 
 		c.teardown()
 	end)

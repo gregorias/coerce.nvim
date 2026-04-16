@@ -11,19 +11,10 @@ This project requires the following tools:
 - [Lefthook]
 - [Stylua]
 
-Install lefthook:
+Run the initialization script:
 
 ```shell
-lefthook install
-```
-
-Install LuaRocks environment:
-
-```shell
-luarocks make ROCKSPEC
-# Install test dependencies.
-# Force using the package tree.
-luarocks test --prepare --tree=lua_modules
+just init
 ```
 
 ## Ops
@@ -60,7 +51,7 @@ graph TD
 
     subgraph Isolation["Neovim Test Environment"]
         NvimShim -- "Sets" --> XDG["XDG_* Env Vars"]
-        NvimShim -- "Loads" --> InitLua["tests/init.lua"]
+        NvimShim -- "Loads" --> InitLua["$XDG_CONFIG_HOME/nvim/init.lua"]
         NvimShim -- "Launches" --> BustedProcess["Busted Runner"]
         BustedProcess -- "Runs" --> E2eSpecFiles["*_e2e_spec.lua"]
         E2eSpecFiles -- "Spawns" --> RemoteNvim["Remote Neovim"]
@@ -69,9 +60,11 @@ graph TD
         XDG -- "Redirects to" --> TestXDG[".tests/xdg"]
         RemoteNvim -- "Inherits" --> XDG
 
-        subgraph Remote["Remote Neovim Test Environment (Optional)"]
+        subgraph Remote["Remote Neovim Test Environment"]
             RemoteNvim -- "Executes" --> IsolatedCode["Isolated Test Code"]
         end
+
+        RemoteNvim -- "Loads" --> InitLua["$XDG_CONFIG_HOME/nvim/init.lua"]
 
         SpecFiles -- "Validates" --> Assertions["Assertions & Results"]
         E2eSpecFiles -- "Validates" --> Assertions["Assertions & Results"]

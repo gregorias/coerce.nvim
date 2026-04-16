@@ -1,8 +1,19 @@
+local yd = require("yo-dawg")
 local cvim = require("coerce.vim")
 local test_helpers = require("tests.helpers")
 local fake_lsp_server_m = require("tests.fake_lsp_server")
 
 describe("coerce.vim.lsp", function()
+	local nvim
+
+	before_each(function()
+		nvim = yd.start()
+	end)
+
+	after_each(function()
+		yd.stop(nvim)
+	end)
+
 	describe("does_any_client_support_rename", function()
 		it("returns false by default", function()
 			test_helpers.create_buf({ "Hello, world!" })
@@ -31,32 +42,44 @@ describe("coerce.vim.lsp", function()
 
 	describe("rename", function()
 		it("renames a word", function()
-			local bufnr = test_helpers.create_buf({ "foo", "local foo" })
-			-- LSP rename only works on named buffers.
-			vim.api.nvim_buf_set_name(bufnr, "test.lua")
-			local lsp_server = fake_lsp_server_m.server()
-			lsp_server.stub_rename("foo", {
-				{ line = 0, character = 0 },
-			})
-			local client_id = vim.lsp.start({
-				name = "fake",
-				cmd = function(ds)
-					return lsp_server(ds)
-				end,
-			}, { bufnr = bufnr })
+			local ret = nvim:exec_lua(
+				[[
+				local c = require("coerce")
+				local cvim = require("coerce.vim")
+				local test_helpers = require("tests.helpers")
+				local fake_lsp_server_m = require("tests.fake_lsp_server")
 
-			local result = false
+				local bufnr = test_helpers.create_buf({ "foo", "local foo" })
+				-- LSP rename only works on named buffers.
+				vim.api.nvim_buf_set_name(bufnr, "test.lua")
+				local lsp_server = fake_lsp_server_m.server()
+				lsp_server.stub_rename("foo", {
+					{ line = 0, character = 0 },
+				})
+				local client_id = vim.lsp.start({
+					name = "fake",
+					cmd = function(ds)
+						return lsp_server(ds)
+					end,
+				}, { bufnr = bufnr })
 
-			require("coop").spawn(function()
-				result = cvim.lsp.rename("bar")
-			end)
+				local result = false
 
-			local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 1, true)
+				require("coop").spawn(function()
+					result = cvim.lsp.rename("bar")
+				end)
+
+				local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 1, true)
+
+				vim.lsp.get_client_by_id(client_id).stop(true)
+				vim.api.nvim_buf_delete(bufnr, { force = true })
+				return {result, lines}]],
+				{}
+			)
+			local result, lines = ret[1], ret[2]
+
 			assert.is.True(result)
 			assert.are.same({ "bar" }, lines)
-
-			vim.lsp.get_client_by_id(client_id).stop(true)
-			vim.api.nvim_buf_delete(bufnr, { force = true })
 		end)
 	end)
 end)

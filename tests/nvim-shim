@@ -4,8 +4,7 @@ export XDG_CONFIG_HOME='.tests/xdg/config'
 export XDG_STATE_HOME='.tests/xdg/local/state'
 export XDG_DATA_HOME='.tests/xdg/local/share'
 
-mkdir -p ${XDG_DATA_HOME}/nvim/site/pack/testing/start/
-nvim -u tests/init.lua -l $@
+nvim -u "${XDG_CONFIG_HOME}/${NVIM_APPNAME:-nvim}/init.lua" -l $@
 exit_code=$?
 
 exit $exit_code
