@@ -1,0 +1,17 @@
+#!/bin/bash
+# Bumps the version.
+
+set -euo pipefail
+
+# Ask for the version bump type using Gum
+echo "Current version: $(bump-my-version show current_version)"
+echo "Choose the version bump:"
+version_type=$(gum choose "patch" "minor" "major")
+bump-my-version bump $version_type --commit --tag
+
+new_version=$(bump-my-version show current_version)
+
+git push
+git push origin v$new_version
+
+echo "✅ Version $new_version bumped and pushed successfully!"

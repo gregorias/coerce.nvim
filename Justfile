@@ -29,3 +29,6 @@ luacheck:
 
 test:
   @busted
+
+bump:
+  ./scripts/bump

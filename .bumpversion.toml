@@ -1,0 +1,18 @@
+[tool.bumpversion]
+current_version = "4.1.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+allow_dirty = false
+tag = false
+tag_name = "v{new_version}"
+commit = false
+message = "chore: bump {current_version} → {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "README.md"
