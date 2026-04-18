@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v6
-      - uses: extractions/setup-just@v1
+      - uses: extractions/setup-just@v4
       - uses: leafo/gh-actions-lua@v12
         with:
           luaVersion: "${{ matrix.lua }}"
