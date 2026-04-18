@@ -16,12 +16,16 @@ init:
   # Even `luarocks test --prepare` doesn't install transitive deps.
   luarocks install busted
   luarocks install luacov
+  luarocks install luacheck
   # Fix https://github.com/lunarmodules/luacov/issues/122
   cp -r lua_modules/lib/luarocks/rocks-5.1/luacov/*/src lua_modules/share/lua/5.1/luacov/reporter
   direnv allow
 
 generate-test-coverage-report:
   @luacov
+
+luacheck:
+  @luacheck .
 
 test:
   @busted

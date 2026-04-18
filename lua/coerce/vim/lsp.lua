@@ -74,11 +74,7 @@ function M.rename(new_name)
 			local params = util.make_position_params(win, client.offset_encoding)
 			local err, result = request(client, ms.textDocument_prepareRename, params, bufnr)
 			if err or result == nil then
-				if idx < #clients then
-					-- continue
-					do
-					end
-				else
+				if idx >= #clients then
 					local msg = err and ("Error on prepareRename: " .. (err.message or ""))
 						or "Nothing to rename"
 					vim.notify(msg, vim.log.levels.INFO)

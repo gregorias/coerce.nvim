@@ -11,6 +11,11 @@ pre-commit:
       tags: documentation
       glob: "*.md"
       run: lychee --accept "100..=103,200..=299,403,429" --root-dir=. DEV.md README.md IDEAS.md
+    luacheck:
+      tags: style lint
+      files: git diff --name-only --cached --diff-filter=AM
+      glob: "*.lua"
+      run: luacheck {staged_files}
     stylua:
       tags: style
       run: stylua --check lua --color always
