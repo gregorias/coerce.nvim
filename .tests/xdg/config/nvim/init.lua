@@ -8,3 +8,4 @@ vim.pack.add({
 		version = "main",
 	},
 })
+vim.opt.runtimepath:append(".")
