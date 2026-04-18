@@ -32,11 +32,11 @@ describe("coerce.vim.lsp", function()
 			})
 
 			assert.is.True(
-				vim.lsp.get_client_by_id(client_id).supports_method("textDocument/rename")
+				vim.lsp.get_client_by_id(client_id):supports_method("textDocument/rename")
 			)
 			assert.is.True(cvim.lsp.does_any_client_support_rename())
 
-			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.lsp.get_client_by_id(client_id):stop(true)
 		end)
 	end)
 
@@ -71,7 +71,7 @@ describe("coerce.vim.lsp", function()
 
 				local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 1, true)
 
-				vim.lsp.get_client_by_id(client_id).stop(true)
+				vim.lsp.get_client_by_id(client_id):stop(true)
 				vim.api.nvim_buf_delete(bufnr, { force = true })
 				return {result, lines}]],
 				{}

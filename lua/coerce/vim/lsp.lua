@@ -16,7 +16,7 @@ function M.does_any_client_support_rename()
 	local clients = vim.lsp.get_clients()
 	for _, client in pairs(clients) do
 		if
-			vim.lsp.buf_is_attached(0, client.id) and client.supports_method("textDocument/rename")
+			vim.lsp.buf_is_attached(0, client.id) and client:supports_method("textDocument/rename")
 		then
 			return true
 		end
@@ -70,7 +70,7 @@ function M.rename(new_name)
 	end
 
 	for idx, client in ipairs(clients) do
-		if client.supports_method(ms.textDocument_prepareRename) then
+		if client:supports_method(ms.textDocument_prepareRename) then
 			local params = util.make_position_params(win, client.offset_encoding)
 			local err, result = request(client, ms.textDocument_prepareRename, params, bufnr)
 			if err or result == nil then
@@ -88,7 +88,7 @@ function M.rename(new_name)
 			end
 		else
 			assert(
-				client.supports_method(ms.textDocument_rename),
+				client:supports_method(ms.textDocument_rename),
 				"Client must support textDocument/rename"
 			)
 			rename(client, new_name)

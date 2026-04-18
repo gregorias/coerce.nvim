@@ -84,7 +84,7 @@ describe("coerce.transformer", function()
 			assert.are.same({ "bar", "local bar" }, lines)
 			assert.is.True(result)
 
-			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.lsp.get_client_by_id(client_id):stop(true)
 		end)
 	end)
 
@@ -141,7 +141,7 @@ describe("coerce.transformer", function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)
 
-			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.lsp.get_client_by_id(client_id):stop(true)
 		end)
 
 		it("uses LSP rename", function()
@@ -172,7 +172,7 @@ describe("coerce.transformer", function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 			assert.are.same({ "bar", "local bar" }, lines)
 
-			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.lsp.get_client_by_id(client_id):stop(true)
 		end)
 
 		it("only tries LSP rename on the buffer it’s connected to", function()
@@ -208,7 +208,7 @@ describe("coerce.transformer", function()
 			local lines = vim.api.nvim_buf_get_lines(buf_nolsp, 0, 2, true)
 			assert.are.same({ "bar", "local foo" }, lines)
 
-			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.lsp.get_client_by_id(client_id):stop(true)
 
 			vim.api.nvim_buf_delete(buf_nolsp, { force = true })
 		end)

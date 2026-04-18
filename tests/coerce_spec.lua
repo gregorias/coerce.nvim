@@ -130,7 +130,7 @@ describe("coerce", function()
 
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
 
-			vim.lsp.get_client_by_id(client_id).stop(true)
+			vim.lsp.get_client_by_id(client_id):stop(true)
 			vim.api.nvim_buf_delete(buf, { force = true })
 
 			c.teardown()

@@ -20,7 +20,7 @@ manipulation, e.g., turning selected text into its numeronym.
 
 ## ⚡️ Requirements
 
-- Neovim 0.9+
+- Neovim 0.11+
 - Required plugin dependencies:
   - [Coop][Coop]
 - Optional plugin dependencies:
