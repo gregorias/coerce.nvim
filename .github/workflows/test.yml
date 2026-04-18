@@ -1,0 +1,36 @@
+name: test
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        # At least v0.12 is required, because my test harness uses vim.pack.add.
+        neovim: [v0.12.0, stable, nightly]
+        lua: ["5.1.5"]
+
+    runs-on: ${{ matrix.os }}
+    name: "OS: ${{ matrix.os }} - Neovim: ${{ matrix.neovim }} - Lua: ${{ matrix.lua }}"
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+      - uses: extractions/setup-just@v1
+      - uses: leafo/gh-actions-lua@v12
+        with:
+          luaVersion: "${{ matrix.lua }}"
+      - uses: leafo/gh-actions-luarocks@v6
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: "${{ matrix.neovim }}"
+
+      - name: set up LuaRocks
+        run: |
+          luarocks build --only-deps
+          luarocks install busted
+          luarocks install luacov
+
+      - name: run tests
+        run: just test

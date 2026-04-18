@@ -5,7 +5,13 @@ export XDG_STATE_HOME='.tests/xdg/local/state'
 export XDG_DATA_HOME='.tests/xdg/local/share'
 export XDG_CACHE_HOME='.tests/xdg/cache'
 
-nvim -u "${XDG_CONFIG_HOME}/${NVIM_APPNAME:-nvim}/init.lua" -l $@
+INIT_LUA="${XDG_CONFIG_HOME}/${NVIM_APPNAME:-nvim}/init.lua"
+if [ ! -f "${INIT_LUA}" ]; then
+  echo "Error: ${INIT_LUA} does not exist."
+  exit 1
+fi
+
+nvim -u "${INIT_LUA}" -l $@
 exit_code=$?
 
 exit $exit_code
