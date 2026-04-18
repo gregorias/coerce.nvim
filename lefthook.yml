@@ -7,6 +7,10 @@ pre-commit:
       tags: documentation style
       glob: "*.md"
       run: markdownlint {staged_files}
+    lychee:
+      tags: documentation
+      glob: "*.md"
+      run: lychee --accept "100..=103,200..=299,403,429" --root-dir=. DEV.md README.md IDEAS.md
     stylua:
       tags: style
       run: stylua --check lua --color always
