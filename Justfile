@@ -1,5 +1,3 @@
-tests_init := "tests/busted.lua"
-
 # Initialize the repository:
 #
 # 1. Hook up Lefthook
