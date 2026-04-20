@@ -10,8 +10,4 @@ version_type=$(gum choose "patch" "minor" "major")
 bump-my-version bump $version_type --commit --tag
 
 new_version=$(bump-my-version show current_version)
-
-git push
-git push origin v$new_version
-
-echo "✅ Version $new_version bumped and pushed successfully!"
+echo "✅ Bumped to version $new_version successfully!"

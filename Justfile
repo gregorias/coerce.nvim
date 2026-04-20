@@ -32,3 +32,6 @@ test:
 
 bump:
   ./scripts/bump
+
+push-current-version:
+  ./scripts/push-current-version

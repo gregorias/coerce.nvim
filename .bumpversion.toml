@@ -16,3 +16,7 @@ message = "chore: bump {current_version} → {new_version}"
 
 [[tool.bumpversion.files]]
 filename = "README.md"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "TBR"

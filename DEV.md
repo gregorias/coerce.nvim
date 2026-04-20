@@ -21,11 +21,22 @@ just init
 
 ## Ops
 
+### Testing
+
 To generate and open a test coverage report:
 
 ```shell
 rm luacov.stats.out && just test && just generate-test-coverage-report && open luacov-html/index.html
 ```
+
+### Version release & distribution
+
+1. Cut off a version in `CHANGELOG.md` by moving the content of “Unreleased” to
+   “TBR — \<date\>”.
+1. Bump the version with a commit & tag:
+   `just bump`.
+1. Release the version commit & tag:
+   `just push-current-version`.
 
 ## Test setup
 

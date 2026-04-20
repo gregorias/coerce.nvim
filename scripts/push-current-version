@@ -1,0 +1,10 @@
+#!/bin/bash
+# Pushes the current version.
+
+set -euo pipefail
+
+new_version=$(bump-my-version show current_version)
+git push
+git push origin v$new_version
+
+echo "✅ Version $new_version pushed successfully!"
