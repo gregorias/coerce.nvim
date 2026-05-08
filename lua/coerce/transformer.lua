@@ -8,9 +8,9 @@ local M = {}
 
 --- Returns transformed selected text.
 ---
----@tparam Region selected_region The selected region to change.
----@tparam function apply The function to apply to the selected region.
----@treturn string
+---@param selected_region coerce.Region The selected region to change.
+---@param apply function The function to apply to the selected region.
+---@return string
 local apply_case_to_selected_region = function(selected_region, apply)
 	local buffer = 0
 	local region = require("coerce.region")
@@ -23,9 +23,9 @@ end
 
 --- Changes the selected text with the apply function using local substitution.
 ---
----@tparam Region selected_region The selected region to change.
----@tparam function apply The function to apply to the selected region.
----@treturn boolean Whether the function has succeeded.
+---@param selected_region coerce.Region The selected region to change.
+---@param apply function The function to apply to the selected region.
+---@return boolean Whether the function has succeeded.
 M.transform_local = function(selected_region, apply)
 	local buffer = 0
 	local region = require("coerce.region")
@@ -48,7 +48,7 @@ end
 --- This is a task function.
 ---
 ---@async
----@param selected_region Region The selected region to change.
+---@param selected_region coerce.Region The selected region to change.
 ---@param apply function The function to apply to the selected region.
 ---@return boolean success Whether the function has succeeded.
 M.transform_lsp_rename = function(selected_region, apply)
@@ -87,7 +87,7 @@ end
 --- to use this function for any other selection mode.
 ---
 ---@async
----@param selected_region Region The selected region to change.
+---@param selected_region coerce.Region The selected region to change.
 ---@param apply function The function to apply to the selected region.
 ---@return boolean success Whether the function has succeeded.
 M.transform_lsp_rename_with_local_failover = function(selected_region, apply)

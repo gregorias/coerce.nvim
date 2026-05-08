@@ -46,8 +46,8 @@ M.default_mode_mask = {
 ---@class CoerceMode
 ---@field vim_mode string
 ---@field keymap_prefix string
----@field selector function
----@field transformer function
+---@field selector fun(cb: fun(region_or_error: coerce.Region | string))
+---@field transformer fun(selected_region: coerce.Region, apply: fun(text: string): string)
 ---@field post_processor? function The function to run after the coercion.
 
 --- Gets the default modes

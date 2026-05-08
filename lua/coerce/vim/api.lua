@@ -14,10 +14,10 @@ M.nvim_buf_get_mark = function(buffer, mark)
 end
 
 --- Gets the text of a region of a buffer.
---
---@tparam number buffer The buffer to get the text from.
---@tparam coerce.region.Region region The region to get the text from.
---@treturn table The text lines of the region.
+---
+---@param buffer number The buffer to get the text from.
+---@param region coerce.Region The region to get the text from.
+---@return table The text lines of the region.
 M.nvim_buf_get_text = function(buffer, region)
 	local region_m = require("coerce.region")
 	assert(

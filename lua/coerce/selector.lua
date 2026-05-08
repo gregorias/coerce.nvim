@@ -7,7 +7,7 @@ local M = {}
 
 --- Selects the current word.
 ---
----@param cb function The callback to return the selected region to.
+---@param cb fun(region_or_error: coerce.Region | string) The callback to return the selected region to.
 M.select_current_word = function(cb)
 	local operator_m = require("coerce.operator")
 	operator_m.operator_cb(function(mmode)
@@ -19,7 +19,7 @@ end
 
 --- Selects with the user provided motion.
 ---
----@param cb function The callback to return the selected region to.
+---@param cb fun(region_or_error: coerce.Region | string) The callback to return the selected region to.
 M.select_with_motion = function(cb)
 	local operator_m = require("coerce.operator")
 	-- The i-mode is important. We might be running within a feedkeys() call, so we need to insert
@@ -32,11 +32,11 @@ M.select_with_motion = function(cb)
 end
 
 --- Selects the current visual selection.
---
--- This plugin is only meant to work with keywords, so this function fails if
--- the selected region is multiline.
---
--- @tparam function cb The callback to return the selected region to.
+---
+--- This plugin is only meant to work with keywords, so this function fails if
+--- the selected region is multiline.
+---
+--- @param cb fun(region_or_error: coerce.Region | string) The callback to return the selected region to.
 M.select_current_visual_selection = function(cb)
 	local visual_m = require("coerce.visual")
 	local selected_region = visual_m.get_current_visual_selection()

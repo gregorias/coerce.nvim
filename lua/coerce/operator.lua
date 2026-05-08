@@ -47,7 +47,7 @@ end
 ---@async
 ---@param mode string The feedkeys() mode. Using “x” may be important to prevent laziness.
 ---@param movement string The movement to be used for the operator.
----@return Region selection_region The selected region.
+---@return coerce.Region selection_region The selected region.
 M.operator = function(mode, movement)
 	local mmode = require("coop.task-utils").cb_to_tf(function(cb)
 		M.operator_cb(cb)
@@ -60,7 +60,7 @@ end
 --- Gets the region selected by an operator motion.
 ---
 ---@param motion_mode motion_mode The motion mode.
----@return Region region The selected region.
+---@return coerce.Region region The selected region.
 M.get_selected_region = function(motion_mode)
 	assert(motion_mode == M.motion_modes.CHAR, "Only supporting char motion for now.")
 	local cvim = require("coerce.vim")

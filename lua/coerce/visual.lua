@@ -1,7 +1,11 @@
 --- A module for working with Neovim's visual mode.
 local M = {}
 
+---@alias coerce.VisualMode "inline" | "line" | "block"
+
 --- An enum representing the different visual modes.
+---
+---@type table<string, coerce.VisualMode>
 M.visual_mode = {
 	INLINE = "inline",
 	LINE = "line",
@@ -9,8 +13,8 @@ M.visual_mode = {
 }
 
 --- Returns the current visual mode.
---
---@treturn visual_mode The current visual mode.
+---
+---@return coerce.VisualMode? visual_mode The current visual mode.
 M.get_visual_mode = function()
 	local mode = vim.api.nvim_get_mode().mode
 	if mode == "v" then
@@ -25,11 +29,11 @@ M.get_visual_mode = function()
 end
 
 --- Returns the current visual selection.
---
--- This function has “current” in its name because a function that returns the
--- last visual selection is also interesting.
---
---@treturn Region The current visual selection.
+---
+--- This function has “current” in its name because a function that returns the
+--- last visual selection is also interesting.
+---
+---@return coerce.Region The current visual selection.
 M.get_current_visual_selection = function()
 	local cvim = require("coerce.vim")
 	local region = require("coerce.region")

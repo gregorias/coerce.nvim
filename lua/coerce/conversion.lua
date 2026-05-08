@@ -1,4 +1,6 @@
 --- A module for enacting case conversions in Neovim.
+
+--luacheck: max comment line length 200
 local M = {}
 
 M.registered_cases = {}
@@ -87,15 +89,16 @@ end
 --- `select_text` uses a callback to support dot-repeat functionality. If `select_text` uses operators, then
 --- the callback can be used as the repeatable action.
 ---
----@param select_text function The function that returns selected text (Region) or an error through a callback.
----@param transform_text function The function to use to transform selected text.
----@param case function The function to use to coerce case.
----@param cb function The function to receive a string error or nil.
+---@param select_text fun(cb: fun(region_or_error: coerce.Region | string)) The function that returns selected text (coerce.Region) or an error through a callback.
+---@param transform_text fun(selected_region: coerce.Region, apply: fun(text: string): string) The function to use to transform selected text.
+---@param case fun(text: string): string The function to use to coerce case.
+---@param cb fun(error: string | nil) The function to receive a string error or nil.
 ---@return nil
 M.coerce = function(select_text, transform_text, case, cb)
 	select_text(function(selected_region)
 		if type(selected_region) == "string" then
 			cb(selected_region)
+			return
 		end
 		transform_text(selected_region, case)
 		cb(nil)
@@ -107,8 +110,8 @@ end
 --- This is a task function.
 ---
 ---@async
----@param transform_text function The function to transform the selected text.
----@param apply function The case function to apply to the current word.
+---@param transform_text fun(selected_region: coerce.Region, apply: fun(text: string): string) The function to transform the selected text.
+---@param apply fun(text: string): string The case function to apply to the current word.
 M.coerce_current_word = function(transform_text, apply)
 	local selector = require("coerce.selector")
 	M.coerce(selector.select_current_word, transform_text, apply, function() end)

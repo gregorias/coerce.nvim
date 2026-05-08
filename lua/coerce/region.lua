@@ -15,6 +15,15 @@
 -- @module coerce.region
 local M = {}
 
+---@alias coerce.RegionMode "char" | "line" | "block"
+
+---@class coerce.Region
+---@field mode coerce.RegionMode
+---@field start_row integer
+---@field end_row integer
+---@field start_col? integer
+---@field end_col? integer
+
 --- Available region modes.
 --
 -- For now, we only support the char mode.
@@ -42,8 +51,8 @@ M.empty_line_region = {
 
 --- Gets the lines selected by a region.
 --
---@tparam Region region The region to get the lines from.
---@return number The number of lines in the region.
+--@param region coerce.Region The region to get the lines from.
+--@return integer The number of lines in the region.
 M.lines = function(region)
 	return region.end_row - region.start_row
 end
@@ -52,10 +61,10 @@ end
 --
 -- Everything should be zero-indexed.
 --
---@tparam RegionMode mode The mode.
---@tparam table The inclusive start.
---@tparam table The inclusive end.
---@treturn Region The created region.
+--@param mode coerce.RegionMode The mode.
+--@param s table The inclusive start.
+--@param e table The inclusive end.
+--@return coerce.Region The created region.
 M.region = function(mode, s, e)
 	-- Make sure we we change start and end if end is higher than start.
 	-- This happens when we select from bottom to top or from right to left.
