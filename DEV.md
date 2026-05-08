@@ -32,7 +32,7 @@ rm luacov.stats.out && just test && just generate-test-coverage-report && open l
 ### Version release & distribution
 
 1. Cut off a version in `CHANGELOG.md` by moving the content of “Unreleased” to
-   “TBR — \<date\>”.
+   “TBR —\<date\>”.
 1. Bump the version with a commit & tag:
    `just bump`.
 1. Release the version commit & tag:
@@ -83,6 +83,74 @@ graph TD
         E2eSpecFiles -- "Validates" --> Assertions["Assertions & Results"]
     end
 ```
+
+## Architecture
+
+```mermaid
+---
+title: Coerce.nvim module structure
+---
+graph LR
+  coerce[coerce.lua]
+
+  subgraph "coerce/"
+    keymap[keymap]
+
+    subgraph "Logic"
+      case
+      transformer
+      conversion -.-> selector
+      conversion -.-> transformer
+    end
+
+    subgraph "Utils"
+      region
+      string
+      table
+    end
+
+    subgraph "Neovim Utils"
+      operator
+      visual
+    end
+
+    subgraph "vim" [vim/]
+      vim-api[vim.api]
+      vim-fn[vim.fn]
+      vim-lsp[vim.lsp]
+    end
+
+    case --> string
+    transformer --> region
+    selector --> region
+
+    selector --> operator
+    selector --> visual
+
+    transformer --> vim
+    transformer --> vim
+    operator --> vim
+    visual --> vim
+  end
+
+  coerce --> case
+  coerce --> selector
+  coerce --> transformer
+  coerce --> keymap
+  coerce --> conversion
+
+  vim-api --> region
+```
+
+### Module Breakdown
+
+- **Entry point**:
+  `coerce.lua` initializes the plugin and orchestrates the different components.
+- **Logic**:
+  Contains the core transformation logic, including case conversion rules and
+  application strategies (local vs. LSP rename).
+- **vim/**:
+  Utilities for Neovim API.
 
 ## ARDs
 
