@@ -161,6 +161,17 @@ Neovim plugins are effectively Lua packages that just use Neovim as the
 intepreter.
 Using LuaRocks lets me easily install and use Busted or LuaCov for tests.
 
+### Defining keymaps
+
+This plugin defines keymaps and has coupled integration with Which Key.
+This goes against the best practice to just expose `<Plug>` commands, but
+for Coerce it makes sense to define keymaps for the user:
+
+1. There’s too many keymaps to define by hand in user configs (mode count times
+   case count).
+2. Keymap setting is quite algorithmic (2 for loops). Better that some code
+   does it.
+
 [Commitlint]: https://github.com/conventional-changelog/commitlint
 [Lefthook]: https://github.com/evilmartians/lefthook
 [LuaRocks]: https://luarocks.org/
