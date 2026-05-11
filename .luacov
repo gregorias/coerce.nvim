@@ -19,7 +19,7 @@ return {
   modules = {
     ["coerce"] = "lua/coerce.lua",
     ["coerce.case"] = "lua/coerce/case.lua",
-    ["coerce.conversion"] = "lua/coerce/keymap.lua",
+    ["coerce.conversion"] = "lua/coerce/conversion.lua",
     ["coerce.keymap"] = "lua/coerce/keymap.lua",
     ["coerce.operator"] = "lua/coerce/operator.lua",
     ["coerce.region"] = "lua/coerce/region.lua",
