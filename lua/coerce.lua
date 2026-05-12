@@ -138,14 +138,14 @@ end
 M.get_effective_config = function(user_config)
 	local keymap_registry = user_config.keymap_registry
 		or require("coerce.keymap").keymap_registry()
-	local effective_keymap_prefixes = vim.tbl_deep_extend(
-		"force",
+	local tbl = require("coerce.table")
+	local effective_keymap_prefixes = tbl.shallow_merge(
 		M.default_mode_keymap_prefixes,
 		user_config.default_mode_keymap_prefixes or {}
 	)
 
 	local default_mode_mask =
-		vim.tbl_deep_extend("force", M.default_mode_mask, user_config.default_mode_mask or {})
+		tbl.shallow_merge(M.default_mode_mask, user_config.default_mode_mask or {})
 
 	local effective_config =
 		M.get_default_config(keymap_registry, default_mode_mask, effective_keymap_prefixes)

@@ -14,4 +14,17 @@ describe("coerce.table", function()
 			assert.are.same({ 2, 3 }, ctable.shift({ 1, 2, 3 }))
 		end)
 	end)
+
+	describe("shallow_merge", function()
+		it("returns empty table without args", function()
+			assert.are.same({}, ctable.shallow_merge())
+		end)
+
+		it("keep later value", function()
+			assert.are.same(
+				{ a = 1, b = 2, c = 2,  d = 3 },
+				ctable.shallow_merge({ a = 1, b = 1 }, { b = 2, c = 2 }, { d = 3 })
+			)
+		end)
+	end)
 end)
