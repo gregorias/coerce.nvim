@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning][semver].
 
 ### Security
 
-## TBR — 2026-05-13
+## 4.3.0 — 2026-05-13
 
 ### Added
 
