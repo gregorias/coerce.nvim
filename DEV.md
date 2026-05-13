@@ -164,13 +164,21 @@ Using LuaRocks lets me easily install and use Busted or LuaCov for tests.
 ### Defining keymaps
 
 This plugin defines keymaps and has coupled integration with Which Key.
-This goes against the best practice to just expose `<Plug>` commands, but
-for Coerce it makes sense to define keymaps for the user:
+This goes against the best practice to just expose `<Plug>` commands, but for
+Coerce it makes sense to define keymaps for the user:
 
 1. There’s too many keymaps to define by hand in user configs (mode count times
    case count).
-2. Keymap setting is quite algorithmic (2 for loops). Better that some code
-   does it.
+2. Keymap setting is quite algorithmic (2 for loops).
+   Better that some code does it.
+
+### Lazy initialization
+
+I did not optimize initial loading times of this plugin.
+It’s short anyway (1–2 ms) and running setup on `VeryLazy` seems good enough.
+
+Using `VeryLazy` is necessary anyway for this plugin to have ≈0
+impact[^lazy-impact] on the initial render.
 
 [Commitlint]: https://github.com/conventional-changelog/commitlint
 [Lefthook]: https://github.com/evilmartians/lefthook
@@ -178,3 +186,6 @@ for Coerce it makes sense to define keymaps for the user:
 [Lychee]: https://github.com/lycheeverse/lychee
 [Just]: https://just.systems/
 [Stylua]: https://github.com/JohnnyMorganz/StyLua
+
+[^lazy-impact]:
+Just having the plugin spec adds <1 ms to startup times.

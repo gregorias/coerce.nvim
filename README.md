@@ -24,7 +24,7 @@ manipulation, e.g., turning selected text into its numeronym.
 - Required plugin dependencies:
   - [Coop][Coop]
 - Optional plugin dependencies:
-  - [Which Key][which-key]
+  - [Which Key][which-key]
 
 ## 📦 Installation
 
@@ -38,11 +38,15 @@ Install the plugin with your preferred package manager, such as [Lazy]:
 }
 ```
 
+> [!TIP]
+> I recommend using `event = 'VeryLazy'` for setup. This way, Coerce’s setup
+> does not happen during the initial render.
+
 ### Abolish setup
 
-This plugin effectively replaces [Abolish]’s coercion functionality. If you
-wish to keep it for its other features, you can disable the coercion feature
-like so:
+This plugin effectively replaces [Abolish]’s coercion functionality.
+If you wish to keep it for its other features, you can disable the coercion
+feature like so:
 
 ```lua
 {
@@ -66,14 +70,14 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 
 ### Quick start
 
-1. Put the cursor inside [a keyword][iskeyword].
-2. Press `crX`, where `X` stands for your desired case. Which key, if present,
-   will show you hints.
+1. Put the cursor inside [a keyword][iskeyword].
+2. Press `crX`, where `X` stands for your desired case.
+   Which key, if present, will show you hints.
 
 ### Built-in cases
 
 | Case              | Key       |
-| :--               | :--       |
+| :---------------- | :-------- |
 | camelCase         | c         |
 | dot.case          | d         |
 | kebab-case        | k         |
@@ -87,25 +91,26 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 ### Built-in modes
 
 | Vim mode | Keymap prefix | Selector                  | Transformer      |
-| :--      | :--           | :--                       | :--              |
+| :------- | :------------ | :------------------------ | :--------------- |
 | Normal   | cr            | current [word][iskeyword] | LSP rename/local |
 | Normal   | gcr           | motion selection          | local            |
 | Visual   | gcr           | visual selection          | local            |
 
-The default visual prefix is `gcr` and not `cr` in order to avoid a conflict with
-[the default `c`](https://neovim.io/doc/user/change.html#v_c).
+The default visual prefix is `gcr` and not `cr` in order to avoid a conflict
+with [the default `c`](https://neovim.io/doc/user/change.html#v_c).
 
 ### Tips & tricks
 
 #### Visually selecting a previously changed keyword
 
 You may coerce a keyword in such a way that it stops being keyword, e.g., you
-use the path case in most programming languages. In that case, just running
-`cr` again won’t fully revert the case. You’ll need to visually select the word
-to fix it.
+use the path case in most programming languages.
+In that case, just running `cr` again won’t fully revert the case.
+You’ll need to visually select the word to fix it.
 
 To quickly select a changed keyword,
-[you can configure a special keymap for doing that](https://vim.fandom.com/wiki/Selecting_your_pasted_text). For example, here’s how I have it set up:
+[you can configure a special keymap for doing that](https://vim.fandom.com/wiki/Selecting_your_pasted_text).
+For example, here’s how I have it set up:
 
 ```lua
 require"which-key".register({
@@ -215,43 +220,45 @@ require"coerce".register_mode{
 
 ## ✅ Comparison to similar tools
 
-[Text-case][text-case] is more feature-rich than Coerce, but if you just need
-to change case of the current keyword, Coerce is simpler.
+[Text-case][text-case] is more feature-rich than Coerce, but if you just need to
+change case of the current keyword, Coerce is simpler.
 
 | Feature                            | Coerce | [Text-case][text-case] | [Abolish][abolish] |
-| :--                                | :--:   | :--:                   | :--:               |
-| Full Unicode support               | ✅     | ❌                     | ❌                 |
-| [Which Key][which-key] integration | ✅     | ✅                     | ❌                 |
-| [nvim-notify] integration          | ✅     | ❌                     | ❌                 |
-| Current keyword coerce             | ✅     | ❌                     | ✅                 |
-| Visual selection                   | ✅     | ✅                     | ❌                 |
-| Motion selection                   | ✅     | ✅                     | ❌                 |
-| LSP rename                         | ✅     | ✅                     | ❌                 |
-| Kebab case                         | ✅     | ✅                     | ✅                 |
-| [Numeronym] “case”                 | ✅     | ❌                     | ❌                 |
-| Dot repeat support                 | ✅     | ✅                     | ✅                 |
-| Custom case support                | ✅     | ❌                     | ❌                 |
-| Custom mode support                | ✅     | ❌                     | ❌                 |
+| :--------------------------------- | :----: | :--------------------: | :----------------: |
+| Full Unicode support               |   ✅   |           ❌           |         ❌         |
+| [Which Key][which-key] integration |   ✅   |           ✅           |         ❌         |
+| [nvim-notify] integration          |   ✅   |           ❌           |         ❌         |
+| Current keyword coerce             |   ✅   |           ❌           |         ✅         |
+| Visual selection                   |   ✅   |           ✅           |         ❌         |
+| Motion selection                   |   ✅   |           ✅           |         ❌         |
+| LSP rename                         |   ✅   |           ✅           |         ❌         |
+| Kebab case                         |   ✅   |           ✅           |         ✅         |
+| [Numeronym] “case”                 |   ✅   |           ❌           |         ❌         |
+| Dot repeat support                 |   ✅   |           ✅           |         ✅         |
+| Custom case support                |   ✅   |           ❌           |         ❌         |
+| Custom mode support                |   ✅   |           ❌           |         ❌         |
 
 ## 🙏 Acknowledgments
 
-This plugin was inspired by [Abolish][abolish]’s coercion feature. I created
-this plugin to address Abolish’s shortcomings, which are:
+This plugin was inspired by [Abolish][abolish]’s coercion feature.
+I created this plugin to address Abolish’s shortcomings, which are:
 
-- No integration with [Which Key][which-key] or [Legendary].
-- Little configurability. I couldn’t extend the plugin with new cases.
+- No integration with [Which Key][which-key] or [Legendary].
+- Little configurability.
+  I couldn’t extend the plugin with new cases.
 
-I used [Text-case][text-case]’s source code to inform myself on how to do
-things in Neovim.
+I used [Text-case][text-case]’s source code to inform myself on how to do things
+in Neovim.
 
 The logo is based on
-[a fist SVG from SVG Repo](https://www.svgrepo.com/svg/29542/fist).
+[a fist SVG from SVG Repo](https://www.svgrepo.com/svg/29542/fist).
 
 ## 🔗 See also
 
 - [Coop](https://github.com/gregorias/coop.nvim) — My Neovim plugin for
   structured concurrency with coroutines.
-- [Toggle](https://github.com/gregorias/toggle.nvim) — My Neovim plugin for toggling options.
+- [Toggle](https://github.com/gregorias/toggle.nvim) — My Neovim plugin for
+  toggling options.
 
 [abolish]: https://github.com/tpope/vim-abolish
 [iskeyword]: https://neovim.io/doc/user/options.html#'iskeyword'
