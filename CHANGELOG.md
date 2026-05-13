@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ### Added
 
+- Added a vimdoc.
+
 ### Changed
 
 ### Deprecated

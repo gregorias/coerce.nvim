@@ -1,7 +1,0 @@
-*coerce.nvim.txt*       For Neovim >= 0.9.0       Last change: 2024 January 06
-
-==============================================================================
-Overview                                                *coerce.nvim-overview*
-
-Coerce is a plugin for changing keyword case. For documentation, see its
-README at https://github.com/gregorias/coerce.nvim

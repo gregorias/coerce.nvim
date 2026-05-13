@@ -1,6 +1,6 @@
 # Ideas
 
-- [ ] Create a VimDoc.
+- [x] Create a VimDoc.
 - [ ] Dynamically listen to a case key instead of registering a keymap for each
   case.
   For WK, use WK’s `expand` functionality.

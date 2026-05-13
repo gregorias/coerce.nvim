@@ -1,0 +1,206 @@
+*coerce* Change keyword case.
+
+A Neovim plugin for changing keyword case.
+Coerce is a Neovim plugin that enables you to quickly change a keyword's
+case. Coerce's framework is also capable of any short-text,
+single-command text manipulation, e.g., turning selected text into its
+numeronym.
+
+------------------------------------------------------------------------
+📦 Installation                                              *coerce-installation*
+
+Install the plugin with your preferred package manager, such as Lazy
+https://github.com/folke/lazy.nvim:
+
+>lua
+    {
+      "gregorias/coerce.nvim",
+      tag = 'v4.3.0',
+      config = true,
+    }
+<
+  [!TIP] I recommend using `event = 'VeryLazy'` for setup. This way,
+  Coerce's setup does not happen during the initial render.
+
+ABOLISH SETUP                                              *coerce-abolish-setup*
+
+This plugin effectively replaces Abolish
+https://github.com/tpope/vim-abolish's coercion functionality. If you
+wish to keep it for its other features, you can disable the coercion
+feature like so:
+
+>lua
+    {
+      "tpope/vim-abolish",
+      init = function()
+        -- Disable coercion mappings. I use coerce.nvim for that.
+        vim.g.abolish_no_mappings = true
+      end,
+    }
+<
+
+------------------------------------------------------------------------
+🚀 Usage                                                            *coerce-usage*
+
+You can use Coerce to coerce words |'iskeyword'| into various cases
+using modes.
+
+- A case is a function that changes a word into another word, e.g., the
+  word's camel case version.
+- A mode specifies how Coerce triggers, selects and transforms the word,
+  e.g., select whatever is currently visually selected.
+
+QUICK START
+
+1. Put the cursor inside a keyword |'iskeyword'|.
+2. Press `crX`, where `X` stands for your desired case. Which key, if
+   present, will show you hints.
+
+BUILT-IN CASES
+
+    Case                                                                  Key ~
+    camelCase                                                             c
+    dot.case                                                              d
+    kebab-case                                                            k
+    n12e https://en.wikipedia.org/wiki/Numeronym#Numerical_contractions   n
+    PascalCase                                                            p
+    snake_case                                                            s
+    UPPER_CASE                                                            u
+    path/case                                                             /
+    space case                                                            `<space>`
+
+BUILT-IN MODES
+
+    Vim mode Keymap      Selector               Transformer
+             prefix                              ~
+
+    Normal   cr          current word           LSP
+                         |'iskeyword'|          rename/local
+
+    Normal   gcr         motion selection       local
+
+    Visual   gcr         visual selection       local
+
+The default visual prefix is `gcr` and not `cr` in order to avoid a
+conflict with the default `c` |v_c|.
+
+TIPS & TRICKS
+
+Visually selecting a previously changed keyword *visually-selecting-a-previously-changed-keyword*
+
+You may coerce a keyword in such a way that it stops being keyword,
+e.g., you use the path case in most programming languages. In that case,
+just running `cr` again won't fully revert the case. You'll need to
+visually select the word to fix it.
+
+To quickly select a changed keyword,
+you can configure a special keymap for doing that
+https://vim.fandom.com/wiki/Selecting_your_pasted_text. For example,
+here's how I have it set up:
+
+>lua
+    require"which-key".register({
+      g = {
+        p = {
+          -- "p" makes sense, gv selects the last Visual selection, so this one
+          -- selects the last pasted text.
+          function()
+              vim.api.nvim_feedkeys("`[" .. vim.fn.strpart(vim.fn.getregtype(), 0, 1) .. "`]", "n", false)
+          end,
+          "Switch to VISUAL using last paste/change",
+        },
+      },
+    })
+<
+With that, I can use `gp` to select whatever I have just coerced.
+
+------------------------------------------------------------------------
+⚙️ Configuration                                           *coerce-configuration*
+
+SETUP
+
+The default configuration looks like so:
+
+>lua
+    require"coerce".setup{
+      keymap_registry = require("coerce.keymap").keymap_registry(),
+      -- The notification function used during error conditions.
+      notify = function(...) return vim.notify(...) end,
+      default_mode_keymap_prefixes = {
+        normal_mode = "cr",
+        motion_mode = "gcr",
+        visual_mode = "gcr",
+      },
+      -- Set any field to false to disable that mode.
+      default_mode_mask = {
+        normal_mode = true,
+        motion_mode = true,
+        visual_mode = true,
+      },
+      -- If you don’t like the default cases and modes, you can override them.
+      cases = require"coerce".default_cases,
+      modes = require"coerce".get_default_modes(default_mode_mask, default_mode_keymap_prefixes),
+    }
+<
+You may freely modify the config parameters to your liking.
+
+REGISTER A NEW CASE
+
+You can register a new case like so:
+
+>lua
+    require"coerce".register_case{
+      keymap = "l",
+      case = function(str)
+        return vim.fn.tolower(str)
+      end,
+      description = "lowercase",
+    }
+<
+
+REGISTER A NEW MODE
+
+You can register a new mode like so:
+
+>lua
+    require"coerce".register_mode{
+      vim_mode = "v",
+      keymap_prefix = "gc",
+      selector = function(cb)
+        local s, e = -- Your function that finds start and end points.
+                     -- For example, returning {0, 0}, {0, 5} selects the first 6
+                     -- characters of the current buffer.
+        local region_m = require"coerce.region"
+        cb(region_m(region_m.modes.INLINE, s, e))
+      end,
+      transformer = require"coerce.transformer".transform_local,
+    }
+<
+
+EXAMPLES
+
+Selectively disabling LSP rename        *selectively-disabling-lsp-rename*
+
+If you don't like that the default normal mode binding uses LSP rename
+(e.g., because it's too slow), you can provide your own implementation
+like so:
+
+>lua
+    require"coerce".setup{
+      -- …
+      default_mode_mask = {
+        -- Disable the default `cr` binding.
+        normal_mode = false,
+      },
+      -- …
+    }
+
+    -- Register a custom `cr` binding that uses the local-only transformation.
+    require"coerce".register_mode{
+      vim_mode = "n",
+      keymap_prefix = "cr",
+      selector = require"coerce.selector".select_current_word,
+      transformer = require"coerce.transformer".transform_local,
+    }
+
+vim:tw=78:ts=8:noet:ft=help:norl:
