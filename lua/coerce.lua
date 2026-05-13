@@ -189,11 +189,6 @@ end
 ---
 ---@param config? CoerceConfigUser
 M.setup = function(config)
-	local coop_status = pcall(require, "coop")
-	if not coop_status then
-		error("Coop not found. Coerce requires gregorias/coop.nvim to work.", 0)
-	end
-
 	effective_config = M.get_effective_config(config or {})
 
 	local conversion_m = require("coerce.conversion")
