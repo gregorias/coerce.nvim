@@ -27,6 +27,9 @@ generate-test-coverage-report:
 luacheck:
   @luacheck .
 
+typecheck:
+  @bash scripts/typecheck.sh
+
 test:
   @busted
 

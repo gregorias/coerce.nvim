@@ -3,6 +3,8 @@ pre-commit:
   commands:
     tests:
       run: just test
+    typecheck:
+      run: just typecheck
     markdownlint:
       tags: documentation style
       glob: "*.md"
