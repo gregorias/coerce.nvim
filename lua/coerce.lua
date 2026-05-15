@@ -92,7 +92,7 @@ M.get_default_modes = function(mode_mask, keymap_prefixes)
 			selector = selector_m.select_current_visual_selection,
 			transformer = transformer_m.transform_local,
 			post_processor = function()
-				local esc = require("coerce.vim.api").replace_all_termcodes("<esc>")
+				local esc = vim.keycode("<esc>")
 				vim.api.nvim_feedkeys(esc, "nx", false)
 			end,
 		})

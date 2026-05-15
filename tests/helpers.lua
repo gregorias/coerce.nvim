@@ -32,7 +32,7 @@ end
 ---@param feedkeys string
 ---@param mode "n"|"v"|"i"|"x"
 M.execute_keys = function(feedkeys, mode)
-	local keys = require("coerce.vim.api").replace_all_termcodes(feedkeys)
+	local keys = vim.keycode(feedkeys)
 	vim.api.nvim_feedkeys(keys, mode, false)
 end
 
