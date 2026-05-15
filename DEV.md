@@ -84,6 +84,12 @@ graph TD
     end
 ```
 
+### Coverage
+
+We initialize Luacov in Neovim’s init.lua.
+Initializing Luacov in the most outer layer, Busted, didn’t work — Luacov wasn’t
+accurately capturing tested code.
+
 ## Architecture
 
 ```mermaid
@@ -94,6 +100,7 @@ graph LR
   coerce[coerce.lua]
 
   subgraph "coerce/"
+    input
     keymap[keymap]
 
     subgraph "Logic"
@@ -188,4 +195,5 @@ impact[^lazy-impact] on the initial render.
 [Stylua]: https://github.com/JohnnyMorganz/StyLua
 
 [^lazy-impact]:
+
 Just having the plugin spec adds <1 ms to startup times.

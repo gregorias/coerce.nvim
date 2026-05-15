@@ -21,6 +21,10 @@ init:
   cp -r lua_modules/lib/luarocks/rocks-5.1/luacov/*/src lua_modules/share/lua/5.1/luacov/reporter
   direnv allow
 
+clean-test:
+  rm -fr .tests/xdg/local
+  rm -f  .tests/xdg/config/nvim/nvim-pack-lock.json
+
 generate-test-coverage-report:
   @luacov
 
@@ -31,6 +35,7 @@ typecheck:
   @bash scripts/typecheck.sh
 
 test:
+  @rm -f luacov.stats.out
   @busted
 
 bump:

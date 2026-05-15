@@ -1,7 +1,7 @@
 return {
 	_all = {
 		lua = "./tests/nvim-shim",
-		coverage = true,
+		coverage = false,
 		ROOT = { "./tests/" },
 	},
 }

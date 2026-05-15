@@ -9,13 +9,13 @@ vim.pack.add({
 	},
 })
 vim.opt.runtimepath:append(".")
+-- Initialize Luacov.
+require("luacov")
+local luacov_runner = require("luacov.runner")
 
 -- Save Luacov stats manually, because Luacov'v hooks don't run properly under `nvim -l`.
 vim.api.nvim_create_autocmd("VimLeavePre", {
-  callback = function()
-		local luacov_runner = package.loaded["luacov.runner"]
-    if luacov_runner then
-      luacov_runner.save_stats()
-    end
-  end
+	callback = function()
+		luacov_runner.save_stats()
+	end,
 })

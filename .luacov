@@ -3,6 +3,7 @@ return {
     "lua/coerce$",
     "lua/coerce/case$",
     "lua/coerce/conversion$",
+    "lua/coerce/input$",
     "lua/coerce/keymap$",
     "lua/coerce/operator$",
     "lua/coerce/region$",
@@ -20,6 +21,7 @@ return {
     ["coerce"] = "lua/coerce.lua",
     ["coerce.case"] = "lua/coerce/case.lua",
     ["coerce.conversion"] = "lua/coerce/conversion.lua",
+    ["coerce.input"] = "lua/coerce/input.lua",
     ["coerce.keymap"] = "lua/coerce/keymap.lua",
     ["coerce.operator"] = "lua/coerce/operator.lua",
     ["coerce.region"] = "lua/coerce/region.lua",
@@ -34,4 +36,5 @@ return {
     ["coerce.visual"] = "lua/coerce/visual.lua",
   },
   reporter = "html",
+  reportfile = "luacov.report.html",
 }

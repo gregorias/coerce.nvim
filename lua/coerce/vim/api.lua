@@ -36,4 +36,15 @@ M.nvim_buf_get_text = function(buffer, region)
 	return lines
 end
 
+---Replace all termcodes in a string of keys.
+---
+---This is just a convenience utility to avoid excessive parameter passing as we almost always want to replace them all.
+---
+---@param str string @String of keys with termcodes.
+---@return string @Translated string of keys.
+---@nodiscard
+M.replace_all_termcodes = function(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 return M
