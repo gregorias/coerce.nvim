@@ -1,14 +1,14 @@
---- A module for case conversion.
--- @module coerce.case
+---A module for case conversion.
+---
+---This module contains the case functions.
 local M = {}
 
-local cs = require("coerce.string")
-
---- Converts a keyword into PascalCase.
+---Converts a keyword into PascalCase.
 ---
 ---@param str string the string to convert
 ---@return string
 M.to_camel_case = function(str)
+	local cs = require("coerce.string")
 	local parts = M.split_keyword(str)
 
 	for i = 2, #parts, 1 do
@@ -20,7 +20,7 @@ M.to_camel_case = function(str)
 	return table.concat(parts, "")
 end
 
---- Converts a keyword into dot-case.
+---Converts a keyword into dot-case.
 ---
 ---@param str string the string to convert
 ---@return string
@@ -29,7 +29,7 @@ M.to_dot_case = function(str)
 	return table.concat(parts, ".")
 end
 
---- Converts a keyword into kebab-case.
+---Converts a keyword into kebab-case.
 ---
 ---@param str string the string to convert
 ---@return string
@@ -38,11 +38,12 @@ M.to_kebab_case = function(str)
 	return table.concat(parts, "-")
 end
 
---- Converts a string into a numerical contraction.
+---Converts a string into a numerical contraction.
 ---
 ---@param str string the string to convert
 ---@return string str the numerical contraction
 M.to_numerical_contraction = function(str)
+	local cs = require("coerce.string")
 	local grapheme_list = cs.str2graphemelist(str)
 	if #grapheme_list <= 2 then
 		return str
@@ -61,11 +62,12 @@ M.to_numerical_contraction = function(str)
 	return grapheme_list[1] .. character_count .. grapheme_list[#grapheme_list]
 end
 
---- Converts a keyword into PascalCase.
+---Converts a keyword into PascalCase.
 ---
 ---@param str string the string to convert
 ---@return string
 M.to_pascal_case = function(str)
+	local cs = require("coerce.string")
 	local parts = M.split_keyword(str)
 
 	for i = 1, #parts, 1 do
@@ -77,7 +79,7 @@ M.to_pascal_case = function(str)
 	return table.concat(parts, "")
 end
 
---- Converts a keyword into snake_case.
+---Converts a keyword into snake_case.
 ---
 ---@param str string the string to convert
 ---@return string
@@ -117,14 +119,14 @@ M.to_space_case = function(str)
 	return table.concat(parts, " ")
 end
 
---- Splits a word into its parts.
+---Splits a word into its parts.
 ---
---- Using ”keyword” instead of “word”, because in this context, things like like
---- “kebab-case” are not words.
+---Using ”keyword” instead of “word”, because in this context, things like like “kebab-case” are not words.
 ---
 ---@param str string the string to split
 ---@return string[] words keyword parts
 M.split_keyword = function(str)
+	local cs = require("coerce.string")
 	local grapheme_list = cs.str2graphemelist(str)
 	if #grapheme_list <= 2 then
 		return { str }

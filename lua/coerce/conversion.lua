@@ -3,7 +3,6 @@
 --luacheck: max comment line length 200
 local M = {}
 
-M.registered_cases = {}
 M.registered_modes = {}
 
 --- Constructs a Coercer object.
@@ -17,7 +16,6 @@ M.Coercer = function(keymap_registry, notify)
 	return {
 		keymap_registry = keymap_registry,
 		notify = notify,
-		registered_cases = {},
 		registered_modes = {},
 
 		---@param mode CoerceMode
@@ -51,7 +49,7 @@ M.Coercer = function(keymap_registry, notify)
 		--@tparam {keymap=string, description=string, case=function}
 		--@treturn nil
 		register_case = function(self, case)
-			table.insert(self.registered_cases, case)
+			require("coerce.cases").register_case(case)
 
 			for _, mode in ipairs(self.registered_modes) do
 				self:_register_mode_case(mode, case)
@@ -65,7 +63,7 @@ M.Coercer = function(keymap_registry, notify)
 			table.insert(self.registered_modes, mode)
 			self.keymap_registry.register_keymap_group(mode.vim_mode, mode.keymap_prefix, "+Coerce")
 
-			for _, case in ipairs(self.registered_cases) do
+			for _, case in ipairs(require("coerce.cases").cases) do
 				self:_register_mode_case(mode, case)
 			end
 		end,
@@ -73,12 +71,12 @@ M.Coercer = function(keymap_registry, notify)
 		--- Unregisters all cases and modes.
 		unregister_all = function(self)
 			for _, mode in ipairs(self.registered_modes) do
-				for _, case in ipairs(self.registered_cases) do
+				for _, case in ipairs(require("coerce.cases").cases) do
 					self:_unregister_mode_case(mode, case)
 				end
 				self.keymap_registry.unregister_keymap_group(mode.vim_mode, mode.keymap_prefix)
 			end
-			self.registered_cases = {}
+			require("coerce.cases").unregister_all_cases()
 			self.registered_modes = {}
 		end,
 	}

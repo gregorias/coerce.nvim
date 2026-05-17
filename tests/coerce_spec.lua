@@ -150,6 +150,7 @@ describe("coerce", function()
 
 		local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
 		assert.are.same({ "MY_CASE" }, lines)
+		c.teardown()
 	end)
 
 	it("displays an error for a multiline selection in visual mode", function()

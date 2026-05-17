@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ### Changed
 
+- Moved case registry into a global module.
+
 ### Deprecated
 
 ### Removed

@@ -105,8 +105,10 @@ graph LR
 
     subgraph "Logic"
       case
+      cases -.-> case
       transformer
       conversion -.-> selector
+      conversion ---> cases
       conversion -.-> transformer
     end
 
