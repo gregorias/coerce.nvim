@@ -19,6 +19,7 @@ init:
   luarocks install luacheck
   # Fix https://github.com/lunarmodules/luacov/issues/122
   cp -r lua_modules/lib/luarocks/rocks-5.1/luacov/*/src lua_modules/share/lua/5.1/luacov/reporter
+  ./scripts/install-which-key.sh
   direnv allow
 
 clean-test:
