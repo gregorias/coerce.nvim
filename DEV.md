@@ -105,11 +105,13 @@ graph LR
 
     subgraph "Logic"
       case
+      mode
       cases -.-> case
       transformer
-      conversion -.-> selector
+      conversion ---> mode
       conversion ---> cases
-      conversion -.-> transformer
+      mode --> selector
+      mode --> transformer
     end
 
     subgraph "Utils"
@@ -143,8 +145,7 @@ graph LR
   end
 
   coerce --> case
-  coerce --> selector
-  coerce --> transformer
+  coerce --> mode
   coerce --> keymap
   coerce --> conversion
 

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning][semver].
 
 ### Changed
 
+- Decoupled the mode type from its keymap (`coerce.Mode`) and moved to its own module.
 - Moved case registry into a global module.
 
 ### Deprecated

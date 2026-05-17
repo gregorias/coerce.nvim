@@ -43,58 +43,51 @@ M.default_mode_mask = {
 	visual_mode = true,
 }
 
----@class CoerceMode
+---@class coerce.KeymapSpec
 ---@field vim_mode string
 ---@field keymap_prefix string
----@field selector fun(cb: fun(region_or_error: coerce.Region | string))
----@field transformer fun(selected_region: coerce.Region, apply: fun(text: string): string)
----@field post_processor? function The function to run after the coercion.
+
+---@class coerce.ModeWithKeymap
+---@field keymap coerce.KeymapSpec
+---@field mode coerce.Mode
 
 --- Gets the default modes
 ---
 ---@param mode_mask DefaultModeMask
 ---@param keymap_prefixes DefaultModeKeymapPrefixConfig
----@return CoerceMode[]
+---@return coerce.ModeWithKeymap[]
 M.get_default_modes = function(mode_mask, keymap_prefixes)
-	local selector_m = require("coerce.selector")
-	local transformer_m = require("coerce.transformer")
+	local mode_m = require("coerce.mode")
 
-	---@type CoerceMode[]
+	---@type coerce.ModeWithKeymap[]
 	local modes = {}
 	if mode_mask.normal_mode ~= false then
 		table.insert(modes, {
-			vim_mode = "n",
-			keymap_prefix = keymap_prefixes.normal_mode,
-			selector = selector_m.select_current_word,
-			transformer = function(selected_region, apply)
-				return require("coop").spawn(
-					transformer_m.transform_lsp_rename_with_local_failover,
-					selected_region,
-					apply
-				)
-			end,
+			keymap = {
+				vim_mode = "n",
+				keymap_prefix = keymap_prefixes.normal_mode,
+			},
+			mode = mode_m.normal_mode,
 		})
 	end
 
 	if mode_mask.motion_mode ~= false then
 		table.insert(modes, {
-			vim_mode = "n",
-			keymap_prefix = keymap_prefixes.motion_mode,
-			selector = selector_m.select_with_motion,
-			transformer = transformer_m.transform_local,
+			keymap = {
+				vim_mode = "n",
+				keymap_prefix = keymap_prefixes.motion_mode,
+			},
+			mode = mode_m.motion_mode,
 		})
 	end
 
 	if mode_mask.visual_mode ~= false then
 		table.insert(modes, {
-			vim_mode = "v",
-			keymap_prefix = keymap_prefixes.visual_mode,
-			selector = selector_m.select_current_visual_selection,
-			transformer = transformer_m.transform_local,
-			post_processor = function()
-				local esc = vim.keycode("<esc>")
-				vim.api.nvim_feedkeys(esc, "nx", false)
-			end,
+			keymap = {
+				vim_mode = "v",
+				keymap_prefix = keymap_prefixes.visual_mode,
+			},
+			mode = mode_m.visual_mode,
 		})
 	end
 
@@ -107,13 +100,13 @@ end
 ---@field cases? table
 ---@field default_mode_keymap_prefixes? DefaultModeKeymapPrefixConfigOptional
 ---@field default_mode_mask? DefaultModeMask
----@field modes? CoerceMode[]
+---@field modes? coerce.ModeWithKeymap[]
 
 ---@class CoerceConfig
 ---@field keymap_registry KeymapRegistry
 ---@field notify function
 ---@field cases table
----@field modes CoerceMode[]
+---@field modes coerce.ModeWithKeymap[]
 
 ---@param keymap_registry KeymapRegistry
 ---@param default_mode_mask DefaultModeMask
@@ -179,7 +172,7 @@ end
 
 --- Registers a new mode.
 ---
----@param mode CoerceMode
+---@param mode coerce.ModeWithKeymap
 M.register_mode = function(mode)
 	assert(coercer ~= nil, "Coercer is not initialized.")
 	coercer:register_mode(mode)

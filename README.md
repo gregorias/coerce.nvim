@@ -179,16 +179,20 @@ You can register a new mode like so:
 
 ```lua
 require"coerce".register_mode{
-  vim_mode = "v",
-  keymap_prefix = "gc",
-  selector = function(cb)
-    local s, e = -- Your function that finds start and end points.
-                 -- For example, returning {0, 0}, {0, 5} selects the first 6
-                 -- characters of the current buffer.
-    local region_m = require"coerce.region"
-    cb(region_m(region_m.modes.INLINE, s, e))
-  end,
-  transformer = require"coerce.transformer".transform_local,
+  keymap = {
+    vim_mode = "v",
+    keymap_prefix = "gc",
+  },
+  mode = {
+    selector = function(cb)
+      local s, e = -- Your function that finds start and end points.
+                   -- For example, returning {0, 0}, {0, 5} selects the first 6
+                   -- characters of the current buffer.
+      local region_m = require"coerce.region"
+      cb(region_m(region_m.modes.INLINE, s, e))
+    end,
+    transformer = require"coerce.transformer".transform_local,
+  }
 }
 ```
 
@@ -211,10 +215,14 @@ require"coerce".setup{
 
 -- Register a custom `cr` binding that uses the local-only transformation.
 require"coerce".register_mode{
-  vim_mode = "n",
-  keymap_prefix = "cr",
-  selector = require"coerce.selector".select_current_word,
-  transformer = require"coerce.transformer".transform_local,
+  keymap = {
+    vim_mode = "n",
+    keymap_prefix = "cr",
+  },
+  mode = {
+    selector = require"coerce.selector".select_current_word,
+    transformer = require"coerce.transformer".transform_local,
+  }
 }
 ```
 

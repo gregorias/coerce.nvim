@@ -1,10 +1,12 @@
 ---The registry of all cases.
 local M = {}
 
+---@alias coerce.CaseFunction fun(str: string): string
+
 ---The case function with metadata.
 ---
 ---@class coerce.Case
----@field case fun(str: string): string @The function to convert a string into this case.
+---@field case coerce.CaseFunction @The function to convert a string into this case.
 ---@field keymap string @The keymap to trigger this case.
 ---@field description string @The description of this case, to be shown in Which Key.
 

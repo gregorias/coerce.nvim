@@ -18,21 +18,26 @@ M.Coercer = function(keymap_registry, notify)
 		notify = notify,
 		registered_modes = {},
 
-		---@param mode CoerceMode
+		---@param mode_with_map coerce.ModeWithKeymap
 		---@param case any
-		_register_mode_case = function(self, mode, case)
+		_register_mode_case = function(self, mode_with_map, case)
 			self.keymap_registry.register_keymap(
-				mode.vim_mode,
-				mode.keymap_prefix .. case.keymap,
+				mode_with_map.keymap.vim_mode,
+				mode_with_map.keymap.keymap_prefix .. case.keymap,
 				function()
 					require("coop").spawn(function()
-						M.coerce(mode.selector, mode.transformer, case.case, function(error)
-							if type(error) == "string" then
-								self.notify(error, "error", { title = "Coerce" })
+						M.coerce(
+							mode_with_map.mode.selector,
+							mode_with_map.mode.transformer,
+							case.case,
+							function(error)
+								if type(error) == "string" then
+									self.notify(error, "error", { title = "Coerce" })
+								end
 							end
-						end)
-						if mode.post_processor then
-							mode.post_processor()
+						)
+						if mode_with_map.mode.post_processor then
+							mode_with_map.mode.post_processor()
 						end
 					end)
 				end,
@@ -40,6 +45,8 @@ M.Coercer = function(keymap_registry, notify)
 			)
 		end,
 
+		---@param mode coerce.KeymapSpec
+		---@param case coerce.Case
 		_unregister_mode_case = function(self, mode, case)
 			self.keymap_registry.unregister_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap)
 		end,
@@ -56,25 +63,32 @@ M.Coercer = function(keymap_registry, notify)
 			end
 		end,
 
-		--- Registers a new mode.
-		--
-		--@tparam { keymap_prefix=string, selector=function }
+		---Registers a new mode.
+		---
+		---@param mode coerce.ModeWithKeymap
 		register_mode = function(self, mode)
 			table.insert(self.registered_modes, mode)
-			self.keymap_registry.register_keymap_group(mode.vim_mode, mode.keymap_prefix, "+Coerce")
+			self.keymap_registry.register_keymap_group(
+				mode.keymap.vim_mode,
+				mode.keymap.keymap_prefix,
+				"+Coerce"
+			)
 
 			for _, case in ipairs(require("coerce.cases").cases) do
 				self:_register_mode_case(mode, case)
 			end
 		end,
 
-		--- Unregisters all cases and modes.
+		---Unregisters all cases and modes.
 		unregister_all = function(self)
 			for _, mode in ipairs(self.registered_modes) do
 				for _, case in ipairs(require("coerce.cases").cases) do
-					self:_unregister_mode_case(mode, case)
+					self:_unregister_mode_case(mode.keymap, case)
 				end
-				self.keymap_registry.unregister_keymap_group(mode.vim_mode, mode.keymap_prefix)
+				self.keymap_registry.unregister_keymap_group(
+					mode.keymap.vim_mode,
+					mode.keymap.keymap_prefix
+				)
 			end
 			require("coerce.cases").unregister_all_cases()
 			self.registered_modes = {}
