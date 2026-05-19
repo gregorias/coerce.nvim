@@ -101,17 +101,20 @@ graph LR
 
   subgraph "coerce/"
     input
-    keymap[keymap]
 
     subgraph "Logic"
       case
       mode
+      keymaps
       cases -.-> case
       transformer
       conversion ---> mode
       conversion ---> cases
       mode --> selector
       mode --> transformer
+      keymaps ---> cases
+      keymaps ---> mode
+      keymaps ---> conversion
     end
 
     subgraph "Utils"
@@ -135,6 +138,8 @@ graph LR
     transformer --> region
     selector --> region
 
+    keymaps -- "fetch case char" --> input
+
     selector --> operator
     selector --> visual
 
@@ -146,8 +151,8 @@ graph LR
 
   coerce --> case
   coerce --> mode
-  coerce --> keymap
   coerce --> conversion
+  coerce --> keymaps
 
   vim-api --> region
 ```
@@ -173,14 +178,13 @@ Using LuaRocks lets me easily install and use Busted or LuaCov for tests.
 
 ### Defining keymaps
 
-This plugin defines keymaps and has coupled integration with Which Key.
-This goes against the best practice to just expose `<Plug>` commands, but for
-Coerce it makes sense to define keymaps for the user:
+This plugin delegates final keymap definition to the user and only provides
+`<Plug>` and Which Key bindings.
 
-1. There’s too many keymaps to define by hand in user configs (mode count times
-   case count).
-2. Keymap setting is quite algorithmic (2 for loops).
-   Better that some code does it.
+This avoids adding yet another flawed DSL for setting up keymaps.
+Previous version had a DSL for setting up keymaps and masking them.
+It was additional complexity, less powerful, and less flexible than direct
+keymap setting.
 
 ### Lazy initialization
 

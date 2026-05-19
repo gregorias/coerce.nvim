@@ -18,164 +18,38 @@ M.default_cases = {
 	{ keymap = "/", case = case_m.to_path_case, description = "path/case" },
 	{ keymap = " ", case = case_m.to_space_case, description = "space case" },
 }
----@class DefaultModeKeymapPrefixConfigOptional
----@field normal_mode? string
----@field motion_mode? string
----@field visual_mode? string
-
----@class DefaultModeKeymapPrefixConfig
----@field normal_mode string
----@field motion_mode string
----@field visual_mode string
-M.default_mode_keymap_prefixes = {
-	normal_mode = "cr",
-	motion_mode = "gcr",
-	visual_mode = "gcr",
-}
-
----@class DefaultModeMask
----@field normal_mode? boolean
----@field motion_mode? boolean
----@field visual_mode? boolean
-M.default_mode_mask = {
-	normal_mode = true,
-	motion_mode = true,
-	visual_mode = true,
-}
-
----@class coerce.KeymapSpec
----@field vim_mode string
----@field keymap_prefix string
-
----@class coerce.ModeWithKeymap
----@field keymap coerce.KeymapSpec
----@field mode coerce.Mode
-
---- Gets the default modes
----
----@param mode_mask DefaultModeMask
----@param keymap_prefixes DefaultModeKeymapPrefixConfig
----@return coerce.ModeWithKeymap[]
-M.get_default_modes = function(mode_mask, keymap_prefixes)
-	local mode_m = require("coerce.mode")
-
-	---@type coerce.ModeWithKeymap[]
-	local modes = {}
-	if mode_mask.normal_mode ~= false then
-		table.insert(modes, {
-			keymap = {
-				vim_mode = "n",
-				keymap_prefix = keymap_prefixes.normal_mode,
-			},
-			mode = mode_m.normal_mode,
-		})
-	end
-
-	if mode_mask.motion_mode ~= false then
-		table.insert(modes, {
-			keymap = {
-				vim_mode = "n",
-				keymap_prefix = keymap_prefixes.motion_mode,
-			},
-			mode = mode_m.motion_mode,
-		})
-	end
-
-	if mode_mask.visual_mode ~= false then
-		table.insert(modes, {
-			keymap = {
-				vim_mode = "v",
-				keymap_prefix = keymap_prefixes.visual_mode,
-			},
-			mode = mode_m.visual_mode,
-		})
-	end
-
-	return modes
-end
 
 ---@class CoerceConfigUser
----@field keymap_registry? KeymapRegistry
----@field notify? function
 ---@field cases? table
----@field default_mode_keymap_prefixes? DefaultModeKeymapPrefixConfigOptional
----@field default_mode_mask? DefaultModeMask
----@field modes? coerce.ModeWithKeymap[]
 
 ---@class CoerceConfig
----@field keymap_registry KeymapRegistry
----@field notify function
 ---@field cases table
----@field modes coerce.ModeWithKeymap[]
 
----@param keymap_registry KeymapRegistry
----@param default_mode_mask DefaultModeMask
----@param keymap_prefixes DefaultModeKeymapPrefixConfig
 ---@return CoerceConfig
-M.get_default_config = function(keymap_registry, default_mode_mask, keymap_prefixes)
+M.get_default_config = function()
 	return {
-		-- Avoid using the default registry here to avoid forcing clients to load Which Key.
-		keymap_registry = keymap_registry,
-		notify = function(...)
-			-- We call `vim.notify` lazily, so that we don’t bind vim.notify during the plugin’s setup.
-			-- The user may modify `vim.notify` later.
-			vim.notify(...)
-		end,
 		cases = M.default_cases,
-		modes = M.get_default_modes(default_mode_mask, keymap_prefixes),
 	}
 end
 
 ---@param user_config CoerceConfigUser
 ---@return CoerceConfig
 M.get_effective_config = function(user_config)
-	local keymap_registry = user_config.keymap_registry
-		or require("coerce.keymap").keymap_registry()
-	local tbl = require("coerce.table")
-	local effective_keymap_prefixes = tbl.shallow_merge(
-		M.default_mode_keymap_prefixes,
-		user_config.default_mode_keymap_prefixes or {}
-	)
+	local effective_config = M.get_default_config()
 
-	local default_mode_mask =
-		tbl.shallow_merge(M.default_mode_mask, user_config.default_mode_mask or {})
-
-	local effective_config =
-		M.get_default_config(keymap_registry, default_mode_mask, effective_keymap_prefixes)
-
-	if user_config.notify then
-		effective_config.notify = user_config.notify
-	end
 	if user_config.cases then
 		effective_config.cases = user_config.cases
-	end
-	if user_config.modes then
-		effective_config.modes = user_config.modes
 	end
 	return effective_config
 end
 
 local effective_config = nil
 
---- The singleton Coercer object.
---
--- It’s initialized with the config in `setup`.
-local coercer = nil
-
---- Registers a new case.
+---Registers a new case.
 ---
----@param case table
+---@param case coerce.Case
 M.register_case = function(case)
-	assert(coercer ~= nil, "Coercer is not initialized.")
-	coercer:register_case(case)
-end
-
---- Registers a new mode.
----
----@param mode coerce.ModeWithKeymap
-M.register_mode = function(mode)
-	assert(coercer ~= nil, "Coercer is not initialized.")
-	coercer:register_mode(mode)
+	require("coerce.cases").register_case(case)
 end
 
 --- Sets up the plugin.
@@ -183,25 +57,15 @@ end
 ---@param config? CoerceConfigUser
 M.setup = function(config)
 	effective_config = M.get_effective_config(config or {})
-
-	local conversion_m = require("coerce.conversion")
-	coercer = conversion_m.Coercer(effective_config.keymap_registry, effective_config.notify)
-
-	for _, mode in ipairs(effective_config.modes) do
-		coercer:register_mode(mode)
-	end
-
 	for _, case in ipairs(effective_config.cases) do
-		coercer:register_case(case)
+		M.register_case(case)
 	end
+	require("coerce.keymaps").register_plug_keymaps()
 end
 
---- Tears down the plugin.
+---Tears down the plugin.
 M.teardown = function()
-	if coercer ~= nil then
-		coercer:unregister_all()
-		coercer = nil
-	end
+	require("coerce.cases").unregister_all_cases()
 	effective_config = nil
 end
 

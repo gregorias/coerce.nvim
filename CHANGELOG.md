@@ -2,8 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog][kac],
-and this project adheres to [Semantic Versioning][semver].
+The format is based on [Keep a Changelog][kac], and this project adheres to
+[Semantic Versioning][semver].
 
 ## Unreleased
 
@@ -13,12 +13,17 @@ and this project adheres to [Semantic Versioning][semver].
 
 ### Changed
 
-- Decoupled the mode type from its keymap (`coerce.Mode`) and moved to its own module.
+- Decoupled the mode type from its keymap (`coerce.Mode`) and moved to its own
+  module.
 - Moved case registry into a global module.
 
 ### Deprecated
 
 ### Removed
+
+- Removed keymap setting.
+  The user is now responsible for configuring their keymaps, which is a best
+  practice.
 
 ### Fixed
 

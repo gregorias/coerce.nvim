@@ -90,14 +90,22 @@ You can use Coerce to coerce [words][iskeyword] into various **cases** using
 
 ### Built-in modes
 
-| Vim mode | Keymap prefix | Selector                  | Transformer      |
-| :------- | :------------ | :------------------------ | :--------------- |
-| Normal   | cr            | current [word][iskeyword] | LSP rename/local |
-| Normal   | gcr           | motion selection          | local            |
-| Visual   | gcr           | visual selection          | local            |
+| Vim mode | Selector                  | Transformer      |
+| :------- | :------------------------ | :--------------- |
+| Normal   | current [word][iskeyword] | LSP rename/local |
+| Normal   | motion selection          | local            |
+| Visual   | visual selection          | local            |
 
-The default visual prefix is `gcr` and not `cr` in order to avoid a conflict
-with [the default `c`](https://neovim.io/doc/user/change.html#v_c).
+> [!TIP]
+> I recommend `cr` as keymap for the normal mode.
+> For the visual mode, I recommend `gcr` and not `cr` in order to avoid a conflict
+> with [the default `c`](https://neovim.io/doc/user/change.html#v_c).
+
+The plugin exposes the built-in modes as the following keymaps:
+
+- `<Plug>(coerce-normal)`
+- `<Plug>(coerce-motion)`
+- `<Plug>(coerce-visual)`
 
 ### Tips & tricks
 
@@ -133,27 +141,32 @@ With that, I can use `gp` to select whatever I have just coerced.
 
 ### Setup
 
+I recommend the following config:
+
+```lua
+require"coerce".setup{}
+local wke = require("coerce.keymaps").which_key_expand
+require("which-key").add({
+  { "cr", group = "+Coerce word", expand = wke.normal_mode, mode = "n" },
+  { "gcr", group = "+Coerce motion", expand = wke.motion_mode, mode = "n" },
+  { "gcr", group = "+Coerce visual", expand = wke.visual_mode, mode = "x" },
+})
+```
+
+but you may also use `vim.keymap` instead of [Which Key][which-key]:
+
+```lua
+vim.keymap.set("n", "cr", "<Plug>(coerce-normal)", { desc = "Coerce word" })
+vim.keymap.set("n", "gcr", "<Plug>(coerce-motion)", { desc = "Coerce motion" })
+vim.keymap.set("x", "gcr", "<Plug>(coerce-visual)", { desc = "Coerce visual" })
+```
+
 The default configuration looks like so:
 
 ```lua
 require"coerce".setup{
-  keymap_registry = require("coerce.keymap").keymap_registry(),
-  -- The notification function used during error conditions.
-  notify = function(...) return vim.notify(...) end,
-  default_mode_keymap_prefixes = {
-    normal_mode = "cr",
-    motion_mode = "gcr",
-    visual_mode = "gcr",
-  },
-  -- Set any field to false to disable that mode.
-  default_mode_mask = {
-    normal_mode = true,
-    motion_mode = true,
-    visual_mode = true,
-  },
-  -- If you don’t like the default cases and modes, you can override them.
+  -- If you don’t like the default cases, you can override this.
   cases = require"coerce".default_cases,
-  modes = require"coerce".get_default_modes(default_mode_mask, default_mode_keymap_prefixes),
 }
 ```
 
@@ -161,7 +174,7 @@ You may freely modify the config parameters to your liking.
 
 ### Register a new case
 
-You can register a new case like so:
+You can register a new case after setup like so:
 
 ```lua
 require"coerce".register_case{
@@ -178,22 +191,18 @@ require"coerce".register_case{
 You can register a new mode like so:
 
 ```lua
-require"coerce".register_mode{
-  keymap = {
-    vim_mode = "v",
-    keymap_prefix = "gc",
-  },
-  mode = {
-    selector = function(cb)
-      local s, e = -- Your function that finds start and end points.
-                   -- For example, returning {0, 0}, {0, 5} selects the first 6
-                   -- characters of the current buffer.
-      local region_m = require"coerce.region"
-      cb(region_m(region_m.modes.INLINE, s, e))
-    end,
-    transformer = require"coerce.transformer".transform_local,
-  }
+---@type coerce.Mode
+local foo_mode = {
+  selector = function(cb)
+    local s, e = -- Your function that finds start and end points.
+                 -- For example, returning {0, 0}, {0, 5} selects the first 6
+                 -- characters of the current buffer.
+    local region_m = require"coerce.region"
+    cb(region_m(region_m.modes.INLINE, s, e))
+  end,
+  transformer = require"coerce.transformer".transform_local,
 }
+vim.keymap.set("v", "gc", function() require"coerce.keymaps".action(foo_mode) end, { desc = "Coerce with foo mode" })
 ```
 
 ### Examples
@@ -206,24 +215,15 @@ because it’s too slow), you can provide your own implementation like so:
 ```lua
 require"coerce".setup{
   -- …
-  default_mode_mask = {
-    -- Disable the default `cr` binding.
-    normal_mode = false,
-  },
-  -- …
 }
 
 -- Register a custom `cr` binding that uses the local-only transformation.
-require"coerce".register_mode{
-  keymap = {
-    vim_mode = "n",
-    keymap_prefix = "cr",
-  },
-  mode = {
+vim.keymap.set("n", "cr", function ()
+  require"coerce.keymaps".action{
     selector = require"coerce.selector".select_current_word,
     transformer = require"coerce.transformer".transform_local,
   }
-}
+end)
 ```
 
 ## ✅ Comparison to similar tools

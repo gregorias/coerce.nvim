@@ -1,100 +1,7 @@
---- A module for enacting case conversions in Neovim.
+---A module for enacting case conversions in Neovim.
 
 --luacheck: max comment line length 200
 local M = {}
-
-M.registered_modes = {}
-
---- Constructs a Coercer object.
----
---- Coercer is meant to be a singleton object that handles registering new
---- cases and modes, and actuating them.
----
----@param keymap_registry table
----@param notify function The notification function to use.
-M.Coercer = function(keymap_registry, notify)
-	return {
-		keymap_registry = keymap_registry,
-		notify = notify,
-		registered_modes = {},
-
-		---@param mode_with_map coerce.ModeWithKeymap
-		---@param case any
-		_register_mode_case = function(self, mode_with_map, case)
-			self.keymap_registry.register_keymap(
-				mode_with_map.keymap.vim_mode,
-				mode_with_map.keymap.keymap_prefix .. case.keymap,
-				function()
-					require("coop").spawn(function()
-						M.coerce(
-							mode_with_map.mode.selector,
-							mode_with_map.mode.transformer,
-							case.case,
-							function(error)
-								if type(error) == "string" then
-									self.notify(error, "error", { title = "Coerce" })
-								end
-							end
-						)
-						if mode_with_map.mode.post_processor then
-							mode_with_map.mode.post_processor()
-						end
-					end)
-				end,
-				case.description
-			)
-		end,
-
-		---@param mode coerce.KeymapSpec
-		---@param case coerce.Case
-		_unregister_mode_case = function(self, mode, case)
-			self.keymap_registry.unregister_keymap(mode.vim_mode, mode.keymap_prefix .. case.keymap)
-		end,
-
-		--- Registers a new case.
-		--
-		--@tparam {keymap=string, description=string, case=function}
-		--@treturn nil
-		register_case = function(self, case)
-			require("coerce.cases").register_case(case)
-
-			for _, mode in ipairs(self.registered_modes) do
-				self:_register_mode_case(mode, case)
-			end
-		end,
-
-		---Registers a new mode.
-		---
-		---@param mode coerce.ModeWithKeymap
-		register_mode = function(self, mode)
-			table.insert(self.registered_modes, mode)
-			self.keymap_registry.register_keymap_group(
-				mode.keymap.vim_mode,
-				mode.keymap.keymap_prefix,
-				"+Coerce"
-			)
-
-			for _, case in ipairs(require("coerce.cases").cases) do
-				self:_register_mode_case(mode, case)
-			end
-		end,
-
-		---Unregisters all cases and modes.
-		unregister_all = function(self)
-			for _, mode in ipairs(self.registered_modes) do
-				for _, case in ipairs(require("coerce.cases").cases) do
-					self:_unregister_mode_case(mode.keymap, case)
-				end
-				self.keymap_registry.unregister_keymap_group(
-					mode.keymap.vim_mode,
-					mode.keymap.keymap_prefix
-				)
-			end
-			require("coerce.cases").unregister_all_cases()
-			self.registered_modes = {}
-		end,
-	}
-end
 
 --- Coerces selected text.
 ---
@@ -127,6 +34,35 @@ end
 M.coerce_current_word = function(transform_text, apply)
 	local selector = require("coerce.selector")
 	M.coerce(selector.select_current_word, transform_text, apply, function() end)
+end
+
+---Coerces and runs post processing.
+---
+---@param mode coerce.Mode
+---@param case coerce.CaseFunction
+---@param notify function
+---@return nil
+M.coerce_and_post = function(mode, case, notify)
+	M.coerce(mode.selector, mode.transformer, case, function(error)
+		if type(error) == "string" then
+			notify(error, "error", { title = "Coerce" })
+		end
+	end)
+	if mode.post_processor then
+		mode.post_processor()
+	end
+end
+
+---Spawns a full coerce task with post processing.
+---
+---@param mode coerce.Mode
+---@param case coerce.CaseFunction
+---@param notify function
+---@return nil
+M.spawn_coerce = function(mode, case, notify)
+	require("coop").spawn(function()
+		M.coerce_and_post(mode, case, notify)
+	end)
 end
 
 return M

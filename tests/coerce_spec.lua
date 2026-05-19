@@ -2,7 +2,6 @@ local yd = require("yo-dawg")
 local c = require("coerce")
 local test_helpers = require("tests.helpers")
 
-
 describe("coerce", function()
 	local nvim
 
@@ -18,6 +17,8 @@ describe("coerce", function()
 		it("registers a new case", function()
 			local buf = test_helpers.create_buf({ "myCase" })
 			c.setup({})
+			-- Set "cr" keymap manually.
+			vim.keymap.set("n", "cr", "<Plug>(coerce-normal)")
 			c.register_case({
 				keymap = "i",
 				case = function(str)
@@ -37,6 +38,7 @@ describe("coerce", function()
 	it("works in visual mode", function()
 		local buf = test_helpers.create_buf({ "myCase" })
 		c.setup({})
+		vim.keymap.set("x", "gcr", "<Plug>(coerce-visual)")
 		-- `ve` selects the keyword
 		-- `cru` runs upper case coercion
 		test_helpers.execute_keys("vegcru", "x")
@@ -53,6 +55,7 @@ describe("coerce", function()
 
 	it("works with motion selection", function()
 		local buf = test_helpers.create_buf({ "myCase" })
+		vim.keymap.set("n", "gcr", "<Plug>(coerce-motion)")
 		c.setup({})
 		-- `gcr` starts the operator pending mode
 		-- `u` select upper case coercion
@@ -68,6 +71,7 @@ describe("coerce", function()
 	it("supports dot repeats", function()
 		local buf = test_helpers.create_buf({ "myCase", "yourCase" })
 		c.setup({})
+		vim.keymap.set("n", "gcr", "<Plug>(coerce-motion)")
 		-- `gcr` starts the operator pending mode
 		-- `u` select upper case coercion
 		-- `e` select the keyword
@@ -81,29 +85,9 @@ describe("coerce", function()
 		c.teardown()
 	end)
 
-	it("supports overriding motion mode keymap", function()
-		local buf = test_helpers.create_buf({ "myCase", "yourCase" })
-		c.setup({
-			default_mode_keymap_prefixes = {
-				motion_mode = "gca",
-				visual_mode = "gca",
-			},
-		})
-		-- `gca` starts the operator pending mode
-		-- `u` select upper case coercion
-		-- `e` select the keyword
-		-- `j` goes down a line
-		-- `.` repeats the last action
-		test_helpers.execute_keys("gcauej.", "x")
-
-		local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
-		assert.are.same({ "MY_CASE", "YOUR_CASE" }, lines)
-
-		c.teardown()
-	end)
-
 	it("uses LSP’s rename method when available", function()
-		local lines = nvim:exec_lua([[
+		local lines = nvim:exec_lua(
+			[[
 			local c = require("coerce")
 		  local test_helpers = require("tests.helpers")
 			local fake_lsp_server_m = require("tests.fake_lsp_server")
@@ -124,6 +108,7 @@ describe("coerce", function()
 			}, { bufnr = buf })
 
 			c.setup({})
+			vim.keymap.set("n", "cr", "<Plug>(coerce-normal)")
 			-- `cr` starts the coercion
 			-- `u` select upper case coercion
 			test_helpers.execute_keys("cru", "x")
@@ -135,7 +120,9 @@ describe("coerce", function()
 
 			c.teardown()
 
-			return lines]], {})
+			return lines]],
+			{}
+		)
 		assert.are.same({ "MY_CASE", "local MY_CASE" }, lines)
 	end)
 
@@ -157,11 +144,11 @@ describe("coerce", function()
 		local buf = test_helpers.create_buf({ "myCase", "yourCase" })
 		local notification = nil
 
-		c.setup({
-			notify = function(message, level)
-				notification = { message = message, level = level }
-			end,
-		})
+		c.setup({})
+		require("coerce.vim.notify").notify = function(message, level)
+			notification = { message = message, level = level }
+		end
+		vim.keymap.set("x", "gcr", "<Plug>(coerce-visual)")
 		-- `vj` selects 2 lines
 		-- `cru` runs the upper case coersion
 		test_helpers.execute_keys("Vjgcru", "x")
@@ -183,6 +170,7 @@ describe("coerce", function()
 		vim.keymap.set("o", "i", '<cmd>echo "Pressed i"<cr>')
 		vim.keymap.set("o", "w", '<cmd>echo "Pressed w"<cr>')
 		c.setup({})
+		vim.keymap.set("n", "cr", "<Plug>(coerce-normal)")
 		-- `cru` runs upper case coercion
 		test_helpers.execute_keys("cru", "x")
 
