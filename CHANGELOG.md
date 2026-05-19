@@ -9,7 +9,22 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## TBR — 2026-05-19
+
+### Added
+
 - Added a vimdoc.
+- Added `<Plug>` keymaps and Which Key expand bindings.
 
 ### Changed
 
@@ -24,6 +39,7 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 - Removed keymap setting.
   The user is now responsible for configuring their keymaps, which is a best
   practice.
+- Removed keymap registry
 
 ### Fixed
 
