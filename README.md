@@ -252,6 +252,10 @@ change case of the current keyword, Coerce is simpler.
 | Custom case support                |   ✅   |           ❌           |         ❌         |
 | Custom mode support                |   ✅   |           ❌           |         ❌         |
 
+## 👥 What others are saying
+
+- [“gregorias/coerce.nvim is the best Neovim plugin for changing keyword cases.” (Ben Du, 2026)](https://www.legendu.net/drafts/2025/04/tips-on-astronvim/)
+
 ## 🙏 Acknowledgments
 
 This plugin was inspired by [Abolish][abolish]’s coercion feature.
