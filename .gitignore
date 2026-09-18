@@ -1,5 +1,6 @@
 deps/
 .tests
+/.jj/
 
 # LuaRocks
 /lua_modules

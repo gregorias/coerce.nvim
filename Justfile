@@ -1,10 +1,26 @@
+# List available recipes
+default:
+  @just --list
+
+# Run all checks
+check:
+  @lefthook run check
+
+# Run all formatters
+format:
+  @lefthook run format
+
 # Initialize the repository:
-#
-# 1. Hook up Lefthook
+# 1. Set up Jujutsu colocated repository and aliases.
 # 2. Set up Luarocks and Lua test dependencies.
 # 3. Enable Direnv.
 init:
-  lefthook install
+  if [ ! -d .jj ]; then \
+    jj git init; \
+  fi
+  jj config set --repo 'revset-aliases."trunk()"' '"main@origin"'
+  jj config set --repo 'aliases.check' '["util", "exec", "--", "sh", "-c", "\"$JJ_WORKSPACE_ROOT/scripts/check.sh\" \"$@\"", "check"]'
+  jj config set --repo 'aliases.ship' '["util", "exec", "--", "sh", "-c", "\"$JJ_WORKSPACE_ROOT/scripts/ship.sh\" \"$@\"", "ship"]'
   luarocks init --lua-version 5.1 --lua-versions 5.1
   # Revert unnecessary changes.
   git restore .gitignore
@@ -29,15 +45,48 @@ clean-test:
 generate-test-coverage-report:
   @luacov
 
-luacheck:
+# Check Lua formatting
+check-lua:
+  stylua --check lua
+
+# Format Lua files
+format-lua:
+  stylua lua
+
+# Lint Lua files
+lint-lua:
   @luacheck .
 
+# Lint Markdown files
+lint-markdown:
+  fd -e md -X markdownlint
+
+# Check Markdown links
+check-links:
+  lychee --accept "100..=103,200..=299,403,429" --root-dir=. DEV.md README.md IDEAS.md
+
+# Check YAML formatting
+check-yaml:
+  fd -H -e yml -e yaml -X prettier -c
+
+# Format YAML files
+format-yaml:
+  fd -H -e yml -e yaml -X prettier -w
+
+# Run static type checking
 typecheck:
   @bash scripts/typecheck.sh
 
+# Run tests
 test:
   @rm -f luacov.stats.out
   @busted
+
+# Lint commit message using Jujutsu revision description
+lint-commit-msg:
+  jj log --no-graph -r "${JJ_COMMIT_ID:-@}" -T description | commitlint
+
+alias lint-commit := lint-commit-msg
 
 bump:
   ./scripts/bump

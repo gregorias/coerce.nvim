@@ -1,31 +1,42 @@
-pre-commit:
+check:
   parallel: true
   commands:
     tests:
+      tags: test
       run: just test
     typecheck:
+      tags: typecheck
+      glob: "*.lua"
       run: just typecheck
-    markdownlint:
+    check-lua:
+      tags: style
+      glob: "*.lua"
+      run: just check-lua
+    lint-lua:
+      tags: style lint
+      glob: "*.lua"
+      run: just lint-lua
+    lint-markdown:
       tags: documentation style
       glob: "*.md"
-      run: markdownlint {staged_files}
-    lychee:
+      run: just lint-markdown
+    check-links:
       tags: documentation
       glob: "*.md"
-      run: lychee --accept "100..=103,200..=299,403,429" --root-dir=. DEV.md README.md IDEAS.md
-    luacheck:
-      tags: style lint
-      files: git diff --name-only --cached --diff-filter=AM
-      glob: "*.lua"
-      run: luacheck {staged_files}
-    stylua:
-      tags: style
-      run: stylua --check lua --color always
-    yaml-prettier:
+      run: just check-links
+    check-yaml:
       tags: style
       glob: "*.{yml,yaml}"
-      run: prettier -c {staged_files}
-commit-msg:
+      run: just check-yaml
+
+format:
+  parallel: true
   commands:
-    commitlint:
-      run: commitlint --edit={1}
+    format-lua:
+      tags: style
+      glob: "*.lua"
+      run: just format-lua
+    format-yaml:
+      tags: style
+      glob: "*.{yml,yaml}"
+      run: just format-yaml
