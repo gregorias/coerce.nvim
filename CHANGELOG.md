@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 
 ### Chores
 
-## TBR — 2026-10-11
+## 5.1.1 — 2026-10-11
 
 ### Chores
 
