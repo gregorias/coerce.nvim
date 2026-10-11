@@ -81,10 +81,11 @@ BUILT-IN CASES                                         *coerce-builtin-cases*
 
 BUILT-IN MODES                                         *coerce-builtin-modes*
 
-    Vim mode  Selector                  Transformer ~
-    Normal    current |'iskeyword'|     LSP rename/local
-    Normal    motion selection          local
-    Visual    visual selection          local
+    Vim mode  Selector               Transformer  Keymap ~
+    Normal    current |'iskeyword'|  LSP/local    <Plug>(coerce-normal)
+    Normal    current |'iskeyword'|  local        <Plug>(coerce-normal-no-lsp)
+    Normal    motion selection       local        <Plug>(coerce-motion)
+    Visual    visual selection       local        <Plug>(coerce-visual)
 
 It is recommended to use `cr` as keymap for the normal mode. For the visual
 mode, `gcr` is recommended to avoid a conflict with the default `c` |v_c|.
@@ -92,6 +93,7 @@ mode, `gcr` is recommended to avoid a conflict with the default `c` |v_c|.
 The plugin exposes the built-in modes as the following keymaps:
 
 - `<Plug>(coerce-normal)`
+- `<Plug>(coerce-normal-no-lsp)`
 - `<Plug>(coerce-motion)`
 - `<Plug>(coerce-visual)`
 
@@ -131,6 +133,7 @@ The recommended configuration with Which Key:
     local wke = require("coerce.keymaps").which_key_expand
     require("which-key").add({
       { "cr", group = "+Coerce word", expand = wke.normal_mode, mode = "n" },
+      { "co", group = "+Coerce word (no LSP)", expand = wke.normal_no_lsp_mode, mode = "n" },
       { "gcr", group = "+Coerce motion", expand = wke.motion_mode, mode = "n" },
       { "gcr", group = "+Coerce visual", expand = wke.visual_mode, mode = "x" },
     })
@@ -139,6 +142,7 @@ Alternatively, you may use `vim.keymap.set`:
 
 >lua
     vim.keymap.set("n", "cr", "<Plug>(coerce-normal)", { desc = "Coerce word" })
+    vim.keymap.set("n", "co", "<Plug>(coerce-normal-no-lsp)", { desc = "Coerce word (no LSP)" })
     vim.keymap.set("n", "gcr", "<Plug>(coerce-motion)", { desc = "Coerce motion" })
     vim.keymap.set("x", "gcr", "<Plug>(coerce-visual)", { desc = "Coerce visual" })
 <
@@ -184,25 +188,6 @@ You can register a new mode like so:
     vim.keymap.set("v", "gc", function()
       require"coerce.keymaps".action(foo_mode)
     end, { desc = "Coerce with foo mode" })
-<
-
-EXAMPLES                                                   *coerce-examples*
-
-SELECTIVELY DISABLING LSP RENAME            *coerce-disable-lsp-rename*
-
-If you don't like that the default normal mode binding uses LSP rename (e.g.,
-because it's too slow), you can provide your own implementation like so:
-
->lua
-    require"coerce".setup{}
-
-    -- Register a custom `cr` binding that uses the local-only transformation.
-    vim.keymap.set("n", "cr", function ()
-      require"coerce.keymaps".action{
-        selector = require"coerce.selector".select_current_word,
-        transformer = require"coerce.transformer".transform_local,
-      }
-    end)
 <
 
 ==============================================================================

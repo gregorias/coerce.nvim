@@ -23,6 +23,9 @@ M.register_plug_keymaps = function()
 	vim.keymap.set("n", "<Plug>(coerce-normal)", function()
 		return M.action(require("coerce.mode").normal_mode)
 	end, { desc = "Coerce word", silent = true })
+	vim.keymap.set("n", "<Plug>(coerce-normal-no-lsp)", function()
+		return M.action(require("coerce.mode").normal_no_lsp_mode)
+	end, { desc = "Coerce word (no LSP)", silent = true })
 	vim.keymap.set("n", "<Plug>(coerce-motion)", function()
 		return M.action(require("coerce.mode").motion_mode)
 	end, { desc = "Coerce motion", silent = true })
@@ -55,6 +58,7 @@ end
 
 M.which_key_expand = {
 	normal_mode = create_wk_expand(require("coerce.mode").normal_mode),
+	normal_no_lsp_mode = create_wk_expand(require("coerce.mode").normal_no_lsp_mode),
 	motion_mode = create_wk_expand(require("coerce.mode").motion_mode),
 	visual_mode = create_wk_expand(require("coerce.mode").visual_mode),
 }

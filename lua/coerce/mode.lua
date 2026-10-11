@@ -25,6 +25,15 @@ M.normal_mode = {
 }
 
 ---@type coerce.Mode
+M.normal_no_lsp_mode = {
+	selector = selector_m.select_current_word,
+	transformer = function(...)
+		local transformer_m = require("coerce.transformer")
+		return transformer_m.transform_local(...)
+	end,
+}
+
+---@type coerce.Mode
 M.motion_mode = {
 	selector = selector_m.select_with_motion,
 	transformer = function(...)

@@ -126,6 +126,44 @@ describe("coerce", function()
 		assert.are.same({ "MY_CASE", "local MY_CASE" }, lines)
 	end)
 
+	it("coerces current word without LSP using normal_no_lsp_mode", function()
+		local lines = nvim:exec_lua(
+			[[
+			local c = require("coerce")
+			local test_helpers = require("tests.helpers")
+			local fake_lsp_server_m = require("tests.fake_lsp_server")
+
+			local buf = test_helpers.create_buf({ "myCase", "local myCase" })
+			vim.api.nvim_buf_set_name(buf, "test.lua")
+			local fake_lsp_server = fake_lsp_server_m.server()
+			fake_lsp_server.stub_rename("myCase", {
+				{ line = 0, character = 0 },
+				{ line = 1, character = 6 },
+			})
+			local client_id = vim.lsp.start({
+				name = "fake-lsp-server",
+				cmd = function(dispatchers)
+					return fake_lsp_server(dispatchers)
+				end,
+			}, { bufnr = buf })
+
+			c.setup({})
+			vim.keymap.set("n", "cr", "<Plug>(coerce-normal-no-lsp)")
+			test_helpers.execute_keys("cru", "x")
+
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 2, true)
+
+			vim.lsp.get_client_by_id(client_id):stop(true)
+			vim.api.nvim_buf_delete(buf, { force = true })
+
+			c.teardown()
+
+			return lines]],
+			{}
+		)
+		assert.are.same({ "MY_CASE", "local myCase" }, lines)
+	end)
+
 	it("works with motion selection even with a user-defined g@ keymap", function()
 		local buf = test_helpers.create_buf({ "myCase" })
 		vim.keymap.set("n", "g@", '<cmd>echo "Pressed g@"<cr>')
