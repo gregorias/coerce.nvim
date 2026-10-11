@@ -19,6 +19,14 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 
 ### Security
 
+### Chores
+
+## TBR — 2026-10-11
+
+### Chores
+
+- Updated release scripts to Jujutsu.
+
 ## 5.0.1 — 2026-10-11
 
 ### Added
