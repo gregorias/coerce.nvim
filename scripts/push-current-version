@@ -5,6 +5,5 @@ set -euo pipefail
 
 new_version=$(bump-my-version show current_version)
 jj git push
-jj git push --tag "v$new_version"
 
 echo "✅ Version $new_version pushed successfully!"

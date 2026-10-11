@@ -19,5 +19,6 @@ new_version=$(bump-my-version show current_version)
 # changes become immutable.
 jj commit -m "chore: bump $current_version → $new_version"
 jj tag set "v$new_version" -r @-
+jj tag track "v$new_version@origin"
 
 echo "✅ Bumped to version $new_version successfully!"
