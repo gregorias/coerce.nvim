@@ -19,6 +19,22 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 
 ### Security
 
+## TBR — 2026-10-11
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+- Fixed `v:NULL` appearing after processing keywords with extra separators.
+
+### Security
+
 ## 5.0.0 — 2026-05-19
 
 ### Added
