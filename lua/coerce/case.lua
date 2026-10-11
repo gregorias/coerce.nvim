@@ -160,9 +160,7 @@ M.split_keyword = function(str)
 				word = word .. grapheme_list[i]
 			end
 		end
-		if word ~= "" then
-			table.insert(words, word)
-		end
+		table.insert(words, word)
 	else
 		-- No separator found. Separate by upper case.
 		local word = ""
