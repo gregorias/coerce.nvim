@@ -13,8 +13,12 @@ M.to_camel_case = function(str)
 
 	for i = 2, #parts, 1 do
 		local part_graphemes = cs.str2graphemelist(parts[i])
-		part_graphemes[1] = vim.fn.toupper(part_graphemes[1])
-		parts[i] = table.concat(part_graphemes, "")
+		if #part_graphemes == 0 then
+			parts[i] = ""
+		else
+			part_graphemes[1] = vim.fn.toupper(part_graphemes[1])
+			parts[i] = table.concat(part_graphemes, "")
+		end
 	end
 
 	return table.concat(parts, "")
@@ -72,8 +76,12 @@ M.to_pascal_case = function(str)
 
 	for i = 1, #parts, 1 do
 		local part_graphemes = cs.str2graphemelist(parts[i])
-		part_graphemes[1] = vim.fn.toupper(part_graphemes[1])
-		parts[i] = table.concat(part_graphemes, "")
+		if #part_graphemes == 0 then
+			parts[i] = ""
+		else
+			part_graphemes[1] = vim.fn.toupper(part_graphemes[1])
+			parts[i] = table.concat(part_graphemes, "")
+		end
 	end
 
 	return table.concat(parts, "")
