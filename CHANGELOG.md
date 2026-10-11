@@ -19,7 +19,7 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 
 ### Security
 
-## TBR — 2026-10-11
+## 5.0.1 — 2026-10-11
 
 ### Added
 
