@@ -6,7 +6,7 @@
 --@module coerce.transformer
 local M = {}
 
---- Returns transformed selected text.
+---Returns transformed selected text.
 ---
 ---@param selected_region coerce.Region The selected region to change.
 ---@param apply function The function to apply to the selected region.
@@ -21,7 +21,7 @@ local apply_case_to_selected_region = function(selected_region, apply)
 	return apply(selected_text_lines[1])
 end
 
---- Changes the selected text with the apply function using local substitution.
+---Changes the selected text with the apply function using local substitution.
 ---
 ---@param selected_region coerce.Region The selected region to change.
 ---@param apply function The function to apply to the selected region.
@@ -43,9 +43,9 @@ M.transform_local = function(selected_region, apply)
 	return true
 end
 
---- Changes the selected text with the apply function using LSP rename.
+---Changes the selected text with the apply function using LSP rename.
 ---
---- This is a task function.
+---This is a task function.
 ---
 ---@async
 ---@param selected_region coerce.Region The selected region to change.

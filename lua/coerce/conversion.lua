@@ -3,10 +3,10 @@
 --luacheck: max comment line length 200
 local M = {}
 
---- Coerces selected text.
+---Coerces selected text.
 ---
---- `select_text` uses a callback to support dot-repeat functionality. If `select_text` uses operators, then
---- the callback can be used as the repeatable action.
+---`select_text` uses a callback to support dot-repeat functionality. If `select_text` uses
+---operators, then the callback can be used as the repeatable action.
 ---
 ---@param select_text fun(cb: fun(region_or_error: coerce.Region | string)) The function that returns selected text (coerce.Region) or an error through a callback.
 ---@param transform_text fun(selected_region: coerce.Region, apply: fun(text: string): string) The function to use to transform selected text.

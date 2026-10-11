@@ -99,7 +99,7 @@ M.to_upper_case = function(str)
 	return table.concat(parts, "_")
 end
 
---- Converts a keyword into path/case.
+---Converts a keyword into path/case.
 ---
 ---@param str string the string to convert
 ---@return string
@@ -109,7 +109,7 @@ M.to_path_case = function(str)
 	return table.concat(parts, "/")
 end
 
---- Converts a keyword into space case.
+---Converts a keyword into space case.
 ---
 ---@param str string the string to convert
 ---@return string
