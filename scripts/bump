@@ -15,7 +15,9 @@ version_type=$(gum choose "patch" "minor" "major")
 bump-my-version bump "$version_type"
 
 new_version=$(bump-my-version show current_version)
-jj describe -m "chore: bump $current_version → $new_version"
-jj tag set "v$new_version"
+# If we just tag the working copy, JJ will show a warning, because tagged
+# changes become immutable.
+jj commit -m "chore: bump $current_version → $new_version"
+jj tag set "v$new_version" -r @-
 
 echo "✅ Bumped to version $new_version successfully!"
