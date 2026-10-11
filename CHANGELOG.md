@@ -9,8 +9,6 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 
 ### Added
 
-- Added built-in no-LSP, current word rename mode.
-
 ### Changed
 
 ### Deprecated
@@ -22,6 +20,12 @@ The format is based on [Keep a Changelog][kac], and this project adheres to
 ### Security
 
 ### Chores
+
+## TBR — 2026-10-11
+
+### Chores
+
+- Fixed bump script overwriting changes.
 
 ## 5.1.0 — 2026-10-11
 

@@ -5,14 +5,29 @@
 # 2. Updates TBR — <date> section in the changelog with the new version.
 # 3. Creates a chore change with the changes.
 # 4. Tags the change with `vVERSION`.
+#
+# Bumping only works on empty working copies to prevent overriding work.
 
 set -euo pipefail
+
+if test "$(jj log -r @ --no-graph -T 'if(empty, "empty", "non-empty")')" = "non-empty"; then
+  echo "You are trying to bump on a non-empty working copy. Run jj new before bumping." >&2
+  exit 1
+fi
 
 current_version=$(bump-my-version show current_version)
 echo "Current version: $current_version"
 echo "Choose the version bump:"
 version_type=$(gum choose "patch" "minor" "major")
-bump-my-version bump "$version_type"
+
+cleanup () {
+  echo "Bump failed; rolling back changes…"
+  jj restore
+}
+# If the bump fails and only does a partial update, roll-back the changes.
+trap cleanup ERR
+
+bump-my-version bump "$version_type";
 
 new_version=$(bump-my-version show current_version)
 # If we just tag the working copy, JJ will show a warning, because tagged
