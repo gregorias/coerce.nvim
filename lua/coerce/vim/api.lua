@@ -1,6 +1,4 @@
 --- Extra vim.api utilities.
---
---@module coerce.vim.api
 local M = {}
 
 --- An alternative to nvim_buf_get_text that is zero-indexed.

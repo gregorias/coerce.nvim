@@ -1,9 +1,7 @@
---- A module or transformers.
---
--- A transformers is a function that takes a selected region and a case, and
--- transforms the selected text using the case.
---
---@module coerce.transformer
+---A module of transformers.
+---
+---A transformer is a function that takes a selected region and a case, and
+---transforms the selected text using the case.
 local M = {}
 
 ---Returns transformed selected text.

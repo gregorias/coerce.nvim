@@ -1,8 +1,6 @@
 --- A module with text selectors.
 --
 -- A text selector is a function that returns a region of selected text.
---
--- @module coerce.selector
 local M = {}
 
 --- Selects the current word.

@@ -11,8 +11,6 @@
 -- - zero-indexed
 -- - start-inclusive
 -- - end-exclusive
---
--- @module coerce.region
 local M = {}
 
 ---@alias coerce.RegionMode "char" | "line" | "block"
